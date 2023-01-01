@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_myLists">
+
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.myapplication.ui.profile.ProfileFragment"
+        android:label="@string/menu_Profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/nav_myLists"
+        android:name="com.example.myapplication.ui.myLists.MyListsFragment"
+        android:label="@string/menu_myLists"
+        tools:layout="@layout/fragment_mylists" >
+        <action
+            android:id="@+id/action_nav_myLists_to_newListFragment"
+            app:destination="@id/nav_newListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.example.myapplication.ui.logout.LogoutFragment"
+        android:label="@string/menu_logout"
+        tools:layout="@layout/fragment_logout" />
+    <fragment
+        android:id="@+id/nav_newListFragment"
+        android:name="com.example.myapplication.ui.newList.NewListFragment"
+        android:label="fragment_new_list"
+        tools:layout="@layout/fragment_new_list" />
+
+</navigation>
