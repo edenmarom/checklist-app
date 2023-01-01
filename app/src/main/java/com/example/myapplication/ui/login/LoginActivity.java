@@ -23,11 +23,14 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.ActivityLoginBinding;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
     private ActivityLoginBinding binding;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,6 +126,16 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        // Check if user is signed in (non-null) and update UI accordingly.
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        if(currentUser != null){
+////            reload();
+//        }
+//    }
 
     private void updateUiWithUser(LoggedInUserView model) {
         String welcome = getString(R.string.welcome) + model.getDisplayName();

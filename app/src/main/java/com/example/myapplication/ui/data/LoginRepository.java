@@ -1,6 +1,18 @@
 package com.example.myapplication.ui.data;
 
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.ui.data.model.LoggedInUser;
+import com.example.myapplication.ui.login.LoginActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -9,6 +21,8 @@ import com.example.myapplication.ui.data.model.LoggedInUser;
 public class LoginRepository {
 
     private static volatile LoginRepository instance;
+    private FirebaseAuth mAuth;
+
 
     private LoginDataSource dataSource;
 
@@ -19,6 +33,7 @@ public class LoginRepository {
     // private constructor : singleton access
     private LoginRepository(LoginDataSource dataSource) {
         this.dataSource = dataSource;
+        mAuth = FirebaseAuth.getInstance();
     }
 
     public static LoginRepository getInstance(LoginDataSource dataSource) {
@@ -44,6 +59,10 @@ public class LoginRepository {
     }
 
     public Result<LoggedInUser> login(String username, String password) {
+
+        // gggg()
+
+
         // handle login
         Result<LoggedInUser> result = dataSource.login(username, password);
         if (result instanceof Result.Success) {
@@ -51,4 +70,24 @@ public class LoginRepository {
         }
         return result;
     }
+
+
+//    public void gggg(String username, String password) {
+//        mAuth.signInWithEmailAndPassword(username, password)
+//                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<AuthResult> task) {
+//                        if (task.isSuccessful()) {
+//                            // Sign in success, update UI with the signed-in user's information
+//                            Log.d("LOGIN", "signInWithEmail:success");
+//                            FirebaseUser user = mAuth.getCurrentUser();
+//                            Log.d("LOGIN", user.getDisplayName());
+////                            updateUI(user);
+//                        } else {
+//                            // If sign in fails, display a message to the user.
+//                            Log.w("LOGIN", "signInWithEmail:failure", task.getException());
+//                        }
+//                    }
+//                });
+//    }
 }
