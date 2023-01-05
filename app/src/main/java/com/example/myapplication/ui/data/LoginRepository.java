@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.data;
 
+import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,7 +19,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.Executor;
 
 /**
@@ -30,7 +36,7 @@ public class LoginRepository {
     private static volatile LoginRepository instance;
     private FirebaseAuth mAuth;
     private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
-
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private LoginDataSource dataSource;
 
@@ -124,3 +130,7 @@ public class LoginRepository {
         return result;
     }
 }
+
+/// TODOS:
+//read from db
+//save img

@@ -124,5 +124,11 @@ tools:context=".ui.profile.ProfileFragment">
 
         </LinearLayout>
 
+        <ImageView
+            android:id="@+id/imgTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu_gallery" />
+
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
