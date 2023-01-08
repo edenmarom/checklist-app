@@ -37,6 +37,7 @@ public class LoginRepository {
     private FirebaseAuth mAuth;
     private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
     FirebaseStorage storage = FirebaseStorage.getInstance();
+    public static LoggedInUser currentUser;
 
     private LoginDataSource dataSource;
 
@@ -96,11 +97,11 @@ public class LoginRepository {
                               // Write a a user to the database example
                               FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
                               DatabaseReference users = database.getReference("Users");
-                              LoggedInUser myuser =
+                              currentUser =
                                       new LoggedInUser(
                                               uid,
                                               "Eden Marom", email,"054-3399867",null);
-                              users.child(uid).setValue(myuser).addOnCompleteListener(new OnCompleteListener<Void> (){
+                              users.child(uid).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void> (){
                                   @Override
                                   public void onComplete(@NonNull Task<Void> task) {
                                       if(task.isSuccessful()){
@@ -130,7 +131,3 @@ public class LoginRepository {
         return result;
     }
 }
-
-/// TODOS:
-//read from db
-//save img
