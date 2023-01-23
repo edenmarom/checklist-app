@@ -10,12 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.myapplication.databinding.FragmentProfileBinding;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -24,6 +31,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     FirebaseStorage storage = FirebaseStorage.getInstance();
     private final String userImagesDBLocation = "user-images/%s.png";
+    private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -33,6 +41,7 @@ public class ProfileFragment extends Fragment {
         View root = binding.getRoot();
 
         LoadProfileImage();
+        LoadProfileData();
 
         return root;
     }
@@ -63,6 +72,31 @@ public class ProfileFragment extends Fragment {
                             Log.d("TAG", path);
                         }
                     });
+        }
+    }
+
+    private void LoadProfileData() {
+        if (currentUser!= null){
+            TextView nameTV = binding.profileName;
+            TextView phoneTV = binding.profilePhone;
+            TextView emailTV = binding.profileEmail;
+            String userUID = currentUser.getUserId();
+            FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
+            DatabaseReference users = database.getReference("Users");
+            users.child(userUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DataSnapshot> task) {
+                    if (!task.isSuccessful()) {
+                        Log.e("TAG", "Error getting user's data", task.getException());
+                    }
+                    else {
+                        Log.d("TAG", "load user's data:success "+ String.valueOf(task.getResult().getValue()));
+                        nameTV.setText(task.getResult().child("displayName").getValue().toString());
+                        phoneTV.setText(task.getResult().child("phone").getValue().toString());
+                        emailTV.setText(task.getResult().child("email").getValue().toString());
+                    }
+                }
+            });
         }
     }
 
