@@ -1,19 +1,20 @@
 package com.example.myapplication.ui.myLists;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+
+import com.example.myapplication.list.Lists;
+
+import java.util.LinkedList;
 
 public class MyListsViewModel extends ViewModel {
 
-    private final MutableLiveData<String> mText;
 
-    public MyListsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is my lists fragment");
-    }
+    LinkedList<Lists> lists = new LinkedList<>();
 
-    public LiveData<String> getText() {
-        return mText;
+    public LinkedList<Lists> getList() {
+        return lists;
     }
+    public void addToList( Lists l){
+        lists.add(l);
+     }
 }
