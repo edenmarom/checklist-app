@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/cercel_shape">
 
 
     <ImageView
         android:id="@+id/image__listItem"
-        android:layout_width="110dp"
-        android:layout_height="108dp"
+        android:layout_width="75dp"
+        android:layout_height="92dp"
         android:layout_marginTop="10dp"
 
         android:src="@drawable/avatar"
@@ -36,12 +37,13 @@
         android:id="@+id/date_listItem"
         android:layout_width="118dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
+        android:layout_marginBottom="16dp"
         android:gravity="center"
         android:text="last update"
         android:textSize="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/image__listItem"
         app:layout_constraintEnd_toEndOf="@+id/title_listItem"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/title_listItem" />
 
     <ImageView
@@ -74,7 +76,9 @@
         android:src="@drawable/ic_baseline_more_horiz_24"
         app:layout_constraintBottom_toBottomOf="@+id/count_people"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.666"
         app:layout_constraintStart_toStartOf="@+id/count_people"
-        app:layout_constraintTop_toTopOf="@+id/count_people" />
+        app:layout_constraintTop_toTopOf="@+id/count_people"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
