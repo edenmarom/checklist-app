@@ -1,13 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.newList.NewListFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="new list" />
 
-</FrameLayout>
+<!--    <Button-->
+<!--        android:id="@+id/button67"-->
+<!--        android:layout_width="59dp"-->
+<!--        android:layout_height="54dp"-->
+<!--        android:background="@drawable/color_cirecel"-->
+<!--        android:contentDescription="@string/action_settings"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/button66"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/guideline2"></Button>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/button66"-->
+<!--        android:layout_width="59dp"-->
+<!--        android:layout_height="54dp"-->
+<!--        android:background="@drawable/color_cirecel"-->
+<!--        android:contentDescription="@string/action_settings"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/button67"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/button65"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/guideline2"></Button>-->
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="127dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="4dp"
+        android:layout_marginBottom="132dp"
+        android:scrollbarSize="10dp"
+        android:text="icon"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/switch1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="127dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="28dp"
+        android:scrollbarSize="10dp"
+        android:text="color"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="127dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="72dp"
+        android:text="add item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.005"
+        app:layout_constraintStart_toEndOf="@+id/floatingActionButton"
+        app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName2" />
+
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="127dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="28dp"
+        android:scrollbarSize="10dp"
+        android:text="color"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton" />
+
+    <EditText
+        android:id="@+id/editTextTextPersonName2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="127dp"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:contentDescription="@string/action_settings"
+        android:src="@drawable/ic_baseline_add_24"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+
+<!--    <Button-->
+<!--        android:id="@+id/button64"-->
+<!--        android:layout_width="59dp"-->
+<!--        android:layout_height="54dp"-->
+<!--        android:background="@drawable/color_cirecel"-->
+<!--        android:contentDescription="@string/action_settings"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/button65"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/guideline3"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/guideline2"></Button>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/button65"-->
+<!--        android:layout_width="59dp"-->
+<!--        android:layout_height="54dp"-->
+<!--        android:background="@drawable/color_cirecel"-->
+<!--        android:contentDescription="@string/action_settings"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/button66"-->
+<!--        app:layout_constraintHorizontal_bias="0.5"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/button64"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/guideline2"></Button>-->
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="224dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <Switch
+        android:id="@+id/switch1"
+        android:layout_width="196dp"
+        android:layout_height="57dp"
+        android:layout_marginBottom="72dp"
+        android:text="includ map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="@+id/guideline3" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

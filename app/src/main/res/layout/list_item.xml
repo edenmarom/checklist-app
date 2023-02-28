@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <ImageView
+        android:id="@+id/image__listItem"
+        android:layout_width="110dp"
+        android:layout_height="108dp"
+        android:layout_marginTop="10dp"
+
+        android:src="@drawable/avatar"
+        app:layout_constraintEnd_toStartOf="@+id/title_listItem"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <TextView
+        android:id="@+id/title_listItem"
+        android:layout_width="113dp"
+        android:layout_height="57dp"
+        android:layout_marginEnd="44dp"
+        android:gravity="center"
+        android:text="Title"
+        android:textSize="100px"
+        app:layout_constraintBottom_toTopOf="@+id/date_listItem"
+        app:layout_constraintEnd_toStartOf="@+id/count_people"
+        app:layout_constraintTop_toTopOf="@+id/image__listItem"
+        app:layout_constraintVertical_bias="0.625" />
+
+    <TextView
+        android:id="@+id/date_listItem"
+        android:layout_width="118dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:gravity="center"
+        android:text="last update"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/image__listItem"
+        app:layout_constraintEnd_toEndOf="@+id/title_listItem"
+        app:layout_constraintStart_toStartOf="@+id/title_listItem" />
+
+    <ImageView
+        android:id="@+id/count_people"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="52dp"
+        android:src="@drawable/ic_baseline_person_outline_24"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/counter__listItem"
+        app:layout_constraintTop_toTopOf="@+id/image__listItem"></ImageView>
+
+    <TextView
+        android:id="@+id/counter__listItem"
+        android:layout_width="30dp"
+        android:layout_height="24dp"
+        android:gravity="center"
+        android:text="0"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/count_people"
+        app:layout_constraintEnd_toStartOf="@+id/count_people"
+        app:layout_constraintTop_toTopOf="@+id/count_people"></TextView>
+
+    <ImageView
+        android:layout_width="38dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="35dp"
+        android:src="@drawable/ic_baseline_more_horiz_24"
+        app:layout_constraintBottom_toBottomOf="@+id/count_people"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/count_people"
+        app:layout_constraintTop_toTopOf="@+id/count_people" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
