@@ -1,11 +1,16 @@
 package com.example.myapplication.model;
 
+import android.location.Location;
+
 import java.util.List;
 
 public class ListItem {
     public String name;
     List<String> listItem;
     Boolean includMap;
+    Location location = new Location("5");
+    String userId;
+
 
     public ListItem(String name, List<String> listItem, Boolean includMap) {
         this.name = name;

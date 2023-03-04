@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
@@ -22,7 +23,9 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListViewHolder> {
 
     LayoutInflater inflater;
     List<ListItem> data;
-    public MyListAdapter(LayoutInflater inflater, List<ListItem> data){
+    Fragment fragment;
+    public MyListAdapter(LayoutInflater inflater, List<ListItem> data, Fragment fragment){
+        this.fragment = fragment;
         this.inflater = inflater;
         this.data = data;
     }
@@ -33,7 +36,7 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListViewHolder> {
 
     public MyListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.list_item,parent,false);
-        return new MyListViewHolder(view,listener, data);
+        return new MyListViewHolder(view,listener, data, fragment);
     }
 
 

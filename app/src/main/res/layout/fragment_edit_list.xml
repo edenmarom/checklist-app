@@ -7,11 +7,11 @@
     android:background="#F4EFEF"
     android:backgroundTint="#FFFFFF"
     android:textAlignment="inherit"
-    tools:context=".ui.newList.NewListFragment">
+    tools:context=".ui.EditItem.EditListFragment">
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/newListEditBtn"
+        android:id="@+id/EditListEditBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -21,75 +21,58 @@
         android:tintMode="src_in"
         app:backgroundTint="#FFFFFF"
         app:backgroundTintMode="add"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <EditText
-        android:id="@+id/ET_add_item"
-        android:layout_width="104dp"
-        android:layout_height="54dp"
-        android:layout_marginEnd="136dp"
-        android:hint="add item"
-        app:layout_constraintBottom_toBottomOf="@+id/B_add_item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/B_add_item"
-        app:layout_constraintVertical_bias="0.774" />
-
-    <ImageView
-        android:id="@+id/B_add_item"
-        android:layout_width="26dp"
-        android:layout_height="23dp"
-        android:contentDescription="@string/action_settings"
-        android:src="@drawable/ic_baseline_add_24"
-        app:layout_constraintBottom_toTopOf="@+id/profile_image"
-        app:layout_constraintEnd_toStartOf="@+id/ET_add_item"
-        app:layout_constraintHorizontal_bias="0.921"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_name" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profile_image"
-        android:layout_width="134dp"
-        android:layout_height="134dp"
-        android:layout_marginStart="108dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/avatar"
-        app:layout_constraintBottom_toTopOf="@+id/include_map"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/B_add_item"
-        app:shapeAppearanceOverlay="@style/Circular" />
-
-    <Button
-        android:id="@+id/AddButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="add_list"
-        android:text="add"
         app:layout_constraintBottom_toBottomOf="@+id/include_map"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/edit_list_EditBtn_editList"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/include_map"
         app:layout_constraintTop_toTopOf="@+id/include_map" />
 
     <EditText
-        android:id="@+id/list_name"
-        android:layout_width="265dp"
-        android:layout_height="51dp"
+        android:id="@+id/list_items"
+        android:layout_width="297dp"
+        android:layout_height="214dp"
         android:background="@drawable/cercel_shape"
         android:contextClickable="true"
         android:ems="10"
         android:foregroundGravity="left"
         android:gravity="start"
-        android:hint="List Name"
+        android:hint="List items"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHighlight="#131212"
         android:textColorHint="#121010"
-        app:layout_constraintBottom_toTopOf="@+id/B_add_item"
+        app:layout_constraintBottom_toTopOf="@+id/include_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.473"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_name_editList" />
+
+    <Button
+        android:id="@+id/edit_list_EditBtn_editList"
+        android:layout_width="99dp"
+        android:layout_height="51dp"
+        android:onClick="add_list"
+        android:text="Edit"
+        app:layout_constraintBottom_toBottomOf="@+id/include_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toTopOf="@+id/include_map" />
+
+    <TextView
+        android:id="@+id/list_name_editList"
+        android:layout_width="303dp"
+        android:layout_height="62dp"
+        android:background="@drawable/cercel_shape"
+        android:contextClickable="true"
+        android:ems="10"
+        android:foregroundGravity="left"
+        android:gravity="start"
+        android:text="List Name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHighlight="#131212"
+        android:textColorHint="#121010"
+        app:layout_constraintBottom_toTopOf="@+id/list_items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -102,20 +85,20 @@
         android:scrollbarSize="200dp"
         android:text="includ map"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/AddButton"
+        app:layout_constraintEnd_toStartOf="@+id/edit_list_EditBtn_editList"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintTop_toBottomOf="@+id/list_items" />
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New List"
+        android:text="Edit List"
         android:textColor="#0C0808"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/list_name"
+        app:layout_constraintBottom_toTopOf="@+id/list_name_editList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

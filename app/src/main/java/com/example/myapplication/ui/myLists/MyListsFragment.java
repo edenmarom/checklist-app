@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.myLists;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMylistsBinding;
 import com.example.myapplication.model.ListItem;
+import com.example.myapplication.ui.EditItem.EditListFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -54,14 +56,23 @@ public class MyListsFragment extends Fragment {
         RecyclerView list = root.findViewById(R.id.RV_list);
         list.setHasFixedSize(true);
 
+        Fragment fragment = getParentFragment();
         list.setLayoutManager(new LinearLayoutManager(getContext()));
-        MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),data);
+        MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),data,fragment);
         list.setAdapter(adapter);
 
         adapter.setOnItemClickListener(new MyListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int pos) {
                 Log.d("TAG", "Row was clicked " + pos);
+
+                //todo::move to edit page
+
+//                Intent i = new Intent(getActivity().this, EditListFragment.class);
+//                i.putExtra("key",value);
+//                startActivity(i);
+
+
             }
         });
         return root;

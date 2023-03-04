@@ -18,9 +18,9 @@ public class MyListsViewModel extends ViewModel {
     public MyListsViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is my lists fragment");
-List<String> list = new ArrayList<>();
-list.add("item1");
-list.add("item2");
+        List<String> list = new ArrayList<>();
+        list.add("item1");
+        list.add("item2");
         for(int i=0;i<20;i++){
             addList(new ListItem("name " + i,list,true));
         }
