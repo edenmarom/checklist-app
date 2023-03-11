@@ -4,8 +4,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.MainActivity;
 import com.example.myapplication.R;
-import com.example.myapplication.ui.login.LoginActivity;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class SplashActivity extends AppCompatActivity {
             public void onTick(long millisUntilFinished) {}
             @Override
             public void onFinish() {
-                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
 
             }

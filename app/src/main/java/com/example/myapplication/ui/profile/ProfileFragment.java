@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -42,6 +44,18 @@ public class ProfileFragment extends Fragment {
     private final String userImagesDBLocation = "user-images/%s.png";
     private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
     StorageReference storageRef = storage.getReference();
+    private boolean textViewsVisible = true;
+    private boolean editTextsVisible = false;
+    FloatingActionButton editBtn;
+    FloatingActionButton saveBtn;
+    TextView nameTextView;
+    TextView phoneTextView;
+    TextView emailTextView;
+    EditText nameEditText;
+    EditText phoneEditText;
+    EditText emailEditText;
+    String userUID;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -49,13 +63,42 @@ public class ProfileFragment extends Fragment {
                 new ViewModelProvider(this).get(ProfileViewModel.class);
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-        FloatingActionButton editImgBtn = binding.profileEditBtn;
+
+        nameTextView = binding.profileName;
+        phoneTextView = binding.profilePhone;
+        emailTextView = binding.profileEmail;
+        nameEditText = binding.profileNameEdit;
+        phoneEditText = binding.profilePhoneEdit;
+        emailEditText = binding.profileEmailEdit;
+
+        FloatingActionButton editImgBtn = binding.profileEditImgBtn;
         editImgBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imageChooser();
             }
         });
+
+        editBtn = binding.profileEditBtn;
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleEditMode();
+            }
+        });
+
+        saveBtn = binding.profileSaveBtn;
+        saveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveEditedProfile();
+            }
+        });
+
+        if (currentUser!= null){
+            userUID = currentUser.getUserId();
+        }
+
         LoadProfileImage();
         LoadProfileData();
         return root;
@@ -64,7 +107,6 @@ public class ProfileFragment extends Fragment {
     private void LoadProfileImage() {
         if (currentUser!= null){
             ImageView imageIV = binding.profileImage;
-            String userUID = currentUser.getUserId();
             String path = String.format(userImagesDBLocation, userUID);
             StorageReference imageRef = storageRef.child(path);
             imageRef.getBytes(Long.MAX_VALUE)
@@ -98,7 +140,6 @@ public class ProfileFragment extends Fragment {
             TextView nameTV = binding.profileName;
             TextView phoneTV = binding.profilePhone;
             TextView emailTV = binding.profileEmail;
-            String userUID = currentUser.getUserId();
             FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
             DatabaseReference users = database.getReference("Users");
             users.child(userUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
@@ -124,6 +165,64 @@ public class ProfileFragment extends Fragment {
         i.setAction(Intent.ACTION_GET_CONTENT);
         ChooseNewProfileImage.launch(i);
     }
+
+    private void toggleEditMode() {
+        nameEditText.setText(nameTextView.getText());
+        phoneEditText.setText(phoneTextView.getText());
+        emailEditText.setText(emailTextView.getText());
+
+        if (textViewsVisible) {
+            nameTextView.setVisibility(View.GONE);
+            phoneTextView.setVisibility(View.GONE);
+            emailTextView.setVisibility(View.GONE);
+            nameEditText.setVisibility(View.VISIBLE);
+            phoneEditText.setVisibility(View.VISIBLE);
+            emailEditText.setVisibility(View.VISIBLE);
+            editBtn.setVisibility(View.GONE);
+            saveBtn.setVisibility(View.VISIBLE);
+            textViewsVisible = false;
+            editTextsVisible = true;
+        } else if (editTextsVisible) {
+            nameEditText.setVisibility(View.GONE);
+            phoneEditText.setVisibility(View.GONE);
+            emailEditText.setVisibility(View.GONE);
+            nameTextView.setVisibility(View.VISIBLE);
+            phoneTextView.setVisibility(View.VISIBLE);
+            emailTextView.setVisibility(View.VISIBLE);
+            editBtn.setVisibility(View.VISIBLE);
+            saveBtn.setVisibility(View.GONE);
+            textViewsVisible = true;
+            editTextsVisible = false;
+        }
+    }
+
+    void saveEditedProfile() {
+        String newName = nameEditText.getText().toString();
+        String newPhone = phoneEditText.getText().toString();
+        String newEmail = emailEditText.getText().toString();
+
+        nameTextView.setText(newName);
+        phoneTextView.setText(newPhone);
+        emailTextView.setText(newEmail);
+
+        Log.d("TAG", "profile edit - new data: ");
+        Log.d("TAG", newName);
+        Log.d("TAG", newPhone);
+        Log.d("TAG", newEmail);
+
+        if (currentUser!= null) {
+            FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
+            DatabaseReference users = database.getReference("Users");
+            users.child(userUID).child("displayName").setValue(newName);
+            users.child(userUID).child("phone").setValue(newPhone);
+            users.child(userUID).child("email").setValue(newEmail);
+
+            Toast.makeText(getActivity(),"Changes Saved",Toast.LENGTH_SHORT).show();
+        }
+
+        toggleEditMode();
+    }
+
 
     ActivityResultLauncher<Intent> ChooseNewProfileImage
             = registerForActivityResult(
@@ -152,7 +251,6 @@ public class ProfileFragment extends Fragment {
 
     private void UploadSelectedImg(Bitmap selectedImageBitmap) {
         if (currentUser!= null) {
-            String userUID = currentUser.getUserId();
             String path = String.format(userImagesDBLocation, userUID);
             StorageReference imageRef = storageRef.child(path);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

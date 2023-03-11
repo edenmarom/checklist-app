@@ -1,11 +1,11 @@
 package com.example.myapplication.ui.myLists;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -19,6 +19,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMylistsBinding;
 import com.example.myapplication.model.ListItem;
 import com.example.myapplication.ui.EditItem.EditListFragment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
