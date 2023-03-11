@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
@@ -23,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.myapplication.databinding.FragmentProfileBinding;
+import com.example.myapplication.ui.data.model.LoggedInUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,22 +42,23 @@ import java.io.IOException;
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
     private final String userImagesDBLocation = "user-images/%s.png";
     private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
-    StorageReference storageRef = storage.getReference();
+    private StorageReference storageRef = storage.getReference();
     private boolean textViewsVisible = true;
     private boolean editTextsVisible = false;
-    FloatingActionButton editBtn;
-    FloatingActionButton saveBtn;
-    TextView nameTextView;
-    TextView phoneTextView;
-    TextView emailTextView;
-    EditText nameEditText;
-    EditText phoneEditText;
-    EditText emailEditText;
-    String userUID;
-
+    private FloatingActionButton editBtn;
+    private FloatingActionButton saveBtn;
+    private TextView nameTextView;
+    private TextView phoneTextView;
+    private TextView emailTextView;
+    private EditText nameEditText;
+    private EditText phoneEditText;
+    private EditText emailEditText;
+    private String userUID;
+    private ImageView imageIV;
+    private ProgressBar progressBar;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -99,6 +102,10 @@ public class ProfileFragment extends Fragment {
             userUID = currentUser.getUserId();
         }
 
+        // TODO remove after log in initialize currentUser
+        userUID = "E5aKiS0H37Yx8nudiYexLAviiVF3";
+        currentUser = new LoggedInUser(userUID,"","", "",null);
+
         LoadProfileImage();
         LoadProfileData();
         return root;
@@ -106,7 +113,8 @@ public class ProfileFragment extends Fragment {
 
     private void LoadProfileImage() {
         if (currentUser!= null){
-            ImageView imageIV = binding.profileImage;
+            imageIV = binding.profileImage;
+            progressBar = binding.profileProgressBar;
             String path = String.format(userImagesDBLocation, userUID);
             StorageReference imageRef = storageRef.child(path);
             imageRef.getBytes(Long.MAX_VALUE)
@@ -115,11 +123,15 @@ public class ProfileFragment extends Fragment {
                         public void onSuccess(byte[] bytes) {
                             Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
                             bitmapToImg(bm, imageIV);
+                            imageIV.setVisibility(View.VISIBLE);
+                            progressBar.setVisibility(View.GONE);
                             Log.d("TAG", "load profile:success");
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
+                            progressBar.setVisibility(View.GONE);
+                            imageIV.setVisibility(View.VISIBLE);
                             Log.d("TAG", "load profile:fail");
                             Log.d("TAG", path);
                         }
