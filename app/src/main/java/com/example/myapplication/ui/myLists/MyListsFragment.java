@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.myLists;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,16 +12,33 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMylistsBinding;
+import com.example.myapplication.model.ListItem;
+import com.example.myapplication.ui.EditItem.EditListFragment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.List;
 
 public class MyListsFragment extends Fragment {
 
     private FragmentMylistsBinding binding;
     FloatingActionButton addNewListBtn;
     NavController navController;
+
+    List<ListItem> data = MyListsViewModel.getAllList();
+
+
+
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -30,8 +48,8 @@ public class MyListsFragment extends Fragment {
         binding = FragmentMylistsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textMylists;
-        myListsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+//        final TextView textView = binding.textMylists;
+//        myListsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
 
         addNewListBtn = binding.myListsAddNewListBtn;
         navController = NavHostFragment.findNavController(this);
@@ -43,8 +61,24 @@ public class MyListsFragment extends Fragment {
             }
         });
 
+        RecyclerView list = root.findViewById(R.id.RV_list);
+        list.setHasFixedSize(true);
+
+        Fragment fragment = getParentFragment();
+        list.setLayoutManager(new LinearLayoutManager(getContext()));
+        MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),data,fragment);
+        list.setAdapter(adapter);
+
+
+//        adapter.setOnItemClickListener(new MyListAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int pos) {
+//                Log.d("TAG", "Row was clicked " + pos);
+//            }
+//        });
         return root;
     }
+
 
     @Override
     public void onDestroyView() {

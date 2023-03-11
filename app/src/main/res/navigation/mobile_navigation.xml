@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
+
     app:startDestination="@+id/nav_login">
     <fragment
         android:id="@+id/nav_login"
@@ -27,6 +28,15 @@
             android:id="@+id/action_nav_myLists_to_newListFragment"
             app:destination="@id/nav_newListFragment" />
     </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_googleMap"
+        android:name="com.example.myapplication.ui.maps.MapsFragment"
+        android:label="@string/menu_Map"
+        tools:layout="@layout/fragment_maps" />
+
+
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.example.myapplication.ui.logout.LogoutFragment"
@@ -41,5 +51,10 @@
         android:name="com.example.myapplication.ui.newList.NewListFragment"
         android:label="fragment_new_list"
         tools:layout="@layout/fragment_new_list" />
+    <fragment
+        android:id="@+id/editListFragment2"
+        android:name="com.example.myapplication.ui.EditItem.EditListFragment"
+        android:label="fragment_edit_list"
+        tools:layout="@layout/fragment_edit_list" />
 
 </navigation>

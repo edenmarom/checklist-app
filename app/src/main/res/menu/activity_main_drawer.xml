@@ -16,5 +16,9 @@
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="@string/menu_logout" />
+        <item
+            android:id="@+id/nav_googleMap"
+            android:icon="@drawable/map"
+            android:title="@string/menu_Map" />
     </group>
 </menu>
