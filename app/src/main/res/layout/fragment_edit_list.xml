@@ -10,6 +10,25 @@
     tools:context=".ui.EditItem.EditListFragment">
 
 
+    <EditText
+        android:id="@+id/list_name_editList2"
+        android:layout_width="303dp"
+        android:layout_height="62dp"
+        android:background="@drawable/cercel_shape"
+        android:contextClickable="true"
+        android:ems="10"
+        android:foregroundGravity="left"
+        android:gravity="start"
+        android:hint="location"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHighlight="#131212"
+        android:textColorHint="#121010"
+        app:layout_constraintBottom_toTopOf="@+id/list_items"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_name_editList" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/EditListEditBtn"
         android:layout_width="70dp"
@@ -21,11 +40,10 @@
         android:tintMode="src_in"
         app:backgroundTint="#FFFFFF"
         app:backgroundTintMode="add"
-        app:layout_constraintBottom_toBottomOf="@+id/include_map"
-        app:layout_constraintEnd_toStartOf="@+id/edit_list_EditBtn_editList"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/include_map"
-        app:layout_constraintTop_toTopOf="@+id/include_map" />
+        app:layout_constraintBottom_toTopOf="@+id/edit_list_EditBtn_editList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_items" />
 
     <EditText
         android:id="@+id/list_items"
@@ -41,11 +59,10 @@
         android:minHeight="48dp"
         android:textColorHighlight="#131212"
         android:textColorHint="#121010"
-        app:layout_constraintBottom_toTopOf="@+id/include_map"
+        app:layout_constraintBottom_toTopOf="@+id/EditListEditBtn"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.473"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_name_editList" />
+        app:layout_constraintTop_toBottomOf="@+id/list_name_editList2" />
 
     <Button
         android:id="@+id/edit_list_EditBtn_editList"
@@ -53,12 +70,12 @@
         android:layout_height="51dp"
         android:onClick="add_list"
         android:text="Edit"
-        app:layout_constraintBottom_toBottomOf="@+id/include_map"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toTopOf="@+id/include_map" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/EditListEditBtn" />
 
-    <TextView
+    <EditText
         android:id="@+id/list_name_editList"
         android:layout_width="303dp"
         android:layout_height="62dp"
@@ -67,28 +84,15 @@
         android:ems="10"
         android:foregroundGravity="left"
         android:gravity="start"
-        android:text="List Name"
+        android:hint="List Name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHighlight="#131212"
         android:textColorHint="#121010"
-        app:layout_constraintBottom_toTopOf="@+id/list_items"
+        app:layout_constraintBottom_toTopOf="@+id/list_name_editList2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <Switch
-        android:id="@+id/include_map"
-        android:layout_width="151dp"
-        android:layout_height="55dp"
-        android:ellipsize="marquee"
-        android:scrollbarSize="200dp"
-        android:text="includ map"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/edit_list_EditBtn_editList"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_items" />
 
     <TextView
         android:id="@+id/textView3"

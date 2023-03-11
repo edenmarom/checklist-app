@@ -20,6 +20,10 @@ import com.example.myapplication.databinding.FragmentMylistsBinding;
 import com.example.myapplication.model.ListItem;
 import com.example.myapplication.ui.EditItem.EditListFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.List;
 
@@ -30,6 +34,9 @@ public class MyListsFragment extends Fragment {
     NavController navController;
 
     List<ListItem> data = MyListsViewModel.getAllList();
+
+
+
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -61,22 +68,16 @@ public class MyListsFragment extends Fragment {
         MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),data,fragment);
         list.setAdapter(adapter);
 
-        adapter.setOnItemClickListener(new MyListAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int pos) {
-                Log.d("TAG", "Row was clicked " + pos);
 
-                //todo::move to edit page
-
-//                Intent i = new Intent(getActivity().this, EditListFragment.class);
-//                i.putExtra("key",value);
-//                startActivity(i);
-
-
-            }
-        });
+//        adapter.setOnItemClickListener(new MyListAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int pos) {
+//                Log.d("TAG", "Row was clicked " + pos);
+//            }
+//        });
         return root;
     }
+
 
     @Override
     public void onDestroyView() {

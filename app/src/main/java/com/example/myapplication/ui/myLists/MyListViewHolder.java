@@ -45,11 +45,13 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View view) {
                 int pos = getAdapterPosition();
-                listener.onItemClick(pos);
+//                listener.onItemClick(pos);
 
                 Bundle bundle = new Bundle();
                 bundle.putString("pos",Integer.toString(pos));
                 navController.navigate(R.id.editListFragment2,bundle);
+
+
             }
         });
 

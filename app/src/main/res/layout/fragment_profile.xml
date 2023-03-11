@@ -7,7 +7,7 @@ android:layout_height="match_parent"
 tools:context=".ui.profile.ProfileFragment">
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/profile_editBtn"
+        android:id="@+id/profileEditBtn"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -44,8 +44,8 @@ tools:context=".ui.profile.ProfileFragment">
             android:layout_width="260dp"
             android:layout_height="260dp"
             android:layout_margin="10dp"
-            android:src="@drawable/avatar"
             android:scaleType="centerCrop"
+            android:src="@drawable/avatar"
             app:shapeAppearanceOverlay="@style/Circular" />
 
         <TextView

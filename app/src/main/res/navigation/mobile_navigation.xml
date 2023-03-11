@@ -5,6 +5,9 @@
     android:id="@+id/mobile_navigation"
     app:startDestination="@+id/nav_myLists">
 
+
+
+
     <fragment
         android:id="@+id/nav_profile"
         android:name="com.example.myapplication.ui.profile.ProfileFragment"
@@ -18,10 +21,16 @@
         <action
             android:id="@+id/action_nav_myLists_to_newListFragment"
             app:destination="@id/nav_newListFragment" />
-        <action
-            android:id="@+id/action_nav_myLists_to_editListFragment2"
-            app:destination="@id/editListFragment2" />
     </fragment>
+
+
+    <fragment
+        android:id="@+id/nav_googleMap"
+        android:name="com.example.myapplication.ui.maps.MapsFragment"
+        android:label="@string/menu_Map"
+        tools:layout="@layout/fragment_maps" />
+
+
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.example.myapplication.ui.logout.LogoutFragment"
@@ -37,10 +46,5 @@
         android:name="com.example.myapplication.ui.EditItem.EditListFragment"
         android:label="fragment_edit_list"
         tools:layout="@layout/fragment_edit_list" />
-    <fragment
-        android:id="@+id/mapFragment"
-        android:name="com.example.myapplication.ui.map.mapFragment"
-        android:label="fragment_map"
-        tools:layout="@layout/fragment_map" />
 
 </navigation>
