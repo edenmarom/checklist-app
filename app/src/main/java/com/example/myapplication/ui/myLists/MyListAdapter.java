@@ -30,6 +30,11 @@ public class MyListAdapter extends RecyclerView.Adapter<MyListViewHolder> {
         this.data = data;
     }
 
+    public void setData(List<ListItem> data){
+        this.data = data;
+        notifyDataSetChanged();
+    }
+
     void setOnItemClickListener(OnItemClickListener listener){
         this.listener = listener;
     }

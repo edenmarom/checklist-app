@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
@@ -35,6 +36,7 @@ public class MyListsFragment extends Fragment {
     NavController navController;
 
     List<ListItem> data = MyListsViewModel.getAllList();
+//    LiveData<List<ListItem>> data2 = MyListsViewModel.getdata2();
 
 
 
@@ -63,8 +65,13 @@ public class MyListsFragment extends Fragment {
 
         Fragment fragment = getParentFragment();
         list.setLayoutManager(new LinearLayoutManager(getContext()));
+//        MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),MyListsViewModel.getdata2().getValue(),fragment);
         MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),data,fragment);
         list.setAdapter(adapter);
+
+//        MyListsViewModel.getdata2().observe(getViewLifecycleOwner(),(data)->{
+//            adapter.setData(data);
+//        });
 
         return root;
     }

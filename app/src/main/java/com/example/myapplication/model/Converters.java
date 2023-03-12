@@ -10,7 +10,10 @@ public class Converters {
     @TypeConverter
     public String fromArray(List<String> strings) {
         String string = "";
-        for(String s : strings) string += (s + ",");
+
+        if (strings != null) {
+            for(String s : strings) string += (s + ",");
+        }
 
         return string;
     }

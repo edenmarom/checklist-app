@@ -1,5 +1,6 @@
 package com.example.myapplication.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -15,9 +16,9 @@ import java.util.List;
 public interface ListItemDao {
     @Query("select * from ListItem")
     List<ListItem> getAll();
+//    LiveData<List<ListItem>> getAll();
 
-
-//    @Query("select * from ListItem where userId = :ListId")
+    //    @Query("select * from ListItem where userId = :ListId")
 //    ListItem getListItemById(String ListId);
 //
     @Insert(onConflict = OnConflictStrategy.REPLACE)
