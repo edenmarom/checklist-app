@@ -1,9 +1,9 @@
 package com.example.myapplication.model;
-
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
-
 import androidx.core.os.HandlerCompat;
+import androidx.lifecycle.MutableLiveData;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -14,17 +14,42 @@ public class Model {
 
     private Executor executor = Executors.newSingleThreadExecutor();
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
+    private FirebaseModel firebaseModel = new FirebaseModel();
+    AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 
     public static Model instance(){
         return _instance;
     }
-    private Model(){
+
+    private Model(){}
+
+    public interface Listener<T>{
+        void onComplete(T data);
     }
 
-    AppLocalDbRepository localDb = AppLocalDb.getAppDb();
+    public enum LoadingState{
+        LOADING,
+        NOT_LOADING
+    }
+
+    final public MutableLiveData<LoadingState> EventImgLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
+
+    public void uploadImg(String userUID, Bitmap selectedImageBitmap, Listener<Bitmap> listener){
+        // update local profile img
+        // TODO
+        // update profile img on firebase
+        firebaseModel.uploadImg(userUID,selectedImageBitmap,listener);
+    }
+
+    public void registerNewUser(LoggedInUser user, Listener<LoggedInUser> listener){
+        firebaseModel.registerNewUser(user,listener);
+    }
+
+
     public interface GetAllListItemsListener {
         void onComplete(List<ListItem> data);
     }
+
     public void getAllListItems(GetAllListItemsListener callback){
         executor.execute(()->{
             List<ListItem> data = localDb.listItemDao().getAll();

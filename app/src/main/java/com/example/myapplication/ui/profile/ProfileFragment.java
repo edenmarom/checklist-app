@@ -24,7 +24,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import com.example.myapplication.databinding.FragmentProfileBinding;
-import com.example.myapplication.ui.data.model.LoggedInUser;
+import com.example.myapplication.model.Model;
+import com.example.myapplication.model.LoggedInUser;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -35,8 +36,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import java.io.ByteArrayOutputStream;
+
 import java.io.IOException;
 
 public class ProfileFragment extends Fragment {
@@ -263,25 +263,9 @@ public class ProfileFragment extends Fragment {
 
     private void UploadSelectedImg(Bitmap selectedImageBitmap) {
         if (currentUser!= null) {
-            String path = String.format(userImagesDBLocation, userUID);
-            StorageReference imageRef = storageRef.child(path);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] imgData = baos.toByteArray();
-            UploadTask uploadTask = imageRef.putBytes(imgData);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Log.d("TAG", "load profile:fail");
-                    Log.d("TAG", "path: " + path);
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.d("TAG", "edit profile:success");
-                    ImageView profileImageIV = binding.profileImage;
-                    bitmapToImg(selectedImageBitmap, profileImageIV);
-                }
+            Model.instance().uploadImg(userUID, selectedImageBitmap, (bitmap) -> {
+                ImageView profileImageIV = binding.profileImage;
+                bitmapToImg(bitmap, profileImageIV);
             });
         }
     }

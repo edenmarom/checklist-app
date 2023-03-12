@@ -1,21 +1,16 @@
 package com.example.myapplication.ui.login;
 
-import android.app.Activity;
 import android.content.Context;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.data.LoginRepository;
-import com.example.myapplication.ui.data.Result;
-import com.example.myapplication.ui.data.model.LoggedInUser;
+import com.example.myapplication.model.LoggedInUser;
+import com.example.myapplication.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -49,6 +44,11 @@ public class LoginViewModel extends ViewModel {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+
+                        //TODO
+                        Model.instance().registerNewUser(new LoggedInUser(),(user)->{
+                        });
+
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userName.trim()).build();
                         assert user != null;

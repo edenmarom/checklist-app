@@ -1,16 +1,17 @@
 package com.example.myapplication.ui.myLists;
 
 import static android.content.ContentValues.TAG;
-
 import android.location.Address;
 import android.util.Log;
+import android.view.Display;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.myapplication.DB.fireBaseInstance;
+import com.example.myapplication.model.FirebaseModel;
 import com.example.myapplication.model.ListItem;
+import com.example.myapplication.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
@@ -18,7 +19,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,10 +30,11 @@ import java.util.stream.Collectors;
 
 public class MyListsViewModel extends ViewModel {
     static List<ListItem> data = new LinkedList<>();
+    private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
 
 
     public MyListsViewModel() {
-        FirebaseDatabase database = fireBaseInstance.instance;
+        FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
         DatabaseReference lists = database.getReference("lists");
 
         lists.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
