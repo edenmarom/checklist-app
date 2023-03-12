@@ -1,35 +1,51 @@
 package com.example.myapplication.model;
 
 import android.location.Address;
-import android.location.Location;
+
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
 import java.util.List;
 
+@Entity
 public class ListItem {
-    public String name;
-    public List<String> listItem;
-    public Address location;
-    public String userId;
-    public List<String> participants ;
-    public String imgIdl;
+    @PrimaryKey
+    @NonNull
+    String listId;
+    String name;
+    @ColumnInfo(name = "items")
+    List<String> items;
+    @ColumnInfo(name = "location")
+    List<String> location;
+    String userId;
+    List<String> participants ;
+    String imgId;
 
+    public ListItem() {
+    }
 
-    public ListItem(String name, List<String> listItem, Address location, String userId, List<String> participants, String imgIdl) {
+    public ListItem(String listId,String name, List<String> listItem, List<String> location, String userId, List<String> participants, String imgIdl) {
+        this.listId = listId;
         this.name = name;
-        this.listItem = listItem;
+        this.items = listItem;
         this.location = location;
         this.userId = userId;
         this.participants = participants;
-        this.imgIdl = imgIdl;
+        this.imgId = imgIdl;
     }
 
+    public String getListId() {
+        return listId;
+    }
 
     public void setName(String name) {
         this.name = name;
     }
 
     public void setListItem(List<String> listItem) {
-        this.listItem = listItem;
+        this.items = listItem;
     }
 
     public String getName() {
@@ -37,10 +53,10 @@ public class ListItem {
     }
 
     public List<String> getListItem() {
-        return listItem;
+        return items;
     }
 
-    public Address getLocation() {
+    public List<String> getLocation() {
         return location;
     }
 
@@ -52,11 +68,11 @@ public class ListItem {
         return participants;
     }
 
-    public String getImgIdl() {
-        return imgIdl;
+    public String getImgId() {
+        return imgId;
     }
 
-    public void setLocation(Address location) {
+    public void setLocation(List<String> location) {
         this.location = location;
     }
 
@@ -68,8 +84,8 @@ public class ListItem {
         this.participants = participants;
     }
 
-    public void setImgIdl(String imgIdl) {
-        this.imgIdl = imgIdl;
+    public void setImgId(String imgId) {
+        this.imgId = imgId;
     }
 
 

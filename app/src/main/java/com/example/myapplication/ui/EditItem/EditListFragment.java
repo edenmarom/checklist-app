@@ -25,7 +25,7 @@ public class EditListFragment extends Fragment {
     private EditListViewModel mViewModel;
     private FragmentEditListBinding binding;
     private View root;
-    private int pos;
+    private String id;
     public static EditListFragment newInstance() {
         return new EditListFragment();
     }
@@ -37,8 +37,7 @@ public class EditListFragment extends Fragment {
 
         binding = FragmentEditListBinding.inflate(inflater, container, false);
         root = binding.getRoot();
-        pos = Integer.parseInt(getArguments().getString("pos"));
-
+        id = getArguments().getString("id");//TODO: insert to firebase
         return inflater.inflate(R.layout.fragment_edit_list, container, false);
     }
 
