@@ -21,7 +21,7 @@ public class Model {
     private FirebaseModel firebaseModel = new FirebaseModel();
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
 //    private LiveData<List<ListItem>> ListItems;
-    private List<ListItem> ListItems;
+    private LiveData<List<ListItem>> ListItems;
 
 
     public static Model instance(){
@@ -48,6 +48,13 @@ public class Model {
         firebaseModel.uploadImg(userUID,selectedImageBitmap,listener);
     }
 
+    public void LoadImg(String userUID, Listener<Bitmap> listener){
+        // check if local img is here
+        // TODO
+        // get profile img from firebase
+        firebaseModel.loadImg(userUID,listener);
+    }
+
     public void registerNewUser(LoggedInUser user, Listener<LoggedInUser> listener){
         firebaseModel.registerNewUser(user,listener);
     }
@@ -66,7 +73,7 @@ public class Model {
 //        });
 //    }
 
-    public List<ListItem> getAllListItems() {
+    public LiveData<List<ListItem>> getAllListItems() {
         if(ListItems == null){
             executor.execute(()->{
                 ListItem b = new ListItem("AAA", "my-list",null,null,null,null, null);

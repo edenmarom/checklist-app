@@ -1,7 +1,9 @@
 package com.example.myapplication.model;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -50,67 +52,29 @@ public class FirebaseModel{
             }
         });
     }
+    public void loadImg(String userUID, Model.Listener<Bitmap> callback){
+        String path = String.format(userImagesDBLocation, userUID);
+        StorageReference imageRef = storageRef.child(path);
+        imageRef.getBytes(Long.MAX_VALUE)
+                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                        callback.onComplete(bm);
+                        Log.d("TAG", "load profile:success");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.d("TAG", "load profile:fail");
+                        Log.d("TAG", path);
+                    }
+                });
+    }
 
     public void registerNewUser(LoggedInUser user, Model.Listener<LoggedInUser> callback){
         // TODO firebase logic here
     }
 
-    //registerNewUser
 
-//    public void getAllStudentsSince(Long since, Model.Listener<List<Student>> callback){
-//        db.collection(Student.COLLECTION)
-//                .whereGreaterThanOrEqualTo(Student.LAST_UPDATED, new Timestamp(since,0))
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        List<Student> list = new LinkedList<>();
-//                        if (task.isSuccessful()){
-//                            QuerySnapshot jsonsList = task.getResult();
-//                            for (DocumentSnapshot json: jsonsList){
-//                                Student st = Student.fromJson(json.getData());
-//                                list.add(st);
-//                            }
-//                        }
-//                        callback.onComplete(list);
-//                    }
-//                });
-//    }
-//
-//    public void addStudent(Student st, Model.Listener<Void> listener) {
-//        db.collection(Student.COLLECTION).document(st.getId()).set(st.toJson())
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        listener.onComplete(null);
-//                    }
-//                });
-//    }
-//
-//    void uploadImage(String name, Bitmap bitmap, Model.Listener<String> listener){
-//        StorageReference storageRef = storage.getReference();
-//        StorageReference imagesRef = storageRef.child("images/" + name + ".jpg");
-//        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//        byte[] data = baos.toByteArray();
-//
-//        UploadTask uploadTask = imagesRef.putBytes(data);
-//        uploadTask.addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception exception) {
-//                listener.onComplete(null);
-//            }
-//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//            @Override
-//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                imagesRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        listener.onComplete(uri.toString());
-//                    }
-//                });
-//            }
-//        });
-//
-//    }
 }

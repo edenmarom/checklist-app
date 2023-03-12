@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class MyListsViewModel extends ViewModel {
     static List<ListItem> data = new LinkedList<>();
     private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
-//    private static LiveData<List<ListItem>> data2 = Model.instance().getAllListItems();
+    private static LiveData<List<ListItem>> data2 = Model.instance().getAllListItems();
 
     public MyListsViewModel() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
@@ -83,9 +83,9 @@ public class MyListsViewModel extends ViewModel {
         return data;
     }
 
-//    public static LiveData<List<ListItem>> getdata2(){
-//        return data2;
-//    }
+    public static LiveData<List<ListItem>> getdata2(){
+        return data2;
+    }
 
     public void addList(ListItem l){
         data.add(l);

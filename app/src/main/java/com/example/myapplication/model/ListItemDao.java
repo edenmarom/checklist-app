@@ -15,8 +15,8 @@ import java.util.List;
 @Dao
 public interface ListItemDao {
     @Query("select * from ListItem")
-    List<ListItem> getAll();
-//    LiveData<List<ListItem>> getAll();
+    LiveData<List<ListItem>> getAll();
+//    List<ListItem> getAll();
 
     //    @Query("select * from ListItem where userId = :ListId")
 //    ListItem getListItemById(String ListId);

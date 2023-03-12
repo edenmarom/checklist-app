@@ -111,31 +111,17 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
+
     private void LoadProfileImage() {
         if (currentUser!= null){
             imageIV = binding.profileImage;
             progressBar = binding.profileProgressBar;
-            String path = String.format(userImagesDBLocation, userUID);
-            StorageReference imageRef = storageRef.child(path);
-            imageRef.getBytes(Long.MAX_VALUE)
-                    .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                        @Override
-                        public void onSuccess(byte[] bytes) {
-                            Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                            bitmapToImg(bm, imageIV);
-                            imageIV.setVisibility(View.VISIBLE);
-                            progressBar.setVisibility(View.GONE);
-                            Log.d("TAG", "load profile:success");
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            progressBar.setVisibility(View.GONE);
-                            imageIV.setVisibility(View.VISIBLE);
-                            Log.d("TAG", "load profile:fail");
-                            Log.d("TAG", path);
-                        }
-                    });
+            Model.instance().LoadImg(userUID, (bitmap) -> {
+                bitmapToImg(bitmap, imageIV);
+                imageIV.setVisibility(View.VISIBLE);
+                progressBar.setVisibility(View.GONE);
+                Log.d("TAG", "load profile:success2");
+            });
         }
     }
 
