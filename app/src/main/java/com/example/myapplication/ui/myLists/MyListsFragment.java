@@ -47,10 +47,6 @@ public class MyListsFragment extends Fragment {
 
         binding = FragmentMylistsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
-
-//        final TextView textView = binding.textMylists;
-//        myListsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
-
         addNewListBtn = binding.myListsAddNewListBtn;
         navController = NavHostFragment.findNavController(this);
 
@@ -61,7 +57,8 @@ public class MyListsFragment extends Fragment {
             }
         });
 
-        RecyclerView list = root.findViewById(R.id.RV_list);
+//        RecyclerView list = root.findViewById(R.id.RV_list);
+        RecyclerView list = binding.RVList;
         list.setHasFixedSize(true);
 
         Fragment fragment = getParentFragment();
@@ -69,13 +66,6 @@ public class MyListsFragment extends Fragment {
         MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),data,fragment);
         list.setAdapter(adapter);
 
-
-//        adapter.setOnItemClickListener(new MyListAdapter.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(int pos) {
-//                Log.d("TAG", "Row was clicked " + pos);
-//            }
-//        });
         return root;
     }
 

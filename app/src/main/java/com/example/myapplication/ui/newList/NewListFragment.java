@@ -117,8 +117,6 @@ public class NewListFragment extends Fragment {
                 List<String> participantsDB = new ArrayList<>();
                 String imgIdlDB = "5";
 
-//                ListItem listItem_toDB = new ListItem(nameDB, listItemDB, address, userIdDB, participantsDB, imgIdlDB);
-
                 lists.child(listIdDB).child("name").setValue(nameDB);
                 lists.child(listIdDB).child("items").setValue(listItemDB);
                 lists.child(listIdDB).child("location").setValue(locationDB);
