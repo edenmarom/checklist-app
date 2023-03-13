@@ -96,11 +96,11 @@ tools:context=".ui.profile.ProfileFragment">
 
         <ImageView
             android:id="@+id/imageView5"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:padding="5dp"
             android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="25dp"
             android:contentDescription="phone icon"
             android:src="@drawable/phone"
             android:layout_gravity="center_vertical" />
@@ -149,10 +149,10 @@ tools:context=".ui.profile.ProfileFragment">
 
         <ImageView
             android:id="@+id/imageView6"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="30dp"
             android:contentDescription="email icon"
             android:src="@drawable/email"
             android:layout_gravity="center_vertical" />
@@ -195,21 +195,23 @@ tools:context=".ui.profile.ProfileFragment">
 
     </LinearLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <Button
         android:id="@+id/profile_editBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="51dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"
-        android:clickable="true"
-        android:src="@android:drawable/ic_menu_edit"
-        android:tint="#000000"
-        android:tintMode="src_in"
-        app:backgroundTint="#FFFFFF"
-        app:backgroundTintMode="add"
+        android:backgroundTint="#FFFFFF"
+        android:drawableTint="#000000"
+        android:onClick="add_list"
+        android:text="Edit"
+        android:textColor="#000000"
+        android:textColorHighlight="#000000"
+        android:textColorHint="#000000"
+        android:textColorLink="#000000"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-        app:rippleColor="#000000" />
+        app:rippleColor="#FFFFFF" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/profile_saveBtn"

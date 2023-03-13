@@ -100,6 +100,8 @@ public class FirebaseModel {
                     public void onFailure(@NonNull Exception exception) {
                         Log.d("TAG", "load profile:fail");
                         Log.d("TAG", path);
+                        callback.onComplete(null);
+
                     }
                 });
     }

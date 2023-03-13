@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -32,7 +33,7 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private boolean textViewsVisible = true;
     private boolean editTextsVisible = false;
-    private FloatingActionButton editBtn;
+    private Button editBtn;
     private FloatingActionButton saveBtn;
     private TextView nameTextView;
     private TextView phoneTextView;
@@ -96,10 +97,12 @@ public class ProfileFragment extends Fragment {
             imageIV = binding.profileImage;
             progressBar = binding.profileProgressBar;
             Model.instance().LoadImg(userUID, (bitmap) -> {
-                bitmapToImg(bitmap, imageIV);
+                if (bitmap != null) {
+                    bitmapToImg(bitmap, imageIV);
+                }
                 imageIV.setVisibility(View.VISIBLE);
                 progressBar.setVisibility(View.GONE);
-                Log.d("TAG", "load profile:success2");
+
             });
         }
     }
