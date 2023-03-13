@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -215,8 +214,12 @@ public class ProfileFragment extends Fragment {
     private void UploadSelectedImg(Bitmap selectedImageBitmap) {
         if (currentUser!= null) {
             Model.instance().uploadImg(userUID, selectedImageBitmap, (bitmap) -> {
-                ImageView profileImageIV = binding.profileImage;
-                bitmapToImg(bitmap, profileImageIV);
+                if (bitmap!=null){
+                    ImageView profileImageIV = binding.profileImage;
+                    bitmapToImg(bitmap, profileImageIV);
+                } else {
+                    Toast.makeText(getActivity(), "something went wrong...", Toast.LENGTH_SHORT).show();
+                }
             });
         }
     }

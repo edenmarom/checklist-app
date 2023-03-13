@@ -30,18 +30,18 @@ public class LoggedInUser {
     }
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> map = new HashMap<>();
-        map.put("uid",userId);
+        map.put("userId",userId);
+        map.put("displayName",displayName);
         map.put("email",email);
         map.put("phone",phone);
-        map.put("displayName",displayName);
         return map;
     }
 
     public LoggedInUser(HashMap<String, Object> map) {
         this.userId = String.valueOf(map.get("userId"));
+        this.displayName = String.valueOf(map.get("displayName"));
         this.email = String.valueOf(map.get("email"));
         this.phone = String.valueOf(map.get("phone"));
-        this.displayName = String.valueOf(map.get("displayName"));
     }
 
     public void setUserId(@NonNull String userId) {

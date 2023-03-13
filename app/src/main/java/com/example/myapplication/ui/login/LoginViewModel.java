@@ -21,7 +21,7 @@ public class LoginViewModel extends ViewModel {
     public void login(View view, Context context, String email, String password) {
 
         if (!isThereEmptyData(true, email.trim(), password.trim(), "", "")) {
-            Model.instance().logIn(context, email, password, (user) -> {
+            Model.instance().logIn(email, password, (user) -> {
                 if (user != null) {
                     Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_myLists);
                 } else

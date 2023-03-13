@@ -85,8 +85,8 @@ public class Model {
         firebaseModel.setInRealTimeDatabaseRegister(context, uid, email, displayName, phone);
     }
 
-    public void logIn(Context context, String email, String password, Listener<LoggedInUser> listener) {
-        firebaseModel.logIn(context, email, password, listener);
+    public void logIn(String email, String password, Listener<LoggedInUser> listener) {
+        firebaseModel.logIn(email, password, listener);
     }
     public void logOut() {
         firebaseModel.logOut();

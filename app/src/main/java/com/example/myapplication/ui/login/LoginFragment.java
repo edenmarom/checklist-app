@@ -51,12 +51,12 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
     public void switchCase() {
         isLogin = !isLogin;
         if(isLogin) {
-            binding.tvSwitchCase.setText("Haven't user? Register!");
+            binding.tvSwitchCase.setText("New here? Register!");
             binding.etUserName.setVisibility(View.GONE);
             binding.etPhone.setVisibility(View.GONE);
             binding.btnLogin.setText("LOGIN");
         } else {
-            binding.tvSwitchCase.setText("Have user? Login!");
+            binding.tvSwitchCase.setText("Already have an account? Login!");
             binding.etUserName.setVisibility(View.VISIBLE);
             binding.etPhone.setVisibility(View.VISIBLE);
             binding.btnLogin.setText("REGISTER");
