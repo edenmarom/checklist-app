@@ -1,12 +1,22 @@
 package com.example.myapplication.model;
+import static com.example.myapplication.model.LoggedInUser.USER_REF;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +63,10 @@ public class Model {
         // TODO
         // get profile img from firebase
         firebaseModel.loadImg(userUID,listener);
+    }
+
+    public void setInRealTimeDatabaseRegister(Context context, String uid, String email, String displayName, String phone) {
+        firebaseModel.setInRealTimeDatabaseRegister(context, uid, email, displayName, phone);
     }
 
     public void registerNewUser(LoggedInUser user, Listener<LoggedInUser> listener){

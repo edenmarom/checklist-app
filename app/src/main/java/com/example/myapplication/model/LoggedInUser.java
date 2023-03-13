@@ -5,9 +5,12 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.util.HashMap;
+
 @Entity
 public class LoggedInUser {
 
+    public static final String USER_REF = "Users";
     @PrimaryKey
     @NonNull
     private String userId;
@@ -24,6 +27,21 @@ public class LoggedInUser {
         this.email = email;
         this.phone = phone;
         //this.profilePic = profilePic;
+    }
+    public HashMap<String, Object> toMap() {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("uid",userId);
+        map.put("email",email);
+        map.put("phone",phone);
+        map.put("displayName",displayName);
+        return map;
+    }
+
+    public LoggedInUser(HashMap<String, Object> map) {
+        this.userId = String.valueOf(map.get("uid"));
+        this.email = String.valueOf(map.get("email"));
+        this.phone = String.valueOf(map.get("phone"));
+        this.displayName = String.valueOf(map.get("displayName"));
     }
 
     public void setUserId(@NonNull String userId) {

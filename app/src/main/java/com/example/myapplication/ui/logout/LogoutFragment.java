@@ -27,7 +27,7 @@ public class LogoutFragment extends Fragment {
         View root = binding.getRoot();
 
         FirebaseAuth.getInstance().signOut();
-        Navigation.findNavController(root).navigate(R.id.action_nav_logout_to_nav_login);
+        Navigation.findNavController(container).navigate(R.id.action_nav_logout_to_nav_login);
 
         return root;
     }

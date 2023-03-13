@@ -1,21 +1,30 @@
 package com.example.myapplication.model;
+import static com.example.myapplication.model.LoggedInUser.USER_REF;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import static com.example.myapplication.ui.data.LoginRepository.currentUser;
+
 
 public class FirebaseModel{
     FirebaseDatabase db;
@@ -52,6 +61,20 @@ public class FirebaseModel{
             }
         });
     }
+
+    public void setInRealTimeDatabaseRegister(Context context, String uid, String email, String displayName, String phone) {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference(USER_REF);
+        ref.child(uid).setValue(new LoggedInUser(uid,email,phone,displayName).toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+                    currentUser = new LoggedInUser(uid,email,phone,displayName);
+                }
+                else Toast.makeText(context,"" + task.getException().getLocalizedMessage(),Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
     public void loadImg(String userUID, Model.Listener<Bitmap> callback){
         String path = String.format(userImagesDBLocation, userUID);
         StorageReference imageRef = storageRef.child(path);
