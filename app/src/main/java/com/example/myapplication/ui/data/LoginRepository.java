@@ -89,7 +89,7 @@ public class LoginRepository {
                               currentUser =
                                       new LoggedInUser(
                                               uid,
-                                              "Eden Marom", email,"054-3399867",null);
+                                              "Eden Marom", email,"054-3399867");
                               users.child(uid).setValue(currentUser).addOnCompleteListener(new OnCompleteListener<Void> (){
                                   @Override
                                   public void onComplete(@NonNull Task<Void> task) {

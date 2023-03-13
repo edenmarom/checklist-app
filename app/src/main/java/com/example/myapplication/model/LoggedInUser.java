@@ -14,16 +14,16 @@ public class LoggedInUser {
     private String displayName;
     private String email;
     private String phone;
-    private Image profilePic;
+    //private Image profilePic;
 
     public LoggedInUser() {}
 
-    public LoggedInUser(String userId, String displayName, String email, String phone, Image profilePic) {
+    public LoggedInUser(String userId, String displayName, String email, String phone) {
         this.userId = userId;
         this.displayName = displayName;
         this.email = email;
         this.phone = phone;
-        this.profilePic = profilePic;
+        //this.profilePic = profilePic;
     }
 
     public void setUserId(@NonNull String userId) {
@@ -42,9 +42,9 @@ public class LoggedInUser {
         this.phone = phone;
     }
 
-    public void setProfilePic(Image profilePic) {
-        this.profilePic = profilePic;
-    }
+//    public void setProfilePic(Image profilePic) {
+//        this.profilePic = profilePic;
+//    }
 
     public String getUserId() {
         return userId;
@@ -56,7 +56,7 @@ public class LoggedInUser {
 
     public String getPhone() { return phone;}
 
-    public Image getProfilePic() { return profilePic;}
+//    public Image getProfilePic() { return profilePic;}
 
     public String getEmail() {return email;}
 }

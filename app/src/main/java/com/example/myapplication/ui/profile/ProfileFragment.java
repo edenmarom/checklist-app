@@ -104,7 +104,7 @@ public class ProfileFragment extends Fragment {
 
         // TODO remove after log in initialize currentUser
         userUID = "E5aKiS0H37Yx8nudiYexLAviiVF3";
-        currentUser = new LoggedInUser(userUID,"","", "",null);
+        currentUser = new LoggedInUser(userUID,"","", "");
 
         LoadProfileImage();
         LoadProfileData();
