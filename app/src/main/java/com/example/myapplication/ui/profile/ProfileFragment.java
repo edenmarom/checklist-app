@@ -1,10 +1,9 @@
 package com.example.myapplication.ui.profile;
 
-import static com.example.myapplication.ui.data.LoginRepository.currentUser;
+import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,30 +21,15 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
 import com.example.myapplication.databinding.FragmentProfileBinding;
 import com.example.myapplication.model.Model;
-import com.example.myapplication.model.LoggedInUser;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.io.IOException;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
-    private FirebaseStorage storage = FirebaseStorage.getInstance();
-    private final String userImagesDBLocation = "user-images/%s.png";
-    private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
-    private StorageReference storageRef = storage.getReference();
     private boolean textViewsVisible = true;
     private boolean editTextsVisible = false;
     private FloatingActionButton editBtn;
@@ -62,8 +46,7 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        ProfileViewModel profileViewModel =
-                new ViewModelProvider(this).get(ProfileViewModel.class);
+
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
@@ -102,10 +85,6 @@ public class ProfileFragment extends Fragment {
             userUID = currentUser.getUserId();
         }
 
-        // TODO remove after log in initialize currentUser
-        userUID = "E5aKiS0H37Yx8nudiYexLAviiVF3";
-        currentUser = new LoggedInUser(userUID,"","", "");
-
         LoadProfileImage();
         LoadProfileData();
         return root;
@@ -138,22 +117,10 @@ public class ProfileFragment extends Fragment {
             TextView nameTV = binding.profileName;
             TextView phoneTV = binding.profilePhone;
             TextView emailTV = binding.profileEmail;
-            FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
-            DatabaseReference users = database.getReference("Users");
-            users.child(userUID).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if (!task.isSuccessful()) {
-                        Log.e("TAG", "Error getting user's data", task.getException());
-                    }
-                    else {
-                        Log.d("TAG", "load user's data:success "+ String.valueOf(task.getResult().getValue()));
-                        nameTV.setText(task.getResult().child("displayName").getValue().toString());
-                        phoneTV.setText(task.getResult().child("phone").getValue().toString());
-                        emailTV.setText(task.getResult().child("email").getValue().toString());
-                    }
-                }
-            });
+
+            nameTV.setText(currentUser.getDisplayName());
+            phoneTV.setText(currentUser.getPhone());
+            emailTV.setText(currentUser.getEmail());
         }
     }
 
@@ -203,24 +170,19 @@ public class ProfileFragment extends Fragment {
         phoneTextView.setText(newPhone);
         emailTextView.setText(newEmail);
 
-        Log.d("TAG", "profile edit - new data: ");
-        Log.d("TAG", newName);
-        Log.d("TAG", newPhone);
-        Log.d("TAG", newEmail);
-
         if (currentUser!= null) {
-            FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
-            DatabaseReference users = database.getReference("Users");
-            users.child(userUID).child("displayName").setValue(newName);
-            users.child(userUID).child("phone").setValue(newPhone);
-            users.child(userUID).child("email").setValue(newEmail);
-
+            updateCurrenUser(newName, newPhone, newEmail);
+            Model.instance().updateUserProfileData(userUID, newName, newPhone, newEmail);
             Toast.makeText(getActivity(),"Changes Saved",Toast.LENGTH_SHORT).show();
         }
-
         toggleEditMode();
     }
 
+    private void updateCurrenUser(String newName, String newPhone, String newEmail) {
+        currentUser.setEmail(newEmail);
+        currentUser.setPhone(newPhone);
+        currentUser.setDisplayName(newName);
+    }
 
     ActivityResultLauncher<Intent> ChooseNewProfileImage
             = registerForActivityResult(

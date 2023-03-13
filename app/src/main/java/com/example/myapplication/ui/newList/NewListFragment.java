@@ -2,7 +2,7 @@ package com.example.myapplication.ui.newList;
 
 import static android.content.ContentValues.TAG;
 
-import static com.example.myapplication.ui.data.LoginRepository.currentUser;
+import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -34,7 +34,6 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentNewListBinding;
 import com.example.myapplication.model.ListItem;
-import com.example.myapplication.ui.profile.ProfileFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;

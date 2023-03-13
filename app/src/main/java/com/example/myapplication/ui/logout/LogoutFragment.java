@@ -12,6 +12,7 @@ import androidx.navigation.Navigation;
 
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentLogoutBinding;
+import com.example.myapplication.model.Model;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LogoutFragment extends Fragment {
@@ -26,7 +27,7 @@ public class LogoutFragment extends Fragment {
         binding = FragmentLogoutBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        FirebaseAuth.getInstance().signOut();
+        Model.instance().logOut();
         Navigation.findNavController(container).navigate(R.id.action_nav_logout_to_nav_login);
 
         return root;

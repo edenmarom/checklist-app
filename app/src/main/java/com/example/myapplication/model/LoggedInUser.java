@@ -38,7 +38,7 @@ public class LoggedInUser {
     }
 
     public LoggedInUser(HashMap<String, Object> map) {
-        this.userId = String.valueOf(map.get("uid"));
+        this.userId = String.valueOf(map.get("userId"));
         this.email = String.valueOf(map.get("email"));
         this.phone = String.valueOf(map.get("phone"));
         this.displayName = String.valueOf(map.get("displayName"));
