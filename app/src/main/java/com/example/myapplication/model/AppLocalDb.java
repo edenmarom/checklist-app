@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
 
 import com.example.myapplication.MyApplication;
 
-@Database(entities = {ListItem.class}, version = 80)
+@Database(entities = {ListItem.class,LoggedInUser.class}, version = 81)
 @TypeConverters({Converters.class})
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract ListItemDao listItemDao();
