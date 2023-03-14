@@ -1,35 +1,13 @@
 package com.example.myapplication.model;
 
-import static com.example.myapplication.model.LoggedInUser.USER_REF;
-import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
-
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.view.View;
-import android.widget.Toast;
-
-import androidx.annotation.NonNull;
 import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.navigation.Navigation;
-
-import com.example.myapplication.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -81,8 +59,8 @@ public class Model {
         firebaseModel.updateUserProfileData(userId, newName, newPhone, newEmail);
     }
 
-    public void setInRealTimeDatabaseRegister(Context context, String uid, String email, String displayName, String phone) {//TODO CHENA - remove?
-        firebaseModel.setInRealTimeDatabaseRegister(context, uid, email, displayName, phone);
+    public void setInRealTimeDatabaseRegister(String uid, String email, String displayName, String phone, Listener<LoggedInUser> listener) {
+        firebaseModel.setInRealTimeDatabaseRegister(uid, email, displayName, phone, listener);
     }
 
     public void logIn(String email, String password, Listener<LoggedInUser> listener) {
@@ -92,8 +70,8 @@ public class Model {
         firebaseModel.logOut();
     }
 
-    public void register(Context context, String email, String password, String userName, String phone, Listener<LoggedInUser> listener) {
-        firebaseModel.register(context, email, password, userName, phone, listener);
+    public void register(String email, String password, String userName, String phone, Listener<LoggedInUser> listener) {
+        firebaseModel.register(email, password, userName, phone, listener);
     }
     public void isUserLoggedIn(Listener<LoggedInUser> listener) {
         firebaseModel.isUserLoggedIn(listener);
@@ -112,20 +90,32 @@ public class Model {
 //        });
 //    }
 
+    public void insert() {
+        executor.execute(() -> {
+            ListItem b = new ListItem("AAA", "my-list", null, null, null, null, null);
+            localDb.listItemDao().insertAll(b);
+            mainHandler.post(() -> {
+                Log.e("TAG", "done inserting");
+            });
+        });
+    }
+
     public LiveData<List<ListItem>> getAllListItems() {
+        try
+        {
+            Thread.sleep(5000);
+        }
+        catch(InterruptedException e)
+        {
+        }
         if (ListItems == null) {
             executor.execute(() -> {
-                ListItem b = new ListItem("AAA", "my-list", null, null, null, null, null);
-                localDb.listItemDao().insertAll(b);
-
-                //TODO Check why the list is null
-
                 ListItems = localDb.listItemDao().getAll();
                 mainHandler.post(() -> {
-                    Log.e("TAG", "done inserting");
+                    Log.e("TAG", "done getting");
+                    Log.e("TAG", "ListItems:" + ListItems);
                 });
             });
-            //refreshAllStudents();TODO
         }
         return ListItems;
     }

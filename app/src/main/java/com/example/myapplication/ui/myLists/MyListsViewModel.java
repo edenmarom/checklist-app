@@ -1,41 +1,36 @@
 package com.example.myapplication.ui.myLists;
 
-import static android.content.ContentValues.TAG;
-import android.location.Address;
 import android.util.Log;
-import android.view.Display;
-
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.example.myapplication.model.FirebaseModel;
 import com.example.myapplication.model.ListItem;
 import com.example.myapplication.model.Model;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MyListsViewModel extends ViewModel {
     static List<ListItem> data = new LinkedList<>();
     private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
-    private static LiveData<List<ListItem>> data2 = Model.instance().getAllListItems();
+    private static LiveData<List<ListItem>> data2;
 
     public MyListsViewModel() {
         FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
         DatabaseReference lists = database.getReference("lists");
+
+        //TODO - this is a Room Test. to be removed
+        Model.instance().insert();
+        data2 = Model.instance().getAllListItems();
 
         lists.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override

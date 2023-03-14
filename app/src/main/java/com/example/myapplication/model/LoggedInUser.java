@@ -1,18 +1,11 @@
 package com.example.myapplication.model;
 
-import android.media.Image;
 import androidx.annotation.NonNull;
-import androidx.room.Entity;
-import androidx.room.PrimaryKey;
-
 import java.util.HashMap;
 
-@Entity
 public class LoggedInUser {
 
     public static final String USER_REF = "Users";
-    @PrimaryKey
-    @NonNull
     private String userId;
     private String displayName;
     private String email;

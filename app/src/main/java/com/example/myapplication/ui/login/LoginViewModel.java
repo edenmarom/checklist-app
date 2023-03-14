@@ -33,7 +33,7 @@ public class LoginViewModel extends ViewModel {
 
     public void register(View view, Context context, String email, String password, String userName, String phone) {
         if (!isThereEmptyData(false, email.trim(), password.trim(), userName.trim(), phone.trim())) {
-            Model.instance().register(context, email, password, userName, phone, (user) -> {
+            Model.instance().register(email, password, userName, phone, (user) -> {
                 if (user != null) {
                     Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_myLists);
                 } else

@@ -1,31 +1,21 @@
 package com.example.myapplication.ui.myLists;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMylistsBinding;
 import com.example.myapplication.model.ListItem;
-import com.example.myapplication.ui.EditItem.EditListFragment;
-
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+
 
 import java.util.List;
 
@@ -82,4 +72,21 @@ public class MyListsFragment extends Fragment {
         super.onDestroyView();
         binding = null;
     }
+
+// TODO
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        reloadData();
+//    }
+//
+//    void reloadData(){
+//        binding.progressBar.setVisibility(View.VISIBLE);
+//        Model.instance().getAllStudents((stList)->{
+//                data = stList;
+//                adapter.setData(data);
+//                binding.progressBar.setVisibility(View.GONE);
+//            });
+//    }
+
 }

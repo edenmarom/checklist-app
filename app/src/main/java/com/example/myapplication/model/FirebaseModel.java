@@ -1,12 +1,10 @@
 package com.example.myapplication.model;
 import static com.example.myapplication.model.LoggedInUser.USER_REF;
-import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import com.example.myapplication.MyApplication;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -91,16 +89,17 @@ public class FirebaseModel {
                 });
     }
 
-    public void setInRealTimeDatabaseRegister(Context context, String uid, String email, String displayName, String phone) {
+    public void setInRealTimeDatabaseRegister(String uid, String email, String displayName, String phone, Model.Listener<LoggedInUser> callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(USER_REF);
         ref.child(uid).setValue(new LoggedInUser(uid, displayName, email, phone).toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
                     currentUser = new LoggedInUser(uid, displayName, email, phone);
-                    // TODO - EDEN TO CHENA: no callback?
-                } else // TODO - EDEN TO CHENA: Toast should be in view model and then no context needed
-                    Toast.makeText(context, "" + task.getException().getLocalizedMessage(), Toast.LENGTH_LONG).show();
+                    callback.onComplete(currentUser);
+                } else
+                    callback.onComplete(null);
+
             }
         });
     }
@@ -134,8 +133,7 @@ public class FirebaseModel {
         FirebaseAuth.getInstance().signOut();
     }
 
-    // TODO - EDEN TO CHENA: context not needed after setInRealTimeDatabaseRegister change
-    public void register(Context context, String email, String password, String userName, String phone, Model.Listener<LoggedInUser> callback) {
+    public void register(String email, String password, String userName, String phone, Model.Listener<LoggedInUser> callback) {
 
         savePasswordToSharedPreferences(password);
 
@@ -144,7 +142,11 @@ public class FirebaseModel {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()) {
                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                    setInRealTimeDatabaseRegister(context, userId, email, userName, phone);
+                    setInRealTimeDatabaseRegister(userId, email, userName, phone, (user) -> {
+                        if(user == null){
+                            callback.onComplete(null);
+                        }
+                    });
 
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder().setDisplayName(userName.trim()).build();
