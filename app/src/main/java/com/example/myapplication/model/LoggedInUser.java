@@ -10,16 +10,16 @@ public class LoggedInUser {
     private String displayName;
     private String email;
     private String phone;
-    //private Image profilePic;
+    private String profilePicUrl;
 
     public LoggedInUser() {}
 
-    public LoggedInUser(String userId, String displayName, String email, String phone) {
+    public LoggedInUser(String userId, String displayName, String email, String phone, String profilePicUrl ) {
         this.userId = userId;
         this.displayName = displayName;
         this.email = email;
         this.phone = phone;
-        //this.profilePic = profilePic;
+        this.profilePicUrl = profilePicUrl;
     }
     public HashMap<String, Object> toMap() {
         HashMap<String, Object> map = new HashMap<>();
@@ -27,6 +27,7 @@ public class LoggedInUser {
         map.put("displayName",displayName);
         map.put("email",email);
         map.put("phone",phone);
+        map.put("profilePicUrl",profilePicUrl);
         return map;
     }
 
@@ -35,6 +36,7 @@ public class LoggedInUser {
         this.displayName = String.valueOf(map.get("displayName"));
         this.email = String.valueOf(map.get("email"));
         this.phone = String.valueOf(map.get("phone"));
+        this.profilePicUrl = String.valueOf(map.get("profilePicUrl"));
     }
 
     public void setUserId(@NonNull String userId) {
@@ -53,10 +55,9 @@ public class LoggedInUser {
         this.phone = phone;
     }
 
-//    public void setProfilePic(Image profilePic) {
-//        this.profilePic = profilePic;
-//    }
-
+    public void setProfilePicUrl(String profilePicUrl) {
+        this.profilePicUrl = profilePicUrl;
+    }
     public String getUserId() {
         return userId;
     }
@@ -67,7 +68,11 @@ public class LoggedInUser {
 
     public String getPhone() { return phone;}
 
-//    public Image getProfilePic() { return profilePic;}
-
     public String getEmail() {return email;}
+
+    public String getProfilePicUrl() {
+        return profilePicUrl;
+    }
+
+
 }

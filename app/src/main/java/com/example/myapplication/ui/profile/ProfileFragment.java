@@ -1,48 +1,47 @@
 package com.example.myapplication.ui.profile;
 
 import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
-import android.app.Activity;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentProfileBinding;
 import com.example.myapplication.model.Model;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import java.io.IOException;
+import com.squareup.picasso.Picasso;
 
 public class ProfileFragment extends Fragment {
 
     private FragmentProfileBinding binding;
     private boolean textViewsVisible = true;
     private boolean editTextsVisible = false;
-    private Button editBtn;
-    private FloatingActionButton saveBtn;
-    private TextView nameTextView;
-    private TextView phoneTextView;
-    private TextView emailTextView;
-    private EditText nameEditText;
-    private EditText phoneEditText;
-    private EditText emailEditText;
     private String userUID;
-    private ImageView imageIV;
-    private ProgressBar progressBar;
+    private ActivityResultLauncher<String> galleryLauncher;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
+            @Override
+            public void onActivityResult(Uri result) {
+                if (result != null){
+                    UploadSelectedImg(result);
+                }
+            }
+        });
+    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,35 +49,16 @@ public class ProfileFragment extends Fragment {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        nameTextView = binding.profileName;
-        phoneTextView = binding.profilePhone;
-        emailTextView = binding.profileEmail;
-        nameEditText = binding.profileNameEdit;
-        phoneEditText = binding.profilePhoneEdit;
-        emailEditText = binding.profileEmailEdit;
-
-        FloatingActionButton editImgBtn = binding.profileEditImgBtn;
-        editImgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                imageChooser();
-            }
+        binding.profileEditImgBtn.setOnClickListener(view1->{
+            galleryLauncher.launch("image/*");
         });
 
-        editBtn = binding.profileEditBtn;
-        editBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                toggleEditMode();
-            }
+        binding.profileEditBtn.setOnClickListener(view1->{
+            toggleEditMode();
         });
 
-        saveBtn = binding.profileSaveBtn;
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveEditedProfile();
-            }
+        binding.profileSaveBtn.setOnClickListener(view1->{
+            saveEditedProfile();
         });
 
         if (currentUser!= null){
@@ -87,90 +67,71 @@ public class ProfileFragment extends Fragment {
 
         LoadProfileImage();
         LoadProfileData();
+
         return root;
     }
 
-
     private void LoadProfileImage() {
         if (currentUser!= null){
-            imageIV = binding.profileImage;
-            progressBar = binding.profileProgressBar;
-            Model.instance().LoadImg(userUID, (bitmap) -> {
-                if (bitmap != null) {
-                    bitmapToImg(bitmap, imageIV);
-                }
-                imageIV.setVisibility(View.VISIBLE);
-                progressBar.setVisibility(View.GONE);
 
-            });
+            String url = currentUser.getProfilePicUrl();
+            if (url  != null && url.length() > 5) {
+                  Picasso.get().load(url).placeholder(R.drawable.avatar).into( binding.profileImage);
+            } else {
+                binding.profileImage.setImageResource(R.drawable.avatar);
+            }
+
+            binding.profileImage.setVisibility(View.VISIBLE);
+            binding.profileProgressBar.setVisibility(View.GONE);
         }
-    }
-
-    private void bitmapToImg(Bitmap bm, ImageView imageIV) {
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        imageIV.setMinimumHeight(dm.heightPixels);
-        imageIV.setMinimumWidth(dm.widthPixels);
-        imageIV.setImageBitmap(bm);
     }
 
     private void LoadProfileData() {
         if (currentUser!= null){
-            TextView nameTV = binding.profileName;
-            TextView phoneTV = binding.profilePhone;
-            TextView emailTV = binding.profileEmail;
-
-            nameTV.setText(currentUser.getDisplayName());
-            phoneTV.setText(currentUser.getPhone());
-            emailTV.setText(currentUser.getEmail());
+            binding.profileName.setText(currentUser.getDisplayName());
+            binding.profilePhone.setText(currentUser.getPhone());
+            binding.profileEmail.setText(currentUser.getEmail());
         }
     }
 
-    void imageChooser() {
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        ChooseNewProfileImage.launch(i);
-    }
-
     private void toggleEditMode() {
-        nameEditText.setText(nameTextView.getText());
-        phoneEditText.setText(phoneTextView.getText());
-        emailEditText.setText(emailTextView.getText());
+        binding.profileNameEdit.setText(binding.profileName.getText());
+        binding.profilePhoneEdit.setText(binding.profilePhone.getText());
+        binding.profileEmailEdit.setText(binding.profileEmail.getText());
 
         if (textViewsVisible) {
-            nameTextView.setVisibility(View.GONE);
-            phoneTextView.setVisibility(View.GONE);
-            emailTextView.setVisibility(View.GONE);
-            nameEditText.setVisibility(View.VISIBLE);
-            phoneEditText.setVisibility(View.VISIBLE);
-            emailEditText.setVisibility(View.VISIBLE);
-            editBtn.setVisibility(View.GONE);
-            saveBtn.setVisibility(View.VISIBLE);
+            binding.profileName.setVisibility(View.GONE);
+            binding.profilePhone.setVisibility(View.GONE);
+            binding.profileEmail.setVisibility(View.GONE);
+            binding.profileNameEdit.setVisibility(View.VISIBLE);
+            binding.profilePhoneEdit.setVisibility(View.VISIBLE);
+            binding.profileEmailEdit.setVisibility(View.VISIBLE);
+            binding.profileEditBtn.setVisibility(View.GONE);
+            binding.profileSaveBtn.setVisibility(View.VISIBLE);
             textViewsVisible = false;
             editTextsVisible = true;
         } else if (editTextsVisible) {
-            nameEditText.setVisibility(View.GONE);
-            phoneEditText.setVisibility(View.GONE);
-            emailEditText.setVisibility(View.GONE);
-            nameTextView.setVisibility(View.VISIBLE);
-            phoneTextView.setVisibility(View.VISIBLE);
-            emailTextView.setVisibility(View.VISIBLE);
-            editBtn.setVisibility(View.VISIBLE);
-            saveBtn.setVisibility(View.GONE);
+            binding.profileNameEdit.setVisibility(View.GONE);
+            binding.profilePhoneEdit.setVisibility(View.GONE);
+            binding.profileEmailEdit.setVisibility(View.GONE);
+            binding.profileName.setVisibility(View.VISIBLE);
+            binding.profilePhone.setVisibility(View.VISIBLE);
+            binding.profileEmail.setVisibility(View.VISIBLE);
+            binding.profileEditBtn.setVisibility(View.VISIBLE);
+            binding.profileSaveBtn.setVisibility(View.GONE);
             textViewsVisible = true;
             editTextsVisible = false;
         }
     }
 
     void saveEditedProfile() {
-        String newName = nameEditText.getText().toString();
-        String newPhone = phoneEditText.getText().toString();
-        String newEmail = emailEditText.getText().toString();
+        String newName = binding.profileNameEdit.getText().toString();
+        String newPhone = binding.profilePhoneEdit.getText().toString();
+        String newEmail = binding.profileEmailEdit.getText().toString();
 
-        nameTextView.setText(newName);
-        phoneTextView.setText(newPhone);
-        emailTextView.setText(newEmail);
+        binding.profileName.setText(newName);
+        binding.profilePhone.setText(newPhone);
+        binding.profileEmail.setText(newEmail);
 
         if (currentUser!= null) {
             updateCurrenUser(newName, newPhone, newEmail);
@@ -186,37 +147,16 @@ public class ProfileFragment extends Fragment {
         currentUser.setDisplayName(newName);
     }
 
-    ActivityResultLauncher<Intent> ChooseNewProfileImage
-            = registerForActivityResult(
-            new ActivityResultContracts
-                    .StartActivityForResult(),
-            result -> {
-                if (result.getResultCode()
-                        == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    if (data != null
-                            && data.getData() != null) {
-                        Uri selectedImageUri = data.getData();
-                        Bitmap selectedImageBitmap;
-                        try {
-                            selectedImageBitmap = MediaStore.Images.Media.getBitmap(
-                                    requireActivity().getContentResolver(),
-                                    selectedImageUri);
-                            UploadSelectedImg(selectedImageBitmap);
-                        }
-                        catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-
-    private void UploadSelectedImg(Bitmap selectedImageBitmap) {
+    private void UploadSelectedImg(Uri result) {
         if (currentUser!= null) {
-            Model.instance().uploadImg(userUID, selectedImageBitmap, (bitmap) -> {
-                if (bitmap!=null){
-                    ImageView profileImageIV = binding.profileImage;
-                    bitmapToImg(bitmap, profileImageIV);
+            binding.profileImage.setImageURI(result);
+            binding.profileImage.setDrawingCacheEnabled(true);
+            binding.profileImage.buildDrawingCache();
+            Bitmap bitmap = ((BitmapDrawable) binding.profileImage.getDrawable()).getBitmap();
+            Model.instance().uploadImage(userUID, bitmap, url->{
+                if (url != null){
+                    currentUser.setProfilePicUrl(url);
+                    Model.instance().updateUserProfileURl(userUID, url);
                 } else {
                     Toast.makeText(getActivity(), "something went wrong...", Toast.LENGTH_SHORT).show();
                 }

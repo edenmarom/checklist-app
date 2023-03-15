@@ -40,32 +40,22 @@ public class Model {
 
     final public MutableLiveData<LoadingState> EventImgLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
 
-    public void uploadImg(String userUID, Bitmap selectedImageBitmap, Listener<Bitmap> listener) {
-        // update local profile img
-        // TODO
-        // update profile img on firebase
-        firebaseModel.uploadImg(userUID, selectedImageBitmap, listener);
+    public void uploadImage(String uid, Bitmap bitmap,Listener<String> listener) {
+        firebaseModel.uploadImage(uid,bitmap,listener);
     }
 
-    public void LoadImg(String userUID, Listener<Bitmap> listener) {
-        // check if local img is here
-        // TODO
-        // get profile img from firebase
-        firebaseModel.loadImg(userUID, listener);
+    public void updateUserProfileURl(String userUID, String url) {
+        firebaseModel.updateUserProfileURl(userUID,url);
     }
+
     public void updateUserProfileData(String userId, String newName, String newPhone, String newEmail) {
-        // check if current user exist in local db
-        // TODO
         firebaseModel.updateUserProfileData(userId, newName, newPhone, newEmail);
-    }
-
-    public void setInRealTimeDatabaseRegister(String uid, String email, String displayName, String phone, Listener<LoggedInUser> listener) {
-        firebaseModel.setInRealTimeDatabaseRegister(uid, email, displayName, phone, listener);
     }
 
     public void logIn(String email, String password, Listener<LoggedInUser> listener) {
         firebaseModel.logIn(email, password, listener);
     }
+
     public void logOut() {
         firebaseModel.logOut();
     }

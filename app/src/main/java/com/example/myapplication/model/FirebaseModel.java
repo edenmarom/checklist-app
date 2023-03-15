@@ -2,7 +2,7 @@ package com.example.myapplication.model;
 import static com.example.myapplication.model.LoggedInUser.USER_REF;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import androidx.annotation.NonNull;
@@ -44,58 +44,46 @@ public class FirebaseModel {
                 .getDefaultSharedPreferences(MyApplication.getMyContext());
     }
 
-    public void uploadImg(String userUID, Bitmap selectedImageBitmap, Model.Listener<Bitmap> callback) {
+    public void uploadImage(String userUID, Bitmap bitmap, Model.Listener<String> callback){
         String path = String.format(userImagesDBLocation, userUID);
         StorageReference imageRef = storageRef.child(path);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         byte[] imgData = baos.toByteArray();
         UploadTask uploadTask = imageRef.putBytes(imgData);
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                Log.d("TAG", "load profile:fail");
+                Log.d("TAG", "edit profile pic:fail");
                 Log.d("TAG", "path: " + path);
                 callback.onComplete(null);
             }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.d("TAG", "edit profile:success");
-                callback.onComplete(selectedImageBitmap);
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d("TAG", "edit profile pic:success");
+                        callback.onComplete(uri.toString());
+                    }
+                });
             }
         });
     }
 
-    public void loadImg(String userUID, Model.Listener<Bitmap> callback) {
-        String path = String.format(userImagesDBLocation, userUID);
-        StorageReference imageRef = storageRef.child(path);
-        imageRef.getBytes(Long.MAX_VALUE)
-                .addOnSuccessListener(new OnSuccessListener<byte[]>() {
-                    @Override
-                    public void onSuccess(byte[] bytes) {
-                        Bitmap bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                        callback.onComplete(bm);
-                        Log.d("TAG", "load profile:success");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Log.d("TAG", "load profile:fail");
-                        Log.d("TAG", path);
-                        callback.onComplete(null);
-
-                    }
-                });
+    public void updateUserProfileURl(String userUID, String url){
+        DatabaseReference users = db.getReference("Users");
+        users.child(userUID).child("profilePicUrl").setValue(url);
     }
 
     public void setInRealTimeDatabaseRegister(String uid, String email, String displayName, String phone, Model.Listener<LoggedInUser> callback) {
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference(USER_REF);
-        ref.child(uid).setValue(new LoggedInUser(uid, displayName, email, phone).toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        ref.child(uid).setValue(new LoggedInUser(uid, displayName, email, phone, "").toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()) {
-                    currentUser = new LoggedInUser(uid, displayName, email, phone);
+                    currentUser = new LoggedInUser(uid, displayName, email, phone, "");
                     callback.onComplete(currentUser);
                 } else
                     callback.onComplete(null);
@@ -153,7 +141,7 @@ public class FirebaseModel {
                     assert user != null;
                     user.updateProfile(profileUpdates).addOnCompleteListener(task1 -> {
                         if (task1.isSuccessful()) {
-                            currentUser = new LoggedInUser(userId, userName, email, phone);
+                            currentUser = new LoggedInUser(userId, userName, email, phone,"");
                             callback.onComplete(currentUser);
                         } else
                             callback.onComplete(null);

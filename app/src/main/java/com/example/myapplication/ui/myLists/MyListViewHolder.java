@@ -70,6 +70,15 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
     public void bind(ListItem l, int pos) {
         id = l.getListId();
         nameTv.setText(l.getName());
+
+        //TODO - EDEN TO ADI: THIS IS HOW THE PHOTOS SHOULD BE HANDLED WITH Picasso LIB
+//        if (st.getAvatarUrl()  != null && st.getAvatarUrl().length() > 5) {
+//            Picasso.get().load(st.getAvatarUrl()).placeholder(R.drawable.avatar).into(avatarImage);
+//        }else{
+//            avatarImage.setImageResource(R.drawable.avatar);
+//        }
+
+
         //TODO: insert all data
 //        listItemTV.setText(l.getListItem().get(0).replace("[","").replace("]","").replace(",","\n"));
 
