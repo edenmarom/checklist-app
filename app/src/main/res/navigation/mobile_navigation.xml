@@ -30,11 +30,7 @@
         <argument
             android:name="userName"
             app:argType="string"
-            android:defaultValue="str" />
-        <argument
-            android:name="test"
-            app:argType="boolean"
-            android:defaultValue="false" />
+            android:defaultValue="user" />
     </fragment>
 
 

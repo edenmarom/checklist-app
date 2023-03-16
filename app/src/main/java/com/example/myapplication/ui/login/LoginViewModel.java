@@ -24,11 +24,7 @@ public class LoginViewModel extends ViewModel {
         if (!isThereEmptyData(true, email.trim(), password.trim(), "", "")) {
             Model.instance().logIn(email, password, (user) -> {
                 if (user != null) {
-                    LoginFragmentDirections.ActionNavLoginToNavMyLists action
-                            = LoginFragmentDirections.actionNavLoginToNavMyLists();
-                    action.setUserName("stam");
-                    Navigation.findNavController(view).navigate(action);
-                    /// Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_myLists);
+                    passUseNameToMyListFrag(user, view);
                 } else
                     Toast.makeText(context, "Login Failed!", Toast.LENGTH_SHORT).show();
             });
@@ -40,11 +36,18 @@ public class LoginViewModel extends ViewModel {
         if (!isThereEmptyData(false, email.trim(), password.trim(), userName.trim(), phone.trim())) {
             Model.instance().register(email, password, userName, phone, (user) -> {
                 if (user != null) {
-                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_myLists);
+                    passUseNameToMyListFrag(user, view);
                 } else
                     Toast.makeText(context, "Registration Failed!", Toast.LENGTH_SHORT).show();
             });
         } else Toast.makeText(context, "Enter All Data!", Toast.LENGTH_SHORT).show();
+    }
+
+    private void passUseNameToMyListFrag(LoggedInUser user, View view) {
+        LoginFragmentDirections.ActionNavLoginToNavMyLists action
+                = LoginFragmentDirections.actionNavLoginToNavMyLists();
+        action.setUserName(user.getDisplayName());
+        Navigation.findNavController(view).navigate(action);
     }
 
     public boolean isThereEmptyData(boolean isLogin, String email, String password, String userName, String phone) {

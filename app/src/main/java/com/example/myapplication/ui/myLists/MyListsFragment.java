@@ -42,7 +42,9 @@ public class MyListsFragment extends Fragment {
         addNewListBtn = binding.myListsAddNewListBtn;
         navController = NavHostFragment.findNavController(this);
 
-        String str = MyListsFragmentArgs.fromBundle(getArguments()).getUserName();
+        String registeredUserDisplayName = MyListsFragmentArgs.fromBundle(getArguments()).getUserName();
+        binding.myListsGreeting.setText("Hello " + registeredUserDisplayName);
+
 
         addNewListBtn.setOnClickListener(new View.OnClickListener() {
             @Override

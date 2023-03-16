@@ -26,7 +26,10 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
         Model.instance().isUserLoggedIn((user)->{
             if(user!=null) {
-                Navigation.findNavController(container).navigate(R.id.action_nav_login_to_nav_myLists);
+                LoginFragmentDirections.ActionNavLoginToNavMyLists action
+                        = LoginFragmentDirections.actionNavLoginToNavMyLists();
+                action.setUserName(user.getDisplayName());
+                Navigation.findNavController(container).navigate(action);
             }else
                 Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
         });
