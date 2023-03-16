@@ -2,6 +2,8 @@ package com.example.myapplication.ui.splash;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myapplication.MainActivity;
@@ -16,15 +18,22 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        new CountDownTimer(SPLASH_DELAY_MILLIS, SPLASH_DELAY_MILLIS) {
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onTick(long millisUntilFinished) {}
-            @Override
-            public void onFinish() {
+            public void run() {
+
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 finish();
 
             }
-        }.start();
+        },SPLASH_DELAY_MILLIS);
+//        new CountDownTimer(SPLASH_DELAY_MILLIS, SPLASH_DELAY_MILLIS) {
+//            @Override
+//            public void onTick(long millisUntilFinished) {}
+//            @Override
+//            public void onFinish() {
+//
+//            }
+//        }.start();
     }
 }

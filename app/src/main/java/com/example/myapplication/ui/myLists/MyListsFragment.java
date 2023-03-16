@@ -42,6 +42,8 @@ public class MyListsFragment extends Fragment {
         addNewListBtn = binding.myListsAddNewListBtn;
         navController = NavHostFragment.findNavController(this);
 
+        String str = MyListsFragmentArgs.fromBundle(getArguments()).getUserName();
+
         addNewListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

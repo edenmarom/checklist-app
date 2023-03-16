@@ -8,7 +8,8 @@ import androidx.navigation.Navigation;
 import com.example.myapplication.R;
 import com.example.myapplication.model.LoggedInUser;
 import com.example.myapplication.model.Model;
-
+import com.example.myapplication.ui.myLists.MyListsFragment;
+import com.example.myapplication.ui.myLists.MyListsFragmentDirections;
 
 public class LoginViewModel extends ViewModel {
 
@@ -23,7 +24,11 @@ public class LoginViewModel extends ViewModel {
         if (!isThereEmptyData(true, email.trim(), password.trim(), "", "")) {
             Model.instance().logIn(email, password, (user) -> {
                 if (user != null) {
-                    Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_myLists);
+                    LoginFragmentDirections.ActionNavLoginToNavMyLists action
+                            = LoginFragmentDirections.actionNavLoginToNavMyLists();
+                    action.setUserName("stam");
+                    Navigation.findNavController(view).navigate(action);
+                    /// Navigation.findNavController(view).navigate(R.id.action_nav_login_to_nav_myLists);
                 } else
                     Toast.makeText(context, "Login Failed!", Toast.LENGTH_SHORT).show();
             });

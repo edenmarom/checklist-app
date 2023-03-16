@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'com.google.gms.google-services'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+    id 'androidx.navigation.safeargs'
 }
 
 android {
@@ -55,6 +56,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.squareup.picasso:picasso:2.8'
+
+    def nav_version = "2.5.3"  //your nav_version defined
+    implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 
     //room
     def room_version = "2.4.3"
