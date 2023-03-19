@@ -1,9 +1,11 @@
 package com.example.myapplication.ui.myLists;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -11,9 +13,11 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMylistsBinding;
 import com.example.myapplication.model.ListItem;
+import com.example.myapplication.model.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
@@ -24,18 +28,12 @@ public class MyListsFragment extends Fragment {
     private FragmentMylistsBinding binding;
     FloatingActionButton addNewListBtn;
     NavController navController;
-
-    List<ListItem> data = MyListsViewModel.getAllList();
-//    LiveData<List<ListItem>> data2 = MyListsViewModel.getdata2();
-
-
-
+    MyListAdapter adapter;
+    MyListsViewModel viewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        MyListsViewModel myListsViewModel =
-                new ViewModelProvider(this).get(MyListsViewModel.class);
 
         binding = FragmentMylistsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
@@ -53,44 +51,25 @@ public class MyListsFragment extends Fragment {
             }
         });
 
-//        RecyclerView list = root.findViewById(R.id.RV_list);
-        RecyclerView list = binding.RVList;
-        list.setHasFixedSize(true);
-
+        binding.RVList.setHasFixedSize(true);
         Fragment fragment = getParentFragment();
-        list.setLayoutManager(new LinearLayoutManager(getContext()));
-//        MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),MyListsViewModel.getdata2().getValue(),fragment);
-        MyListAdapter adapter = new MyListAdapter(getLayoutInflater(),data,fragment);
-        list.setAdapter(adapter);
+        binding.RVList.setLayoutManager(new LinearLayoutManager(getContext()));
 
-//        MyListsViewModel.getdata2().observe(getViewLifecycleOwner(),(data)->{
-//            adapter.setData(data);
-//        });
+        adapter = new MyListAdapter(getLayoutInflater(), viewModel.getData().getValue(), fragment);
+        binding.RVList.setAdapter(adapter);
+
+        viewModel.getData().observe(getViewLifecycleOwner(), adapter::setData);
 
         return root;
     }
-
-
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        viewModel = new ViewModelProvider(this).get(MyListsViewModel.class);
     }
 
-// TODO
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        reloadData();
-//    }
-//
-//    void reloadData(){
+    void reloadData(){
 //        binding.progressBar.setVisibility(View.VISIBLE);
-//        Model.instance().getAllStudents((stList)->{
-//                data = stList;
-//                adapter.setData(data);
-//                binding.progressBar.setVisibility(View.GONE);
-//            });
-//    }
-
+        Model.instance().refreshAllLists();
+    }
 }

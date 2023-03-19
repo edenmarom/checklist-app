@@ -1,11 +1,15 @@
 package com.example.myapplication.model;
+
 import static com.example.myapplication.model.LoggedInUser.USER_REF;
+
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
+
 import com.example.myapplication.MyApplication;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,13 +22,20 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
 
 
@@ -40,11 +51,11 @@ public class FirebaseModel {
         db = FirebaseDatabase.getInstance(dbUrl);
         storage = FirebaseStorage.getInstance();
         storageRef = storage.getReference();
-        preferences =  PreferenceManager
+        preferences = PreferenceManager
                 .getDefaultSharedPreferences(MyApplication.getMyContext());
     }
 
-    public void uploadImage(String userUID, Bitmap bitmap, Model.Listener<String> callback){
+    public void uploadImage(String userUID, Bitmap bitmap, Model.Listener<String> callback) {
         String path = String.format(userImagesDBLocation, userUID);
         StorageReference imageRef = storageRef.child(path);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -72,7 +83,7 @@ public class FirebaseModel {
         });
     }
 
-    public void updateUserProfileURl(String userUID, String url){
+    public void updateUserProfileURl(String userUID, String url) {
         DatabaseReference users = db.getReference("Users");
         users.child(userUID).child("profilePicUrl").setValue(url);
     }
@@ -131,7 +142,7 @@ public class FirebaseModel {
                 if (task.isSuccessful()) {
                     String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
                     setInRealTimeDatabaseRegister(userId, email, userName, phone, (user) -> {
-                        if(user == null){
+                        if (user == null) {
                             callback.onComplete(null);
                         }
                     });
@@ -141,7 +152,7 @@ public class FirebaseModel {
                     assert user != null;
                     user.updateProfile(profileUpdates).addOnCompleteListener(task1 -> {
                         if (task1.isSuccessful()) {
-                            currentUser = new LoggedInUser(userId, userName, email, phone,"");
+                            currentUser = new LoggedInUser(userId, userName, email, phone, "");
                             callback.onComplete(currentUser);
                         } else
                             callback.onComplete(null);
@@ -192,7 +203,7 @@ public class FirebaseModel {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), password);
 
-        if (user != null && credential != null){
+        if (user != null && credential != null) {
             user.reauthenticate(credential).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
@@ -211,5 +222,30 @@ public class FirebaseModel {
         } else {
             Log.d("TAG", "change email in auth-firebase: fail");
         }
+    }
+
+    public void getAllListsSince(Long since, Model.Listener<List<ListItem>> callback) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.orderByChild(ListItem.LAST_UPDATED)
+                .startAt(since)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<ListItem> list = new LinkedList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                            ListItem l = dataSnapshot.getValue(ListItem.class);
+                            Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
+                            ListItem l = ListItem.fromJson(dataMap);
+                            l.setListId(dataSnapshot.getKey());
+                            list.add(l);
+                        }
+                        callback.onComplete(list);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        // Handle the error here
+                    }
+                });
     }
 }

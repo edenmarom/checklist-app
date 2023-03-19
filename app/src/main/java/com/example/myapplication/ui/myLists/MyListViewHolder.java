@@ -13,8 +13,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.databinding.FragmentMylistsBinding;
 import com.example.myapplication.model.ListItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -46,16 +46,9 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
         editB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                int pos = getAdapterPosition();
-
-//                Bundle bundle = new Bundle();
-//                bundle.putString("pos",Integer.toString(pos));
-
                Bundle bundle = new Bundle();
                 bundle.putString("id",id);
                 navController.navigate(R.id.editListFragment2,bundle);
-
-
             }
         });
 
@@ -71,13 +64,11 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
         id = l.getListId();
         nameTv.setText(l.getName());
 
-        //TODO - EDEN TO ADI: THIS IS HOW THE PHOTOS SHOULD BE HANDLED WITH Picasso LIB
-//        if (st.getAvatarUrl()  != null && st.getAvatarUrl().length() > 5) {
-//            Picasso.get().load(st.getAvatarUrl()).placeholder(R.drawable.avatar).into(avatarImage);
-//        }else{
-//            avatarImage.setImageResource(R.drawable.avatar);
-//        }
-
+        if (l.getImgUrl()  != null && l.getImgUrl().length() > 5) {
+            Picasso.get().load(l.getImgUrl()).placeholder(R.drawable.avatar).into(image);
+        }else{
+            image.setImageResource(R.drawable.avatar);
+        }
 
         //TODO: insert all data
 //        listItemTV.setText(l.getListItem().get(0).replace("[","").replace("]","").replace(",","\n"));

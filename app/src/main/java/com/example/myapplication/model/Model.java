@@ -67,61 +67,40 @@ public class Model {
         firebaseModel.isUserLoggedIn(listener);
     }
 
-    public interface GetAllListItemsListener {
-        void onComplete(List<ListItem> data);
-    }
-
-//    public void getAllListItems(GetAllListItemsListener callback){
-//        executor.execute(()->{
-//            List<ListItem> data = localDb.listItemDao().getAll();
-//            mainHandler.post(()->{
-//                callback.onComplete(data);
-//            });
-//        });
-//    }
-
-    public void insert() {
-        executor.execute(() -> {
-            ListItem b = new ListItem("AAA", "my-list", null, null, null, null, null);
-            localDb.listItemDao().insertAll(b);
-            mainHandler.post(() -> {
-                Log.e("TAG", "done inserting");
-            });
-        });
-    }
-
     public LiveData<List<ListItem>> getAllListItems() {
-        try
-        {
-            Thread.sleep(5000);
-        }
-        catch(InterruptedException e)
-        {
-        }
-        if (ListItems == null) {
-            executor.execute(() -> {
-                ListItems = localDb.listItemDao().getAll();
-                mainHandler.post(() -> {
-                    Log.e("TAG", "done getting");
-                    Log.e("TAG", "ListItems:" + ListItems);
-                });
-            });
+        if(ListItems == null){
+            ListItems = localDb.listItemDao().getAll();
+            refreshAllLists();
         }
         return ListItems;
     }
 
-
-//    public interface AddListItemListener {
-//        void onComplete();
-//    }
-//    public void addListItem(ListItem listItem, AddListItemListener listener){
-//        executor.execute(()->{
-//            localDb.listItemDao().insertAll(listItem);
-//            mainHandler.post(()->{
-//                listener.onComplete();
-//            });
-//        });
-//    }
-
+    public void refreshAllLists(){
+//        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
+        // get local last update
+        Long localLastUpdate = ListItem.getLocalLastUpdate();
+        // get all updated recorde from firebase since local last update
+        firebaseModel.getAllListsSince(localLastUpdate,list->{
+            executor.execute(()->{
+                Log.d("TAG", " firebase return : " + list.size());
+                Long time = localLastUpdate;
+                for(ListItem l:list){
+                    // insert new records into ROOM
+                    localDb.listItemDao().insertAll(l);
+                    if (time < l.getLastUpdated()){
+                        time = l.getLastUpdated();
+                    }
+                }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                // update local last update
+                ListItem.setLocalLastUpdate(time);
+//                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
+            });
+        });
+    }
 
 }
