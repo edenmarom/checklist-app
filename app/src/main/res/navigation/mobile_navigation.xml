@@ -32,15 +32,11 @@
             app:argType="string"
             android:defaultValue="user" />
     </fragment>
-
-
     <fragment
         android:id="@+id/nav_googleMap"
         android:name="com.example.myapplication.ui.maps.MapsFragment"
         android:label="@string/menu_Map"
         tools:layout="@layout/fragment_maps" />
-
-
     <fragment
         android:id="@+id/nav_logout"
         android:name="com.example.myapplication.ui.logout.LogoutFragment"
@@ -60,5 +56,11 @@
         android:name="com.example.myapplication.ui.EditItem.EditListFragment"
         android:label="fragment_edit_list"
         tools:layout="@layout/fragment_edit_list" />
+    <fragment
+        android:id="@+id/nav_sharedLists"
+        android:name="com.example.myapplication.ui.sharedLists.SharedListsFragment"
+        android:label="@string/menu_sharedLists"
+        tools:layout="@layout/fragment_sharedlists" >
+    </fragment>
 
 </navigation>

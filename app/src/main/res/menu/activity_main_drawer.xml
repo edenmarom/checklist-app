@@ -9,16 +9,20 @@
             android:icon="@drawable/lists"
             android:title="@string/menu_myLists" />
         <item
+            android:id="@+id/nav_sharedLists"
+            android:icon="@drawable/lists"
+            android:title="@string/menu_sharedLists" />
+        <item
             android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_Profile" />
         <item
-            android:id="@+id/nav_logout"
-            android:icon="@drawable/logout"
-            android:title="@string/menu_logout" />
-        <item
             android:id="@+id/nav_googleMap"
             android:icon="@drawable/map"
             android:title="@string/menu_Map" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout"
+            android:title="@string/menu_logout" />
     </group>
 </menu>

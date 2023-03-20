@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.myLists;
+package com.example.myapplication.ui.sharedLists;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,24 +12,22 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMylistsBinding;
-import com.example.myapplication.model.ListItem;
 import com.example.myapplication.model.Model;
+import com.example.myapplication.ui.myLists.MyListAdapter;
+import com.example.myapplication.ui.myLists.MyListsFragmentArgs;
+import com.example.myapplication.ui.myLists.MyListsViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
-import java.util.List;
-
-public class MyListsFragment extends Fragment {
+public class SharedListsFragment extends Fragment {
 
     private FragmentMylistsBinding binding;
     FloatingActionButton addNewListBtn;
     NavController navController;
     MyListAdapter adapter;
-    MyListsViewModel viewModel;
+    SharedListsViewModel viewModel;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -39,9 +37,6 @@ public class MyListsFragment extends Fragment {
         View root = binding.getRoot();
         addNewListBtn = binding.myListsAddNewListBtn;
         navController = NavHostFragment.findNavController(this);
-
-        String registeredUserDisplayName = MyListsFragmentArgs.fromBundle(getArguments()).getUserName();
-        binding.myListsGreeting.setText("Hello " + registeredUserDisplayName);
 
         addNewListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +59,7 @@ public class MyListsFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        viewModel = new ViewModelProvider(this).get(MyListsViewModel.class);
+        viewModel = new ViewModelProvider(this).get(SharedListsViewModel.class);
     }
 
     public static void reloadData(){

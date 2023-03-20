@@ -1,5 +1,6 @@
 package com.example.myapplication.model;
 
+import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Looper;
@@ -18,7 +19,7 @@ public class Model {
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseModel firebaseModel = new FirebaseModel();
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
-    private LiveData<List<ListItem>> ListItems;
+    private LiveData<List<ListItem>> MyListItems;
 
     public static Model instance() {
         return _instance;
@@ -72,8 +73,9 @@ public class Model {
         firebaseModel.logIn(email, password, listener);
     }
 
-    public void logOut() {
-        firebaseModel.logOut();
+    public void logOut(Listener<Void> listener) {
+        firebaseModel.logOut(listener);
+        AppLocalDb.clear();
     }
 
     public void register(String email, String password, String userName, String phone, Listener<LoggedInUser> listener) {
@@ -83,12 +85,12 @@ public class Model {
         firebaseModel.isUserLoggedIn(listener);
     }
 
-    public LiveData<List<ListItem>> getAllListItems() {
-        if(ListItems == null){
-            ListItems = localDb.listItemDao().getAll();
-            refreshAllLists();
+    public LiveData<List<ListItem>> getMyListItems() {
+        if(MyListItems == null){
+            MyListItems = localDb.listItemDao().getListItemByUserId(currentUser.getUserId());
+            refreshMyLists();
         }
-        return ListItems;
+        return MyListItems;
     }
     public void getSelectedListData(String id, Listener<ListItem> listener){
         firebaseModel.getSelectedListData(id,listener);
@@ -97,10 +99,10 @@ public class Model {
 
 
 
-    public void refreshAllLists(){
+    public void refreshMyLists(){
 //        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
         Long localLastUpdate = ListItem.getLocalLastUpdate();
-        firebaseModel.getAllListsSince(localLastUpdate,list->{
+        firebaseModel.getMyListsSince(localLastUpdate,list->{
             executor.execute(()->{
                 Log.d("TAG", " firebase return : " + list.size());
                 Long time = localLastUpdate;
@@ -109,11 +111,6 @@ public class Model {
                     if (time < l.getLastUpdated()){
                         time = l.getLastUpdated();
                     }
-                }
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
                 ListItem.setLocalLastUpdate(time);
 //                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);

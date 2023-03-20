@@ -20,6 +20,7 @@
         android:layout_height="249dp"
         android:src="@drawable/logo_and_app_name" />
 
+
     <EditText
         android:id="@+id/etUserName"
         android:layout_width="match_parent"
