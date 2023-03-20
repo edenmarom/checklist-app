@@ -124,8 +124,9 @@ public class FirebaseModel {
         });
     }
 
-    public void logOut() {
+    public void logOut(Model.Listener<Void> callback) {
         FirebaseAuth.getInstance().signOut();
+        callback.onComplete(null);
     }
 
     public void register(String email, String password, String userName, String phone, Model.Listener<LoggedInUser> callback) {
@@ -220,7 +221,7 @@ public class FirebaseModel {
         }
     }
 
-    public void getAllListsSince(Long since, Model.Listener<List<ListItem>> callback) {
+    public void getMyListsSince(Long since, Model.Listener<List<ListItem>> callback) {
         DatabaseReference lists = db.getReference("lists");
         lists.orderByChild(ListItem.LAST_UPDATED)
                 .startAt(since)
@@ -232,7 +233,9 @@ public class FirebaseModel {
                             Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
                             ListItem l = ListItem.fromJson(dataMap);
                             l.setListId(dataSnapshot.getKey());
-                            list.add(l);
+                            if (l.getUserId().equals(currentUser.getUserId())){
+                                list.add(l);
+                            }
                         }
                         callback.onComplete(list);
                     }

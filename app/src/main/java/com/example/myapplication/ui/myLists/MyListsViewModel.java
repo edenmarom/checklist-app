@@ -9,7 +9,7 @@ import com.example.myapplication.model.Model;
 import java.util.List;
 
 public class MyListsViewModel extends ViewModel {
-    private static LiveData<List<ListItem>> data = Model.instance().getAllListItems();
+    private static LiveData<List<ListItem>> data = Model.instance().getMyListItems();
 
     public MyListsViewModel() {
 
@@ -17,5 +17,9 @@ public class MyListsViewModel extends ViewModel {
 
     LiveData<List<ListItem>> getData() {
         return data;
+    }
+
+    public static final void clear() {
+        data = null;
     }
 }

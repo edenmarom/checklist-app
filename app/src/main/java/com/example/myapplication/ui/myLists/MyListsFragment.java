@@ -43,7 +43,6 @@ public class MyListsFragment extends Fragment {
         String registeredUserDisplayName = MyListsFragmentArgs.fromBundle(getArguments()).getUserName();
         binding.myListsGreeting.setText("Hello " + registeredUserDisplayName);
 
-
         addNewListBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,8 +67,8 @@ public class MyListsFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(MyListsViewModel.class);
     }
 
-    void reloadData(){
+    public static void reloadData(){
 //        binding.progressBar.setVisibility(View.VISIBLE);
-        Model.instance().refreshAllLists();
+        Model.instance().refreshMyLists();
     }
 }
