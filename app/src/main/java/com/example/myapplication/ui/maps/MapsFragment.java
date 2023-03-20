@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.myapplication.R;
+import com.example.myapplication.model.Model;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -38,7 +39,8 @@ public class MapsFragment extends Fragment {
                     Manifest.permission.ACCESS_COARSE_LOCATION};
             requestPermissions(perms, 0); // Use this method in Fragment classes
 
-
+            //get all location
+//            Model.instance().getLocations();
 
             LatLng sydney = new LatLng(-34, 151);
             googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));

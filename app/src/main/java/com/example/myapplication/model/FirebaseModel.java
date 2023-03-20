@@ -27,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,6 +40,7 @@ public class FirebaseModel {
     private FirebaseDatabase db;
     private FirebaseStorage storage;
     private final String userImagesDBLocation = "user-images/%s.png";
+    private final String listImagesDBLocation = "list-images/%s.png";
     private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
     private StorageReference storageRef;
     private SharedPreferences preferences;
@@ -77,6 +79,30 @@ public class FirebaseModel {
                 });
             }
         });
+    }
+
+    public void getAllListsSince(Long since, Model.Listener<List<ListItem>> callback) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.orderByChild(ListItem.LAST_UPDATED)
+                .startAt(since)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<ListItem> list = new LinkedList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
+                            ListItem l = ListItem.fromJson(dataMap);
+                            l.setListId(dataSnapshot.getKey());
+                            list.add(l);
+                        }
+                        callback.onComplete(list);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        callback.onComplete(null);
+                    }
+                });
     }
 
     public void updateUserProfileURl(String userUID, String url) {
@@ -186,6 +212,18 @@ public class FirebaseModel {
         updateEmailOnFirebaseAuth(newEmail);
         updateProfileDataInRealTimeDB(userId, newName, newPhone, newEmail);
     }
+    public void updateList(String id, String name, String items) {
+        updateListDataInRealTimeDB(id, name, items);
+    }
+
+    private void updateListDataInRealTimeDB(String id, String name, String items) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.child(id).child("name").setValue(name);
+        List<String> itemsAsList = Arrays.asList(items.split(","));
+        lists.child(id).child("items").setValue(itemsAsList);
+
+
+    }
 
     private void updateProfileDataInRealTimeDB(String userId, String newName, String newPhone, String newEmail) {
         DatabaseReference users = db.getReference("Users");
@@ -247,9 +285,70 @@ public class FirebaseModel {
                 });
     }
 
-    public void insertNewList(ListItem l, Model.Listener<Void> callback) {
+
+    //TODO EDEN add new list with the "toJson" function in order to have a lastupdate field.
+
+    public void insertNewList(ListItem l, Model.Listener<String> callback) {
         DatabaseReference lists = db.getReference("lists");
-        lists.push().setValue(l.toJson());
-        callback.onComplete(null);
+//        lists.push().setValue(l.toJson());
+        String pushKey = lists.push().getKey();
+        lists.child(pushKey).setValue(l.toJson());
+        callback.onComplete(pushKey);
     }
+
+    public void getSelectedListData(String recipeId, Model.Listener<ListItem> listener) {
+        FirebaseDatabase.getInstance().getReference().child("lists").child(recipeId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
+                        ListItem list = ListItem.fromJson(dataMap);
+                        if (list != null) {
+                            listener.onComplete(list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle the error
+                    }
+                });
+    }
+
+    public void updateListUrl(String userUID, String url) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.child(userUID).child("imgUrl").setValue(url);
+    }
+
+    public void uploadImageList(String userUID, Bitmap bitmap, Model.Listener<String> callback) {
+        String path = String.format(listImagesDBLocation, userUID);
+        StorageReference imageRef = storageRef.child(path);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] imgData = baos.toByteArray();
+        UploadTask uploadTask = imageRef.putBytes(imgData);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("TAG", "edit profile pic:fail");
+                Log.d("TAG", "path: " + path);
+                callback.onComplete(null);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d("TAG", "edit profile pic:success");
+                        callback.onComplete(uri.toString());
+                    }
+                });
+            }
+        });
+    }
+
+//    public void getLocation() {
+//        listI
+//    }
 }

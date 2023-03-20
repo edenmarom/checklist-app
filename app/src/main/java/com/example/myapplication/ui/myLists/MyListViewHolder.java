@@ -52,27 +52,27 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
-        //TODO ADI- add on click like eliav did this crashes the app
-        itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                int pos = getAdapterPosition();
-                listener.onItemClick(pos);
-            }
-        });
+//        TODO ADI- add on click like eliav did this crashes the app
+//        itemView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                int pos = getAdapterPosition();
+//                listener.onItemClick(pos);
+//            }
+//        });
     }
     public void bind(ListItem l, int pos) {
         id = l.getListId();
         nameTv.setText(l.getName());
-
+        listItemTV.setText(l.getListItem()
+                .toString().replaceAll(",","\n")
+                .replaceAll("\\[|\\]", ""));
         if (l.getImgUrl()  != null && l.getImgUrl().length() > 5) {
             Picasso.get().load(l.getImgUrl()).placeholder(R.drawable.avatar).into(image);
         }else{
             image.setImageResource(R.drawable.avatar);
         }
 
-        //TODO: insert all data
-//        listItemTV.setText(l.getListItem().get(0).replace("[","").replace("]","").replace(",","\n"));
 
     }
 

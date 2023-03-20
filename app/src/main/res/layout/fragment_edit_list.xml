@@ -10,27 +10,8 @@
     tools:context=".ui.EditItem.EditListFragment">
 
 
-    <EditText
-        android:id="@+id/list_name_editList2"
-        android:layout_width="303dp"
-        android:layout_height="62dp"
-        android:background="@drawable/cercel_shape"
-        android:contextClickable="true"
-        android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="start"
-        android:hint="location"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textColorHighlight="#131212"
-        android:textColorHint="#121010"
-        app:layout_constraintBottom_toTopOf="@+id/list_items"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_name_editList" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/EditListEditBtn"
+        android:id="@+id/addImg_editList"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -40,10 +21,11 @@
         android:tintMode="src_in"
         app:backgroundTint="#FFFFFF"
         app:backgroundTintMode="add"
-        app:layout_constraintBottom_toTopOf="@+id/edit_list_EditBtn_editList"
+        app:layout_constraintBottom_toBottomOf="@+id/editList_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_items" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/editList_image"
+        app:layout_constraintTop_toTopOf="@+id/editList_image" />
 
     <EditText
         android:id="@+id/list_items"
@@ -59,10 +41,9 @@
         android:minHeight="48dp"
         android:textColorHighlight="#131212"
         android:textColorHint="#121010"
-        app:layout_constraintBottom_toTopOf="@+id/EditListEditBtn"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_name_editList2" />
+        app:layout_constraintBottom_toTopOf="@+id/editList_image"
+        app:layout_constraintStart_toStartOf="@+id/list_name_editList"
+        app:layout_constraintTop_toBottomOf="@+id/list_name_editList" />
 
     <Button
         android:id="@+id/edit_list_EditBtn_editList"
@@ -73,7 +54,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/EditListEditBtn" />
+        app:layout_constraintTop_toBottomOf="@+id/editList_image" />
 
     <EditText
         android:id="@+id/list_name_editList"
@@ -84,12 +65,9 @@
         android:ems="10"
         android:foregroundGravity="left"
         android:gravity="start"
-        android:hint="List Name"
-        android:inputType="textPersonName"
         android:minHeight="48dp"
-        android:textColorHighlight="#131212"
-        android:textColorHint="#121010"
-        app:layout_constraintBottom_toTopOf="@+id/list_name_editList2"
+        android:text="List Name"
+        app:layout_constraintBottom_toTopOf="@+id/list_items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -106,6 +84,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/editList_image"
+        android:layout_width="169dp"
+        android:layout_height="175dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/avatar"
+        app:layout_constraintBottom_toTopOf="@+id/edit_list_EditBtn_editList"
+        app:layout_constraintEnd_toStartOf="@+id/addImg_editList"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_items"
+        app:shapeAppearanceOverlay="@style/Circular" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
