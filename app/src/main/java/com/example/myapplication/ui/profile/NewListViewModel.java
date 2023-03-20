@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.newList;
+package com.example.myapplication.ui.profile;
 
 import androidx.lifecycle.ViewModel;
 

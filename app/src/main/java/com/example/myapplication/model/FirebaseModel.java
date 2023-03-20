@@ -27,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -186,6 +187,18 @@ public class FirebaseModel {
         updateEmailOnFirebaseAuth(newEmail);
         updateProfileDataInRealTimeDB(userId, newName, newPhone, newEmail);
     }
+    public void updateList(String id, String name, String items) {
+        updateListDataInRealTimeDB(id, name, items);
+    }
+
+    private void updateListDataInRealTimeDB(String id, String name, String items) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.child(id).child("name").setValue(name);
+        List<String> itemsAsList = Arrays.asList(items.split(","));
+        lists.child(id).child("items").setValue(itemsAsList);
+
+
+    }
 
     private void updateProfileDataInRealTimeDB(String userId, String newName, String newPhone, String newEmail) {
         DatabaseReference users = db.getReference("Users");
@@ -307,4 +320,8 @@ public class FirebaseModel {
             }
         });
     }
+
+//    public void getLocation() {
+//        listI
+//    }
 }

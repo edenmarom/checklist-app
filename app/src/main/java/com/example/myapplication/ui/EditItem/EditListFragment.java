@@ -68,7 +68,7 @@ public class EditListFragment extends Fragment {
         Model.instance().getSelectedListData(id, (listItem) -> {
             list_ = listItem;
             binding.listNameEditList.setText(listItem.getName());
-            binding.listItems.setText(listItem.getListItem().toString());//todo: change view
+            binding.listItems.setText(listItem.getListItem().toString().replace("]","").replace("[",""));
 
 
 
@@ -84,7 +84,10 @@ public class EditListFragment extends Fragment {
 
 
         binding.editListEditBtnEditList.setOnClickListener(view1-> {
-            Toast.makeText(getContext(), "on click!!!", Toast.LENGTH_SHORT).show();
+            String listitems = binding.listItems.getText().toString();
+            String listName = binding.listNameEditList.getText().toString();
+
+            Model.instance().updateEditList(id,listName,listitems);
             getActivity().onBackPressed();
         });
 

@@ -27,6 +27,14 @@ public class Model {
     private Model() {
     }
 
+//    public void getLocations() {
+//        if(ListItems == null){
+//            List<List<String>> locations = localDb.listItemDao().getLocation();
+//            refreshAllLists();
+//        }
+//        return ListItems;
+//    }
+
     public interface Listener<T> {
         void onComplete(T data);
     }
@@ -56,7 +64,10 @@ public class Model {
     public void updateUserProfileData(String userId, String newName, String newPhone, String newEmail) {
         firebaseModel.updateUserProfileData(userId, newName, newPhone, newEmail);
     }
-
+    public void updateEditList(String id, String name, String items) {
+        firebaseModel.updateList(id, name, items);
+        refreshAllLists();//Todo: change refresh all to refresh one
+    }
     public void logIn(String email, String password, Listener<LoggedInUser> listener) {
         firebaseModel.logIn(email, password, listener);
     }
