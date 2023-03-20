@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.myLists;
+package com.example.myapplication.ui.sharedLists;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
@@ -8,10 +8,10 @@ import com.example.myapplication.model.Model;
 
 import java.util.List;
 
-public class MyListsViewModel extends ViewModel {
+public class SharedListsViewModel extends ViewModel {
     private static LiveData<List<ListItem>> data = Model.instance().getMyListItems();
 
-    public MyListsViewModel() {
+    public SharedListsViewModel() {
 
     }
 

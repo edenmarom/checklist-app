@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
 import com.example.myapplication.R;
@@ -22,9 +24,7 @@ public class LoginViewModel extends ViewModel {
 
     public void login(View view, Context context, String email, String password) {
         if (!isThereEmptyData(true, email.trim(), password.trim(), "", "")) {
-            ProgressDialog progressDialog = new ProgressDialog(context);
-            progressDialog.setMessage("Loading");
-            progressDialog.show();
+            ProgressDialog progressDialog = loader(context);
             Model.instance().logIn(email, password, (user) -> {
                 if (user != null) {
                     passUseNameToMyListFrag(user, view);
@@ -37,12 +37,18 @@ public class LoginViewModel extends ViewModel {
         }
     }
 
+    @NonNull
+    private ProgressDialog loader(Context context) {
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading");
+        progressDialog.show();
+        return progressDialog;
+    }
+
 
     public void register(View view, Context context, String email, String password, String userName, String phone) {
         if (!isThereEmptyData(false, email.trim(), password.trim(), userName.trim(), phone.trim())) {
-            ProgressDialog progressDialog = new ProgressDialog(context);
-            progressDialog.setMessage("Loading");
-            progressDialog.show();
+            ProgressDialog progressDialog = loader(context);
             Model.instance().register(email, password, userName, phone, (user) -> {
                 if (user != null) {
                     passUseNameToMyListFrag(user, view);
