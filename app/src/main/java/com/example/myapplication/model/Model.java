@@ -18,6 +18,7 @@ public class Model {
     private Executor executor = Executors.newSingleThreadExecutor();
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseModel firebaseModel = new FirebaseModel();
+    private LiveData<List<ListItem>> ListItems;
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
     private LiveData<List<ListItem>> MyListItems;
 
@@ -36,6 +37,14 @@ public class Model {
 //        return ListItems;
 //    }
 
+
+    public LiveData<List<ListItem>> getAllListItems() {
+        if(ListItems == null){
+            ListItems = localDb.listItemDao().getAll();
+            refreshAllLists();
+        }
+        return ListItems;
+    }
     public interface Listener<T> {
         void onComplete(T data);
     }
@@ -122,6 +131,32 @@ public class Model {
         firebaseModel.insertNewList(l, (listId)->{
             refreshAllLists();
             listener.onComplete(listId);
+        });
+    }
+
+
+
+    public void refreshAllLists(){
+//        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
+        Long localLastUpdate = ListItem.getLocalLastUpdate();
+        firebaseModel.getAllListsSince(localLastUpdate,list->{
+            executor.execute(()->{
+                Log.d("TAG", " firebase return : " + list.size());
+                Long time = localLastUpdate;
+                for(ListItem l:list){
+                    localDb.listItemDao().insertAll(l);
+                    if (time < l.getLastUpdated()){
+                        time = l.getLastUpdated();
+                    }
+                }
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ListItem.setLocalLastUpdate(time);
+//                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
+            });
         });
     }
 }

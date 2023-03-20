@@ -9,6 +9,9 @@ import java.util.List;
 @Dao
 public interface ListItemDao {
 
+    @Query("select * from ListItem")
+    LiveData<List<ListItem>> getAll();
+
     @Query("select * from ListItem where listId = :ListId")
     LiveData<ListItem> getListItemById(String ListId);
 

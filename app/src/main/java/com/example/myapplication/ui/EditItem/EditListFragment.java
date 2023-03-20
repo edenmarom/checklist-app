@@ -30,6 +30,7 @@ import com.example.myapplication.databinding.FragmentEditListBinding;
 import com.example.myapplication.databinding.FragmentNewListBinding;
 import com.example.myapplication.model.ListItem;
 import com.example.myapplication.model.Model;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -72,10 +73,9 @@ public class EditListFragment extends Fragment {
 
 
 
-//            if(recipe.getRecipeImage() != ""){
-//                Picasso.get().load(recipe.getRecipeImage()).placeholder(R.drawable.cooking_icon).into(binding.editRecipeFragmentRecipeImg);
-//                isImageSelected = true;
-//            }
+            if(listItem.getImgUrl() != ""){
+                Picasso.get().load(listItem.getImgUrl()).placeholder(R.drawable.avatar).into(binding.editListImage);
+            }
         });
 
         binding.addImgEditList.setOnClickListener(view1->{

@@ -81,6 +81,30 @@ public class FirebaseModel {
         });
     }
 
+    public void getAllListsSince(Long since, Model.Listener<List<ListItem>> callback) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.orderByChild(ListItem.LAST_UPDATED)
+                .startAt(since)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<ListItem> list = new LinkedList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
+                            ListItem l = ListItem.fromJson(dataMap);
+                            l.setListId(dataSnapshot.getKey());
+                            list.add(l);
+                        }
+                        callback.onComplete(list);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
     public void updateUserProfileURl(String userUID, String url) {
         DatabaseReference users = db.getReference("Users");
         users.child(userUID).child("profilePicUrl").setValue(url);
