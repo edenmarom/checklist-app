@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+
+import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentLogoutBinding;
 import com.example.myapplication.model.Model;
 import com.example.myapplication.ui.myLists.MyListsFragment;
@@ -24,8 +27,10 @@ public class LogoutFragment extends Fragment {
         View root = binding.getRoot();
 
         Model.instance().logOut((Void)->{
-            MyListsFragment.reloadData();
-            getActivity().finish();
+//            MyListsFragment.reloadData();
+//            getActivity().finish();
+            Navigation.findNavController(container).clearBackStack(R.id.action_nav_logout_to_nav_login);
+            Navigation.findNavController(container).navigate(R.id.action_nav_logout_to_nav_login);
         });
 
         return root;

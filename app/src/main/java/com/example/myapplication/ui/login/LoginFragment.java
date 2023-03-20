@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.login;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
 
     LoginViewModel loginViewModel;
     boolean isLogin;
+
+    ProgressDialog progressDialog;
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
