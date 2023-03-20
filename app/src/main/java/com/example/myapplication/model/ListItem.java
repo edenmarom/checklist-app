@@ -1,18 +1,13 @@
 package com.example.myapplication.model;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
 import com.google.firebase.database.ServerValue;
-
 import com.example.myapplication.MyApplication;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,9 +30,7 @@ public class ListItem {
     String imgUrl;
     Long lastUpdated;
 
-
-    public ListItem() {
-    }
+    public ListItem() {}
 
     public ListItem(String listId, String name, List<String> listItem, List<String> location, String userId, List<String> participants, String imgUrl) {
         this.listId = listId;
@@ -70,16 +63,13 @@ public class ListItem {
         List<String> itemsList = toArray(items);
         List<String> locationsList = toArray(location);
         List<String> participantsList = toArray(participants);
-
         ListItem l = new ListItem(id, name, itemsList, locationsList, userId, participantsList, imgUrl);
-        l.setLastUpdated(new Long(0));
 
-//        try {//TODO : fix import timestamp
-//            Timestamp time = (Timestamp) json.get(LAST_UPDATED);
-//            l.setLastUpdated(time.getSeconds());
-//        } catch (Exception e) {
-//
-//        }
+        try {
+            l.setLastUpdated((Long) json.get(LAST_UPDATED));
+        } catch (Exception e) {
+            Log.d("TAG", "Error getting lastUpdated field" + e.toString());
+        }
         return l;
     }
 
@@ -92,9 +82,7 @@ public class ListItem {
         json.put(USER_ID, getUserId());
         json.put(PARTICIPANTS, getParticipants());
         json.put(IMG_URL, getImgUrl());
-        json.put(LAST_UPDATED, "");
-        Log.d("TAG", "ServerValue.TIMESTAMP " + ServerValue.TIMESTAMP);
-//        json.put(LAST_UPDATED, FieldValue.serverTimestamp()); // TODO fix import FieldValue
+        json.put(LAST_UPDATED, ServerValue.TIMESTAMP);
         return json;
     }
 
@@ -179,8 +167,7 @@ public class ListItem {
 
         for (String s : concatenatedStrings.split(",")) {
             myStrings.add(s);
-        }
-        ;
+        };
 
         return myStrings;
     }

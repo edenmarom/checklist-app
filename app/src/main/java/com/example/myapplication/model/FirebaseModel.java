@@ -39,6 +39,7 @@ public class FirebaseModel {
     private FirebaseDatabase db;
     private FirebaseStorage storage;
     private final String userImagesDBLocation = "user-images/%s.png";
+    private final String listImagesDBLocation = "list-images/%s.png";
     private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
     private StorageReference storageRef;
     private SharedPreferences preferences;
@@ -246,17 +247,13 @@ public class FirebaseModel {
 
 
     //TODO EDEN add new list with the "toJson" function in order to have a lastupdate field.
-    public void insertNewList(ListItem l, Model.Listener<Void> callback) {
-        String key = db.getReference("lists").push().getKey();
+
+    public void insertNewList(ListItem l, Model.Listener<String> callback) {
         DatabaseReference lists = db.getReference("lists");
-        String listIdDB = key;
-        lists.child(listIdDB).child("name").setValue(l.getName());
-        lists.child(listIdDB).child("items").setValue(l.getListItem());
-        lists.child(listIdDB).child("location").setValue(l.getLocation());
-        lists.child(listIdDB).child("participants").setValue(l.getParticipants());
-        lists.child(listIdDB).child("image").setValue(l.getImgUrl());
-        lists.child(listIdDB).child("userID").setValue(l.getUserId());
-        callback.onComplete(null);
+//        lists.push().setValue(l.toJson());
+        String pushKey = lists.push().getKey();
+        lists.child(pushKey).setValue(l.toJson());
+        callback.onComplete(pushKey);
     }
 
     public void getSelectedListData(String recipeId, Model.Listener<ListItem> listener) {
@@ -276,5 +273,38 @@ public class FirebaseModel {
                         // Handle the error
                     }
                 });
+    }
+
+    public void updateListUrl(String userUID, String url) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.child(userUID).child("imgUrl").setValue(url);
+    }
+
+    public void uploadImageList(String userUID, Bitmap bitmap, Model.Listener<String> callback) {
+        String path = String.format(listImagesDBLocation, userUID);
+        StorageReference imageRef = storageRef.child(path);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+        byte[] imgData = baos.toByteArray();
+        UploadTask uploadTask = imageRef.putBytes(imgData);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                Log.d("TAG", "edit profile pic:fail");
+                Log.d("TAG", "path: " + path);
+                callback.onComplete(null);
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Log.d("TAG", "edit profile pic:success");
+                        callback.onComplete(uri.toString());
+                    }
+                });
+            }
+        });
     }
 }

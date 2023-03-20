@@ -111,8 +111,8 @@ public class NewListFragment extends Fragment {
         List<String> participantsDB = new ArrayList<>();//TODO ADI add participantsDB
         String imgIdlDB = "";
         ListItem l = new ListItem("",name_ET,listItemDB,locationDB,userIdDB,participantsDB,imgIdlDB);
-        Model.instance().insertNewList(l, (listener)->{
-            ///
+        Model.instance().insertNewList(l, (listId)->{
+            l.setListId(String.valueOf(listId));
         });
     }
 

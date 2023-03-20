@@ -41,9 +41,16 @@ public class Model {
     public void uploadImage(String uid, Bitmap bitmap,Listener<String> listener) {
         firebaseModel.uploadImage(uid,bitmap,listener);
     }
+    public void uploadImageList(String uid, Bitmap bitmap,Listener<String> listener) {
+        firebaseModel.uploadImageList(uid,bitmap,listener);
+    }
+
 
     public void updateUserProfileURl(String userUID, String url) {
         firebaseModel.updateUserProfileURl(userUID,url);
+    }
+    public void updateListImg(String userUID, String url) {
+        firebaseModel.updateListUrl(userUID,url);
     }
 
     public void updateUserProfileData(String userId, String newName, String newPhone, String newEmail) {
@@ -103,10 +110,10 @@ public class Model {
         });
     }
 
-    public void insertNewList(ListItem l, Listener<Void> listener) {
-        firebaseModel.insertNewList(l, (Void)->{
+    public void insertNewList(ListItem l, Listener<String> listener) {
+        firebaseModel.insertNewList(l, (listId)->{
             refreshAllLists();
-            listener.onComplete(null);
+            listener.onComplete(listId);
         });
     }
 }

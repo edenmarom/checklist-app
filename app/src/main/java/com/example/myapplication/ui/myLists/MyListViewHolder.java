@@ -52,6 +52,7 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
             }
         });
 
+        //TODO ADI- add on click like eliav did this crashes the app
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
