@@ -161,7 +161,6 @@ public class ListItem {
         editor.putLong(LOCAL_LAST_UPDATED, time);
         editor.commit();
     }
-
     private static List<String> toArray(String concatenatedStrings) {
         List<String> myStrings = new ArrayList<>();
 

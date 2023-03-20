@@ -348,6 +348,32 @@ public class FirebaseModel {
         });
     }
 
+    public void getMySharedListsSince(Long since, Model.Listener<List<ListItem>> callback) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.orderByChild(ListItem.LAST_UPDATED)
+                .startAt(since)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<ListItem> list = new LinkedList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
+                            ListItem l = ListItem.fromJson(dataMap);
+                            l.setListId(dataSnapshot.getKey());
+                            if (l.getParticipants().contains(currentUser.getUserId())){
+                                list.add(l);
+                            }
+                        }
+                        callback.onComplete(list);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        callback.onComplete(null);
+                    }
+                });
+    }
+
 //    public void getLocation() {
 //        listI
 //    }

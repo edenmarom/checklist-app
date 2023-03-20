@@ -27,5 +27,8 @@ public interface ListItemDao {
 
     @Query("select * from ListItem where userId = :id")
     LiveData<List<ListItem>> getListItemByUserId(String id);
+
+    @Query("SELECT * FROM ListItem WHERE participants in (:id)")
+    LiveData<List<ListItem>> getMySharedList(String id);
 }
 

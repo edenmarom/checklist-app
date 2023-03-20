@@ -12,16 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMylistsBinding;
-import com.example.myapplication.model.ListItem;
 import com.example.myapplication.model.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-
-import java.util.List;
 
 public class MyListsFragment extends Fragment {
 

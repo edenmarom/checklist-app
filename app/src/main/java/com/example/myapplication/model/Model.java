@@ -21,6 +21,7 @@ public class Model {
     private LiveData<List<ListItem>> ListItems;
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
     private LiveData<List<ListItem>> MyListItems;
+    private LiveData<List<ListItem>> SharedLists;
 
     public static Model instance() {
         return _instance;
@@ -153,6 +154,31 @@ public class Model {
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
+                }
+                ListItem.setLocalLastUpdate(time);
+//                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
+            });
+        });
+    }
+    public LiveData<List<ListItem>> getSharedLists() {
+        if(SharedLists == null){
+            SharedLists = localDb.listItemDao().getMySharedList(currentUser.getUserId());
+//            refreshMySharedLists();
+        }
+        return SharedLists;
+    }
+    public void refreshMySharedLists(){
+//        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
+        Long localLastUpdate = ListItem.getLocalLastUpdate();
+        firebaseModel.getMySharedListsSince(localLastUpdate,list->{
+            executor.execute(()->{
+                Log.d("TAG", " firebase return : " + list.size());
+                Long time = localLastUpdate;
+                for(ListItem l:list){
+                    localDb.listItemDao().insertAll(l);
+                    if (time < l.getLastUpdated()){
+                        time = l.getLastUpdated();
+                    }
                 }
                 ListItem.setLocalLastUpdate(time);
 //                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);

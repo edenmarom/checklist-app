@@ -94,7 +94,8 @@ public class NewListFragment extends Fragment {
         locationDB.add(String.valueOf(address.getLatitude()));
         locationDB.add(String.valueOf(address.getLongitude()));
         String userIdDB = currentUser.getUserId();
-        List<String> participantsDB = new ArrayList<>();//TODO ADI add participantsDB
+        List<String> participantsDB = new ArrayList<>();
+        participantsDB.add(0,"E5aKiS0H37Yx8nudiYexLAviiVF3");//TODO ADI add participantsDB
         String imgIdlDB = "";
         ListItem l = new ListItem("",name_ET,listItemDB,locationDB,userIdDB,participantsDB,imgIdlDB);
         Model.instance().insertNewList(l, (listId)->{

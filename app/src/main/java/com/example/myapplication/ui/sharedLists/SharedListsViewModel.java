@@ -9,15 +9,13 @@ import com.example.myapplication.model.Model;
 import java.util.List;
 
 public class SharedListsViewModel extends ViewModel {
-    private static LiveData<List<ListItem>> data = Model.instance().getMyListItems();
+    private static LiveData<List<ListItem>> data = Model.instance().getSharedLists();
 
-    public SharedListsViewModel() {
-
-    }
+    public SharedListsViewModel() {}
 
     LiveData<List<ListItem>> getData() {
         if(data == null){
-            return Model.instance().getMyListItems();
+            return Model.instance().getSharedLists();
         }
         return data;
     }

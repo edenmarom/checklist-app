@@ -8,11 +8,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.navigation.Navigation;
-import com.example.myapplication.R;
 import com.example.myapplication.model.LoggedInUser;
 import com.example.myapplication.model.Model;
-import com.example.myapplication.ui.myLists.MyListsFragment;
-import com.example.myapplication.ui.myLists.MyListsFragmentDirections;
 
 public class LoginViewModel extends ViewModel {
 
