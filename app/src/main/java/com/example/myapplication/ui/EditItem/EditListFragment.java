@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.EditItem;
 
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
@@ -19,6 +20,10 @@ import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentEditListBinding;
 import com.example.myapplication.databinding.FragmentNewListBinding;
+import com.example.myapplication.model.ListItem;
+import com.example.myapplication.model.Model;
+
+import java.util.List;
 
 public class EditListFragment extends Fragment {
 
@@ -38,6 +43,22 @@ public class EditListFragment extends Fragment {
         binding = FragmentEditListBinding.inflate(inflater, container, false);
         root = binding.getRoot();
         id = getArguments().getString("id");//TODO: insert to firebase
+
+//        LiveData<ListItem> liveData = Model.instance().getListItemById(id);
+        Model.instance().getSelectedListData(id, (listItem) -> {
+            binding.listNameEditList.setText("listItem.getName().toString()");
+            binding.listItems.setText(listItem.getListItem().toString());
+//            if(recipe.getRecipeImage() != ""){
+//                Picasso.get().load(recipe.getRecipeImage()).placeholder(R.drawable.cooking_icon).into(binding.editRecipeFragmentRecipeImg);
+//                isImageSelected = true;
+//            }
+        });
+        binding.editListEditBtnEditList.setOnClickListener(view1-> {
+            Toast.makeText(getContext(), "on click!!!", Toast.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
+        });
+
+
         return inflater.inflate(R.layout.fragment_edit_list, container, false);
     }
 
@@ -46,17 +67,5 @@ public class EditListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(EditListViewModel.class);
 
-
-        Button edit_ButtonList = getView().findViewById(R.id.edit_list_EditBtn_editList);
-        edit_ButtonList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "on click!!!", Toast.LENGTH_SHORT).show();
-                getActivity().onBackPressed();
-
-            }
-
-            ;
-        });
     }
 };

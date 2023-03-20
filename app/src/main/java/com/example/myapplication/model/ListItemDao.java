@@ -18,9 +18,9 @@ public interface ListItemDao {
     LiveData<List<ListItem>> getAll();
 //    List<ListItem> getAll();
 
-    //    @Query("select * from ListItem where userId = :ListId")
-//    ListItem getListItemById(String ListId);
-//
+        @Query("select * from ListItem where listId = :ListId")
+        LiveData<ListItem> getListItemById(String ListId);
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(ListItem... listItems);
 //

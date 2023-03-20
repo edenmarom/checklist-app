@@ -72,6 +72,12 @@ public class Model {
         }
         return ListItems;
     }
+    public void getSelectedListData(String id, Listener<ListItem> listener){
+        firebaseModel.getSelectedListData(id,listener);
+    }
+
+
+
 
     public void refreshAllLists(){
 //        EventStudentsListLoadingState.setValue(LoadingState.LOADING);

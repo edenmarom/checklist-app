@@ -84,7 +84,7 @@
         android:ems="10"
         android:foregroundGravity="left"
         android:gravity="start"
-        android:hint="List Name"
+        android:text="List Name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHighlight="#131212"

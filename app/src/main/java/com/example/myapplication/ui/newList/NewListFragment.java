@@ -52,10 +52,10 @@ public class NewListFragment extends Fragment {
     private View root;
     private List<String> listItem_ = new ArrayList<String>();
     private ListItem currentList;
-    private final String userImagesDBLocation = "list-images/%s.png";
+//    private final String userImagesDBLocation = "list-images/%s.png";
 
     //DB
-    private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
+//    private final String dbUrl = "https://checklist-f8ac0-default-rtdb.europe-west1.firebasedatabase.app";
     FirebaseStorage storage = FirebaseStorage.getInstance();
     StorageReference storageRef = storage.getReference();
 
@@ -78,6 +78,13 @@ public class NewListFragment extends Fragment {
             insertNewList();
             getActivity().onBackPressed();
         });
+        binding.BAddItem.setOnClickListener(view1-> {
+            EditText ET = (EditText) getView().findViewById(R.id.ET_add_item);
+                Toast.makeText(getContext(), ET.getText().toString(), Toast.LENGTH_SHORT).show();
+                listItem_.add(ET.getText().toString());
+                ET.setText("");
+                ET.setHint("add item");
+        });
 
         return root;
     }
@@ -88,29 +95,7 @@ public class NewListFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(NewListViewModel.class);
         // TODO: Use the ViewModel
 
-        //add button
-        ImageView addButtonItem = getView().findViewById(R.id.B_add_item);
-        addButtonItem.setOnClickListener(new View.OnClickListener() {
-            EditText ET = (EditText) getView().findViewById(R.id.ET_add_item);
 
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), ET.getText().toString(), Toast.LENGTH_SHORT).show();
-                listItem_.add(ET.getText().toString());
-                ET.setText("");
-                ET.setHint("add item");
-            }
-        });
-
-        //finish and add all
-        FloatingActionButton editImgBtn = getView().findViewById(R.id.newListEditBtn);
-        editImgBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "in image", Toast.LENGTH_LONG).show();
-                imageChooser();
-            }
-        });
     }
 
     private void insertNewList() {
@@ -124,76 +109,11 @@ public class NewListFragment extends Fragment {
         locationDB.add(String.valueOf(address.getLongitude()));
         String userIdDB = currentUser.getUserId();
         List<String> participantsDB = new ArrayList<>();//TODO ADI add participantsDB
-        String imgIdlDB = "5";//TODO ADI add imgIdlDB
+        String imgIdlDB = "";
         ListItem l = new ListItem("",name_ET,listItemDB,locationDB,userIdDB,participantsDB,imgIdlDB);
         Model.instance().insertNewList(l, (listener)->{
             ///
         });
-    }
-
-    void imageChooser() { //TODO ADI change according to profile frag
-        Intent i = new Intent();
-        i.setType("image/*");
-        i.setAction(Intent.ACTION_GET_CONTENT);
-        ChooseNewProfileImage.launch(i);
-    }
-
-    ActivityResultLauncher<Intent> ChooseNewProfileImage
-            = registerForActivityResult(
-            new ActivityResultContracts
-                    .StartActivityForResult(),
-            result -> {
-                if (result.getResultCode()
-                        == Activity.RESULT_OK) {
-                    Intent data = result.getData();
-                    if (data != null
-                            && data.getData() != null) {
-                        Uri selectedImageUri = data.getData();
-                        Bitmap selectedImageBitmap;
-                        try {
-                            selectedImageBitmap = MediaStore.Images.Media.getBitmap(
-                                    requireActivity().getContentResolver(),
-                                    selectedImageUri);
-                            UploadSelectedImg(selectedImageBitmap);
-                        }
-                        catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-
-    private void UploadSelectedImg(Bitmap selectedImageBitmap) {
-        if (currentUser != null) {//TODO: change img name
-            String userUID = currentUser.getUserId();
-            String path = String.format(userImagesDBLocation, userUID);
-            StorageReference imageRef = storageRef.child(path);
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            selectedImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-            byte[] imgData = baos.toByteArray();
-            UploadTask uploadTask = imageRef.putBytes(imgData);
-            uploadTask.addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception exception) {
-                    Log.d("TAG", "load profile:fail");
-                    Log.d("TAG", "path: " + path);
-                }
-            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    Log.d("TAG", "edit profile:success");
-                    ImageView profileImageIV = binding.profileImage;
-                    bitmapToImg(selectedImageBitmap, profileImageIV);
-                }
-            });
-        }
-    }
-    private void bitmapToImg(Bitmap bm, ImageView imageIV) {
-        DisplayMetrics dm = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        imageIV.setMinimumHeight(dm.heightPixels);
-        imageIV.setMinimumWidth(dm.widthPixels);
-        imageIV.setImageBitmap(bm);
     }
 
 

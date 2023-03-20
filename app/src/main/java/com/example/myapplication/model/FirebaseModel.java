@@ -244,15 +244,6 @@ public class FirebaseModel {
                 });
     }
 
-//    public void addStudent(Student st, Model.Listener<Void> listener) {
-//        db.collection(Student.COLLECTION).document(st.getId()).set(st.toJson())
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        listener.onComplete(null);
-//                    }
-//                });
-//    }
 
     //TODO EDEN add new list with the "toJson" function in order to have a lastupdate field.
     public void insertNewList(ListItem l, Model.Listener<Void> callback) {
@@ -266,5 +257,24 @@ public class FirebaseModel {
         lists.child(listIdDB).child("image").setValue(l.getImgUrl());
         lists.child(listIdDB).child("userID").setValue(l.getUserId());
         callback.onComplete(null);
+    }
+
+    public void getSelectedListData(String recipeId, Model.Listener<ListItem> listener) {
+        FirebaseDatabase.getInstance().getReference().child("lists").child(recipeId)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
+                        ListItem list = ListItem.fromJson(dataMap);
+                        if (list != null) {
+                            listener.onComplete(list);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+                        // Handle the error
+                    }
+                });
     }
 }

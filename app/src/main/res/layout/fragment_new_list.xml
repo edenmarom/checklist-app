@@ -10,86 +10,47 @@
     tools:context=".ui.newList.NewListFragment">
 
 
-    <EditText
-        android:id="@+id/list_location"
-        android:layout_width="265dp"
-        android:layout_height="51dp"
-        android:background="@drawable/cercel_shape"
-        android:contextClickable="true"
-        android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="start"
-        android:hint="location "
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:textColorHighlight="#131212"
-        android:textColorHint="#121010"
-        app:layout_constraintBottom_toTopOf="@+id/ET_add_item"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_name" />
+    <!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+    <!--        android:id="@+id/newListEditBtn"-->
+    <!--        android:layout_width="70dp"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginEnd="112dp"-->
+    <!--        android:clickable="true"-->
+    <!--        android:contentDescription="@string/action_settings"-->
+    <!--        android:src="@drawable/ic_baseline_add_a_photo_24"-->
+    <!--        android:tint="@color/black"-->
+    <!--        android:tintMode="src_in"-->
+    <!--        app:backgroundTint="#FFFFFF"-->
+    <!--        app:backgroundTintMode="add"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/profile_image"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/profile_image"-->
+    <!--        app:layout_constraintVertical_bias="0.564" />-->
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/newListEditBtn"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="112dp"
-        android:clickable="true"
-        android:contentDescription="@string/action_settings"
-        android:src="@drawable/ic_baseline_add_a_photo_24"
-        android:tint="@color/black"
-        android:tintMode="src_in"
-        app:backgroundTint="#FFFFFF"
-        app:backgroundTintMode="add"
-        app:layout_constraintBottom_toBottomOf="@+id/profile_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/profile_image"
-        app:layout_constraintVertical_bias="0.564" />
-
-    <EditText
-        android:id="@+id/ET_add_item"
-        android:layout_width="104dp"
-        android:layout_height="54dp"
-        android:hint="add item"
-        app:layout_constraintBottom_toTopOf="@+id/profile_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/B_add_item"
-        app:layout_constraintTop_toBottomOf="@+id/list_location" />
+    <!--    <com.google.android.material.imageview.ShapeableImageView-->
+    <!--        android:id="@+id/profile_image"-->
+    <!--        android:layout_width="134dp"-->
+    <!--        android:layout_height="134dp"-->
+    <!--        android:layout_marginStart="108dp"-->
+    <!--        android:scaleType="centerCrop"-->
+    <!--        android:src="@drawable/avatar"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/AddButton"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/ET_add_item"-->
+    <!--        app:shapeAppearanceOverlay="@style/Circular" />-->
 
     <ImageView
         android:id="@+id/B_add_item"
         android:layout_width="26dp"
         android:layout_height="23dp"
-        android:layout_marginStart="128dp"
         android:contentDescription="@string/action_settings"
         android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintBottom_toBottomOf="@+id/ET_add_item"
+        app:layout_constraintEnd_toStartOf="@+id/ET_add_item"
+        app:layout_constraintHorizontal_bias="0.883"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/ET_add_item"
-        app:layout_constraintVertical_bias="0.677" />
-
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/profile_image"
-        android:layout_width="134dp"
-        android:layout_height="134dp"
-        android:layout_marginStart="108dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/avatar"
-        app:layout_constraintBottom_toTopOf="@+id/AddButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ET_add_item"
-        app:shapeAppearanceOverlay="@style/Circular" />
-
-    <Button
-        android:id="@+id/AddButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="add"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image" />
+        app:layout_constraintVertical_bias="0.451" />
 
     <EditText
         android:id="@+id/list_name"
@@ -110,6 +71,35 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
+    <EditText
+        android:id="@+id/list_location"
+        android:layout_width="265dp"
+        android:layout_height="51dp"
+        android:background="@drawable/cercel_shape"
+        android:contextClickable="true"
+        android:ems="10"
+        android:foregroundGravity="left"
+        android:gravity="start"
+        android:hint="location "
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:textColorHighlight="#131212"
+        android:textColorHint="#121010"
+        app:layout_constraintBottom_toTopOf="@+id/ET_add_item"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_name" />
+
+    <EditText
+        android:id="@+id/ET_add_item"
+        android:layout_width="104dp"
+        android:layout_height="54dp"
+        android:layout_marginEnd="152dp"
+        android:hint="add item"
+        app:layout_constraintBottom_toTopOf="@+id/AddButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_location" />
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
@@ -119,9 +109,18 @@
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/list_name"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="140dp" />
+
+    <Button
+        android:id="@+id/AddButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="add"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ET_add_item" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
