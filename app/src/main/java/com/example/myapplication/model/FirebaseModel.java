@@ -247,15 +247,8 @@ public class FirebaseModel {
 
     //TODO EDEN add new list with the "toJson" function in order to have a lastupdate field.
     public void insertNewList(ListItem l, Model.Listener<Void> callback) {
-        String key = db.getReference("lists").push().getKey();
         DatabaseReference lists = db.getReference("lists");
-        String listIdDB = key;
-        lists.child(listIdDB).child("name").setValue(l.getName());
-        lists.child(listIdDB).child("items").setValue(l.getListItem());
-        lists.child(listIdDB).child("location").setValue(l.getLocation());
-        lists.child(listIdDB).child("participants").setValue(l.getParticipants());
-        lists.child(listIdDB).child("image").setValue(l.getImgUrl());
-        lists.child(listIdDB).child("userID").setValue(l.getUserId());
+        lists.push().setValue(l.toJson());
         callback.onComplete(null);
     }
 
