@@ -26,19 +26,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentNewListBinding;
 import com.example.myapplication.model.ListItem;
+import com.example.myapplication.model.Model;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -77,10 +74,12 @@ public class NewListFragment extends Fragment {
         binding = FragmentNewListBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
-        return inflater.inflate(R.layout.fragment_new_list, container, false);
+        binding.AddButton.setOnClickListener(view1->{
+            insertNewList();
+            getActivity().onBackPressed();
+        });
 
-
-
+        return root;
     }
 
     @Override
@@ -88,46 +87,6 @@ public class NewListFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(NewListViewModel.class);
         // TODO: Use the ViewModel
-
-        Button addButtonList = getView().findViewById(R.id.AddButton);
-        addButtonList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                Toast.makeText(getContext(), "on click!!!", Toast.LENGTH_SHORT).show();
-
-
-                FirebaseDatabase database = FirebaseDatabase.getInstance(dbUrl);
-                String key = database.getReference("lists").push().getKey();
-                DatabaseReference lists = database.getReference("lists");
-
-                //add to the list
-                String listIdDB = key;
-
-                EditText name_ET = getView().findViewById(R.id.list_name);
-                String nameDB = name_ET.getText().toString();
-                List<String> listItemDB = listItem_;
-                EditText address_ET = getView().findViewById(R.id.list_location);
-                String address_s = address_ET.getText().toString().trim();
-                Address address = getLatitudeAndLongitudeFromGoogleMapForAddress(address_s);
-                List<Double> locationDB = new ArrayList<>();
-                locationDB.add(address.getLatitude());
-                locationDB.add(address.getLongitude());
-                String userIdDB = "5";//currentList.getUserId() TODO:;
-                List<String> participantsDB = new ArrayList<>();
-                String imgIdlDB = "5";
-
-                lists.child(listIdDB).child("name").setValue(nameDB);
-                lists.child(listIdDB).child("items").setValue(listItemDB);
-                lists.child(listIdDB).child("location").setValue(locationDB);
-                lists.child(listIdDB).child("participants").setValue(participantsDB);
-                lists.child(listIdDB).child("image").setValue(imgIdlDB);
-                lists.child(listIdDB).child("userID").setValue(userIdDB);
-
-                //back
-                getActivity().onBackPressed();
-
-            }
-        });
 
         //add button
         ImageView addButtonItem = getView().findViewById(R.id.B_add_item);
@@ -153,7 +112,26 @@ public class NewListFragment extends Fragment {
             }
         });
     }
-    void imageChooser() {
+
+    private void insertNewList() {
+        String name_ET = binding.listName.getText().toString();
+        List<String> listItemDB = listItem_;
+        EditText address_ET = binding.listLocation;
+        String address_s = address_ET.getText().toString().trim();
+        Address address = getLatitudeAndLongitudeFromGoogleMapForAddress(address_s);
+        List<String> locationDB = new ArrayList<>();
+        locationDB.add(String.valueOf(address.getLatitude()));
+        locationDB.add(String.valueOf(address.getLongitude()));
+        String userIdDB = currentUser.getUserId();
+        List<String> participantsDB = new ArrayList<>();//TODO ADI add participantsDB
+        String imgIdlDB = "5";//TODO ADI add imgIdlDB
+        ListItem l = new ListItem("",name_ET,listItemDB,locationDB,userIdDB,participantsDB,imgIdlDB);
+        Model.instance().insertNewList(l, (listener)->{
+            ///
+        });
+    }
+
+    void imageChooser() { //TODO ADI change according to profile frag
         Intent i = new Intent();
         i.setType("image/*");
         i.setAction(Intent.ACTION_GET_CONTENT);
@@ -230,8 +208,6 @@ public class NewListFragment extends Fragment {
                 return null;
             }
             Address location = address.get(0);
-
-//            Log.d(TAG, "Address Latitude : "+ location.getLatitude()+ "Address Longitude : "+ location.getLongitude());
             return location;
 
         }

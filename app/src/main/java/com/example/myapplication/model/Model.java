@@ -18,9 +18,7 @@ public class Model {
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseModel firebaseModel = new FirebaseModel();
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
-    //    private LiveData<List<ListItem>> ListItems;
     private LiveData<List<ListItem>> ListItems;
-
 
     public static Model instance() {
         return _instance;
@@ -77,15 +75,12 @@ public class Model {
 
     public void refreshAllLists(){
 //        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
-        // get local last update
         Long localLastUpdate = ListItem.getLocalLastUpdate();
-        // get all updated recorde from firebase since local last update
         firebaseModel.getAllListsSince(localLastUpdate,list->{
             executor.execute(()->{
                 Log.d("TAG", " firebase return : " + list.size());
                 Long time = localLastUpdate;
                 for(ListItem l:list){
-                    // insert new records into ROOM
                     localDb.listItemDao().insertAll(l);
                     if (time < l.getLastUpdated()){
                         time = l.getLastUpdated();
@@ -96,11 +91,16 @@ public class Model {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                // update local last update
                 ListItem.setLocalLastUpdate(time);
 //                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }
 
+    public void insertNewList(ListItem l, Listener<Void> listener) {
+        firebaseModel.insertNewList(l, (Void)->{
+            refreshAllLists();
+            listener.onComplete(null);
+        });
+    }
 }

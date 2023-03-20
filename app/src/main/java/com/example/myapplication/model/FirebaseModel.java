@@ -1,15 +1,12 @@
 package com.example.myapplication.model;
 
 import static com.example.myapplication.model.LoggedInUser.USER_REF;
-
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import androidx.annotation.NonNull;
-
 import com.example.myapplication.MyApplication;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -29,7 +26,6 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -233,7 +229,6 @@ public class FirebaseModel {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         List<ListItem> list = new LinkedList<>();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                            ListItem l = dataSnapshot.getValue(ListItem.class);
                             Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
                             ListItem l = ListItem.fromJson(dataMap);
                             l.setListId(dataSnapshot.getKey());
@@ -244,8 +239,32 @@ public class FirebaseModel {
 
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
-                        // Handle the error here
+                        callback.onComplete(null);
                     }
                 });
+    }
+
+//    public void addStudent(Student st, Model.Listener<Void> listener) {
+//        db.collection(Student.COLLECTION).document(st.getId()).set(st.toJson())
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        listener.onComplete(null);
+//                    }
+//                });
+//    }
+
+    //TODO EDEN add new list with the "toJson" function in order to have a lastupdate field.
+    public void insertNewList(ListItem l, Model.Listener<Void> callback) {
+        String key = db.getReference("lists").push().getKey();
+        DatabaseReference lists = db.getReference("lists");
+        String listIdDB = key;
+        lists.child(listIdDB).child("name").setValue(l.getName());
+        lists.child(listIdDB).child("items").setValue(l.getListItem());
+        lists.child(listIdDB).child("location").setValue(l.getLocation());
+        lists.child(listIdDB).child("participants").setValue(l.getParticipants());
+        lists.child(listIdDB).child("image").setValue(l.getImgUrl());
+        lists.child(listIdDB).child("userID").setValue(l.getUserId());
+        callback.onComplete(null);
     }
 }
