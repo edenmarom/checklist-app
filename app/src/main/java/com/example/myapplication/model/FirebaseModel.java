@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -212,8 +213,9 @@ public class FirebaseModel {
         updateEmailOnFirebaseAuth(newEmail);
         updateProfileDataInRealTimeDB(userId, newName, newPhone, newEmail);
     }
-    public void updateList(String id, String name, String items) {
+    public void updateList(String id, String name, String items, Model.Listener<Void> callback) {
         updateListDataInRealTimeDB(id, name, items);
+        callback.onComplete(null);
     }
 
     private void updateListDataInRealTimeDB(String id, String name, String items) {
@@ -221,8 +223,7 @@ public class FirebaseModel {
         lists.child(id).child("name").setValue(name);
         List<String> itemsAsList = Arrays.asList(items.split(","));
         lists.child(id).child("items").setValue(itemsAsList);
-
-
+        lists.child(id).child("lastUpdated").setValue(ServerValue.TIMESTAMP);
     }
 
     private void updateProfileDataInRealTimeDB(String userId, String newName, String newPhone, String newEmail) {
@@ -285,12 +286,8 @@ public class FirebaseModel {
                 });
     }
 
-
-    //TODO EDEN add new list with the "toJson" function in order to have a lastupdate field.
-
     public void insertNewList(ListItem l, Model.Listener<String> callback) {
         DatabaseReference lists = db.getReference("lists");
-//        lists.push().setValue(l.toJson());
         String pushKey = lists.push().getKey();
         lists.child(pushKey).setValue(l.toJson());
         callback.onComplete(pushKey);

@@ -90,7 +90,7 @@
         android:layout_width="169dp"
         android:layout_height="175dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/avatar"
+        android:src="@drawable/list"
         app:layout_constraintBottom_toTopOf="@+id/edit_list_EditBtn_editList"
         app:layout_constraintEnd_toStartOf="@+id/addImg_editList"
         app:layout_constraintHorizontal_bias="0.5"

@@ -1,21 +1,17 @@
 package com.example.myapplication.ui.myLists;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myapplication.R;
 import com.example.myapplication.model.ListItem;
 import com.squareup.picasso.Picasso;
-
 import java.util.List;
 
 public class MyListViewHolder extends RecyclerView.ViewHolder {
@@ -30,7 +26,7 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
     Fragment fragment;
     String id;
 
-    public MyListViewHolder(@NonNull View itemView, MyListAdapter.OnItemClickListener listener, List<ListItem> data, Fragment fragment) {
+    public MyListViewHolder(@NonNull View itemView, List<ListItem> data, Fragment fragment) {
         super(itemView);
         this.data = data;
         this.fragment = fragment;
@@ -51,29 +47,20 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
                 navController.navigate(R.id.editListFragment2,bundle);
             }
         });
-
-//        TODO ADI- add on click like eliav did this crashes the app
-//        itemView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                int pos = getAdapterPosition();
-//                listener.onItemClick(pos);
-//            }
-//        });
     }
-    public void bind(ListItem l, int pos) {
+
+    public void bind(ListItem l) {
         id = l.getListId();
         nameTv.setText(l.getName());
         listItemTV.setText(l.getListItem()
                 .toString().replaceAll(",","\n")
                 .replaceAll("\\[|\\]", ""));
+
         if (l.getImgUrl()  != null && l.getImgUrl().length() > 5) {
-            Picasso.get().load(l.getImgUrl()).placeholder(R.drawable.avatar).into(image);
+            Picasso.get().load(l.getImgUrl()).placeholder(R.drawable.list).into(image);
         }else{
-            image.setImageResource(R.drawable.avatar);
+            image.setImageResource(R.drawable.list);
         }
-
-
     }
 
 }
