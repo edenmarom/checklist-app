@@ -27,7 +27,7 @@
         android:layout_height="58dp"
         android:gravity="center"
         android:text="Title"
-        android:textSize="100px"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/image_listItem"
         app:layout_constraintEnd_toStartOf="@+id/edit_B"
         app:layout_constraintHorizontal_bias="0.5"
