@@ -1,5 +1,7 @@
 package com.example.myapplication.ui.EditItem;
 import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
+import static java.lang.String.join;
+
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -48,7 +50,7 @@ public class EditListFragment extends Fragment {
         Model.instance().getSelectedListData(id, (listItem) -> {
             list_ = listItem;
             binding.listNameEditList.setText(listItem.getName());
-            binding.listItems.setText(listItem.getListItem().toString().replace("]","").replace("[",""));
+            binding.listItems.setText(String.join("\n",listItem.getListItem()));
 
             String url = listItem.getImgUrl();
             if(url != "" && url  != null && url.length() > 5){
