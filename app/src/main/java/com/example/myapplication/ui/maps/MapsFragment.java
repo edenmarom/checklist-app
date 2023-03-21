@@ -15,7 +15,7 @@ import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentEditListBinding;
 import com.example.myapplication.model.FirebaseModel;
 import com.example.myapplication.model.Model;
-import com.example.myapplication.ui.EditItem.EditListViewModel;
+//import com.example.myapplication.ui.EditItem.EditListViewModel;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -83,4 +83,9 @@ public class MapsFragment extends Fragment {
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
 }
