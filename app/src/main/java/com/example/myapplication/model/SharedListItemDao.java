@@ -14,7 +14,7 @@ public interface SharedListItemDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(SharedListItem... listItems);
 
-    @Query("SELECT * FROM SharedListItem WHERE participants in (:id)")
-    LiveData<List<SharedListItem>> getMySharedList(String id);
+    @Query("SELECT * FROM SharedListItem WHERE participants in (:email)")
+    LiveData<List<SharedListItem>> getMySharedList(String email);
 }
 

@@ -15,7 +15,7 @@ import com.example.myapplication.model.Model;
 
 public class SharedListsFragment extends Fragment {
 
-    private FragmentSharedlistsBinding binding;
+    FragmentSharedlistsBinding binding;
     NavController navController;
     SharedListAdapter adapter;
     SharedListsViewModel viewModel;
@@ -28,14 +28,16 @@ public class SharedListsFragment extends Fragment {
         navController = NavHostFragment.findNavController(this);
 
         binding.RVSharedList.setHasFixedSize(true);
-        Fragment fragment = getParentFragment();//TODO EDEN CHECK THIS COMPARED TO ELIAV
         binding.RVSharedList.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new SharedListAdapter(getLayoutInflater(), viewModel.getData().getValue(), fragment);
+        adapter = new SharedListAdapter(getLayoutInflater(), viewModel.getData().getValue());
         binding.RVSharedList.setAdapter(adapter);
 
         binding.progressBar.setVisibility(View.GONE);
 
-        viewModel.getData().observe(getViewLifecycleOwner(), adapter::setData);
+        viewModel.getData().observe(getViewLifecycleOwner(),list->{
+            adapter.setData(list);
+        });
+
 
         Model.instance().EventSharedListLoadingState.observe(getViewLifecycleOwner(),status->{
             binding.swipeRefresh.setRefreshing(status == Model.LoadingState.LOADING);

@@ -3,7 +3,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.model.SharedListItem;
@@ -13,10 +12,8 @@ public class SharedListAdapter extends RecyclerView.Adapter<SharedListViewHolder
 
     LayoutInflater inflater;
     List<SharedListItem> data;
-    Fragment fragment;
 
-    public SharedListAdapter(LayoutInflater inflater, List<SharedListItem> data, Fragment fragment) {
-        this.fragment = fragment;
+    public SharedListAdapter(LayoutInflater inflater, List<SharedListItem> data) {
         this.inflater = inflater;
         this.data = data;
     }
@@ -30,7 +27,7 @@ public class SharedListAdapter extends RecyclerView.Adapter<SharedListViewHolder
     @Override
     public SharedListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.list_item, parent, false);
-        return new SharedListViewHolder(view, data, fragment);
+        return new SharedListViewHolder(view, data);
     }
 
 

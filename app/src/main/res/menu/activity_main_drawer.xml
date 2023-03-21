@@ -10,7 +10,7 @@
             android:title="@string/menu_myLists" />
         <item
             android:id="@+id/nav_sharedLists"
-            android:icon="@drawable/lists"
+            android:icon="@drawable/participent"
             android:title="@string/menu_sharedLists" />
         <item
             android:id="@+id/nav_profile"

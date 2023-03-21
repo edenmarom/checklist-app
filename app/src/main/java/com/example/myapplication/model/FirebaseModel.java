@@ -358,7 +358,7 @@ public class FirebaseModel {
                             Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
                             SharedListItem sl = SharedListItem.fromJson(dataMap);
                             sl.setListId(dataSnapshot.getKey());
-                            if (sl.getParticipants().contains(currentUser.getUserId())){
+                            if (sl.getParticipants().contains(currentUser.getEmail())){
                                 list.add(sl);
                             }
                         }

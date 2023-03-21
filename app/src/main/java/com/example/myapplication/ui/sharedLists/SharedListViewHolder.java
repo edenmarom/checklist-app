@@ -5,9 +5,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
 import com.example.myapplication.model.SharedListItem;
@@ -20,30 +18,27 @@ public class SharedListViewHolder extends RecyclerView.ViewHolder {
     Button editB;
     ImageView image;
     TextView listItemTV;
-    TextView updateTV;
     List<SharedListItem> data;
-    NavController navController;
-    Fragment fragment;
     String id;
+    List<String> participantsTV;
 
-    public SharedListViewHolder(@NonNull View itemView, List<SharedListItem> data, Fragment fragment) {
+    public SharedListViewHolder(@NonNull View itemView, List<SharedListItem> data) {
         super(itemView);
         this.data = data;
-        this.fragment = fragment;
 
-        navController = NavHostFragment.findNavController(fragment);
-        nameTv = itemView.findViewById(R.id.title_listItem);
-        editB = itemView.findViewById(R.id.edit_B);
-        image = itemView.findViewById(R.id.image_listItem);
-        listItemTV = itemView.findViewById(R.id.listItem_TV);
-//        updateTV = itemView.findViewById(R.id.date_listItem);
+        nameTv = itemView.findViewById(R.id.shared_title_listItem);
+        editB = itemView.findViewById(R.id.shared_edit_B);
+        image = itemView.findViewById(R.id.shared_image_listItem);
+        listItemTV = itemView.findViewById(R.id.shared_listItem_TV);
+        participantsTV = itemView.findViewById(R.id.shared_participants_TV);
+
 
         editB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                Bundle bundle = new Bundle();
                 bundle.putString("id",id);
-                navController.navigate(R.id.editListFragment2,bundle);
+                Navigation.findNavController(view).navigate(R.id.editListFragment2,bundle);
             }
         });
 
@@ -55,6 +50,7 @@ public class SharedListViewHolder extends RecyclerView.ViewHolder {
         listItemTV.setText(l.getListItem()
                 .toString().replaceAll(",","\n").replaceAll(" ","")
                 .replaceAll("\\[|\\]", ""));
+        participantsTV.addAll(l.getParticipants());
 
         if (l.getImgUrl()  != null && l.getImgUrl().length() > 5) {
             Picasso.get().load(l.getImgUrl()).placeholder(R.drawable.list).into(image);
