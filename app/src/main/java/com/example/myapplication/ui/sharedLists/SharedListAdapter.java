@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.myLists;
+package com.example.myapplication.ui.sharedLists;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -6,35 +6,37 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
-import com.example.myapplication.model.ListItem;
+import com.example.myapplication.model.SharedListItem;
 import java.util.List;
 
-public class MyListAdapter extends RecyclerView.Adapter<MyListViewHolder> {
+public class SharedListAdapter extends RecyclerView.Adapter<SharedListViewHolder> {
+
     LayoutInflater inflater;
-    List<ListItem> data;
+    List<SharedListItem> data;
     Fragment fragment;
 
-    public MyListAdapter(LayoutInflater inflater, List<ListItem> data, Fragment fragment) {
+    public SharedListAdapter(LayoutInflater inflater, List<SharedListItem> data, Fragment fragment) {
         this.fragment = fragment;
         this.inflater = inflater;
         this.data = data;
     }
 
-    public void setData(List<ListItem> data) {
+    public void setData(List<SharedListItem> data) {
         this.data = data;
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public MyListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SharedListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.list_item, parent, false);
-        return new MyListViewHolder(view, data, fragment);
+        return new SharedListViewHolder(view, data, fragment);
     }
 
+
     @Override
-    public void onBindViewHolder(@NonNull MyListViewHolder holder, int position) {
-        ListItem l = data.get(position);
+    public void onBindViewHolder(@NonNull SharedListViewHolder holder, int position) {
+        SharedListItem l = data.get(position);
         holder.bind(l);
     }
 

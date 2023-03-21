@@ -1,19 +1,20 @@
 package com.example.myapplication.model;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
 import java.util.List;
 
 @Dao
-public interface ListItemDao {
+public interface SharedListItemDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAll(ListItem... listItems);
+    void insertAll(SharedListItem... listItems);
 
-    @Query("select * from ListItem where userId = :id")
-    LiveData<List<ListItem>> getListItemByUserId(String id);
-
+    @Query("SELECT * FROM SharedListItem WHERE participants in (:id)")
+    LiveData<List<SharedListItem>> getMySharedList(String id);
 }
 

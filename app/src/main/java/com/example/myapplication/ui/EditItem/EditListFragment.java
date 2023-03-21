@@ -1,57 +1,36 @@
 package com.example.myapplication.ui.EditItem;
-
 import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
-
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentEditListBinding;
-import com.example.myapplication.databinding.FragmentNewListBinding;
 import com.example.myapplication.model.ListItem;
 import com.example.myapplication.model.Model;
 import com.squareup.picasso.Picasso;
 
-import java.util.List;
-
 public class EditListFragment extends Fragment {
 
     private ListItem list_;
-    private EditListViewModel mViewModel;
     private FragmentEditListBinding binding;
     private View root;
-
     private String id;
     private ActivityResultLauncher<String> galleryLauncher;
-
-    public static EditListFragment newInstance() {
-        return new EditListFragment();
-    }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
 
         galleryLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
             @Override
@@ -65,16 +44,14 @@ public class EditListFragment extends Fragment {
         root = binding.getRoot();
         id = getArguments().getString("id");
 
-//        LiveData<ListItem> liveData = Model.instance().getListItemById(id);
         Model.instance().getSelectedListData(id, (listItem) -> {
             list_ = listItem;
             binding.listNameEditList.setText(listItem.getName());
             binding.listItems.setText(listItem.getListItem().toString().replace("]","").replace("[",""));
 
-
-
-            if(listItem.getImgUrl() != ""){
-                Picasso.get().load(listItem.getImgUrl()).placeholder(R.drawable.avatar).into(binding.editListImage);
+            String url = listItem.getImgUrl();
+            if(url != "" && url  != null && url.length() > 5){
+                Picasso.get().load(url).placeholder(R.drawable.list).into(binding.editListImage);
             }
         });
 
@@ -82,24 +59,16 @@ public class EditListFragment extends Fragment {
             galleryLauncher.launch("image/*");
         });
 
-
         binding.editListEditBtnEditList.setOnClickListener(view1-> {
             String listitems = binding.listItems.getText().toString();
             String listName = binding.listNameEditList.getText().toString();
 
-            Model.instance().updateEditList(id,listName,listitems);
-            getActivity().onBackPressed();
+            Model.instance().updateEditList(id,listName,listitems, (Void)->{
+                Model.instance().refreshMyLists();
+                getActivity().onBackPressed();
+            });
         });
-
-
-        return root;//inflater.inflate(R.layout.fragment_edit_list, container, false);
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        mViewModel = new ViewModelProvider(this).get(EditListViewModel.class);
-
+        return root;
     }
 
     private void UploadSelectedImg(Uri result) {

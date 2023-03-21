@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -34,9 +35,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
-
 
 public class FirebaseModel {
     private FirebaseDatabase db;
@@ -242,8 +241,10 @@ public class FirebaseModel {
         updateEmailOnFirebaseAuth(newEmail);
         updateProfileDataInRealTimeDB(userId, newName, newPhone, newEmail);
     }
-    public void updateList(String id, String name, String items) {
+
+    public void updateList(String id, String name, String items, Model.Listener<Void> callback) {
         updateListDataInRealTimeDB(id, name, items);
+        callback.onComplete(null);
     }
 
     private void updateListDataInRealTimeDB(String id, String name, String items) {
@@ -251,8 +252,7 @@ public class FirebaseModel {
         lists.child(id).child("name").setValue(name);
         List<String> itemsAsList = Arrays.asList(items.split(","));
         lists.child(id).child("items").setValue(itemsAsList);
-
-
+        lists.child(id).child("lastUpdated").setValue(ServerValue.TIMESTAMP);
     }
 
     private void updateProfileDataInRealTimeDB(String userId, String newName, String newPhone, String newEmail) {
@@ -315,12 +315,8 @@ public class FirebaseModel {
                 });
     }
 
-
-    //TODO EDEN add new list with the "toJson" function in order to have a lastupdate field.
-
     public void insertNewList(ListItem l, Model.Listener<String> callback) {
         DatabaseReference lists = db.getReference("lists");
-//        lists.push().setValue(l.toJson());
         String pushKey = lists.push().getKey();
         lists.child(pushKey).setValue(l.toJson());
         callback.onComplete(pushKey);
@@ -385,4 +381,29 @@ public class FirebaseModel {
 //    public void getLocation() {
 //        listI
 //    }
+    public void getMySharedListsSince(Long since, Model.Listener<List<SharedListItem>> callback) {
+        DatabaseReference lists = db.getReference("lists");
+        lists.orderByChild(SharedListItem.LAST_UPDATED)
+                .startAt(since)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        List<SharedListItem> list = new LinkedList<>();
+                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                            Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
+                            SharedListItem sl = SharedListItem.fromJson(dataMap);
+                            sl.setListId(dataSnapshot.getKey());
+                            if (sl.getParticipants().contains(currentUser.getUserId())){
+                                list.add(sl);
+                            }
+                        }
+                        callback.onComplete(list);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        callback.onComplete(null);
+                    }
+                });
+    }
 }

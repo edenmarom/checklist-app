@@ -12,16 +12,10 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentMylistsBinding;
-import com.example.myapplication.model.ListItem;
 import com.example.myapplication.model.Model;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-
-import java.util.List;
 
 public class MyListsFragment extends Fragment {
 
@@ -53,11 +47,20 @@ public class MyListsFragment extends Fragment {
         binding.RVList.setHasFixedSize(true);
         Fragment fragment = getParentFragment();
         binding.RVList.setLayoutManager(new LinearLayoutManager(getContext()));
-
         adapter = new MyListAdapter(getLayoutInflater(), viewModel.getData().getValue(), fragment);
         binding.RVList.setAdapter(adapter);
 
+        binding.progressBar.setVisibility(View.GONE);
+
         viewModel.getData().observe(getViewLifecycleOwner(), adapter::setData);
+
+        Model.instance().EventMyListLoadingState.observe(getViewLifecycleOwner(),status->{
+            binding.swipeRefresh.setRefreshing(status == Model.LoadingState.LOADING);
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(()->{
+            reloadData();
+        });
 
         return root;
     }
@@ -68,7 +71,6 @@ public class MyListsFragment extends Fragment {
     }
 
     public static void reloadData(){
-//        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().refreshMyLists();
     }
 }

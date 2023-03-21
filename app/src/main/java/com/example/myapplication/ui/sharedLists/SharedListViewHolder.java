@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.myLists;
+package com.example.myapplication.ui.sharedLists;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,29 +10,28 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.R;
-import com.example.myapplication.model.ListItem;
+import com.example.myapplication.model.SharedListItem;
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
-public class MyListViewHolder extends RecyclerView.ViewHolder {
+public class SharedListViewHolder extends RecyclerView.ViewHolder {
 
     TextView nameTv;
     Button editB;
     ImageView image;
     TextView listItemTV;
     TextView updateTV;
-    List<ListItem> data;
+    List<SharedListItem> data;
     NavController navController;
     Fragment fragment;
     String id;
 
-    public MyListViewHolder(@NonNull View itemView, List<ListItem> data, Fragment fragment) {
+    public SharedListViewHolder(@NonNull View itemView, List<SharedListItem> data, Fragment fragment) {
         super(itemView);
         this.data = data;
         this.fragment = fragment;
 
         navController = NavHostFragment.findNavController(fragment);
-
         nameTv = itemView.findViewById(R.id.title_listItem);
         editB = itemView.findViewById(R.id.edit_B);
         image = itemView.findViewById(R.id.image_listItem);
@@ -47,9 +46,10 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
                 navController.navigate(R.id.editListFragment2,bundle);
             }
         });
+
     }
 
-    public void bind(ListItem l) {
+    public void bind(SharedListItem l) {
         id = l.getListId();
         nameTv.setText(l.getName());
         listItemTV.setText(l.getListItem()

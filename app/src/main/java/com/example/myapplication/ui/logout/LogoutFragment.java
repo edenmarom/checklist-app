@@ -7,12 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
-import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentLogoutBinding;
 import com.example.myapplication.model.Model;
-import com.example.myapplication.ui.myLists.MyListsFragment;
 import com.example.myapplication.ui.myLists.MyListsViewModel;
 
 public class LogoutFragment extends Fragment {
