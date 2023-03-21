@@ -13,8 +13,6 @@ public class Model {
     private static final Model _instance = new Model();
     private Executor executor = Executors.newSingleThreadExecutor();
     private FirebaseModel firebaseModel = new FirebaseModel();
-    private LiveData<List<ListItem>> ListItems;
-    private List<List<String>> locations;
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
     private LiveData<List<ListItem>> MyListItems;
     private LiveData<List<SharedListItem>> SharedLists;
@@ -25,31 +23,6 @@ public class Model {
 
     private Model() {
     }
-
-//    public void getLocations() {
-//        if(ListItems == null){
-//            List<List<String>> locations = localDb.listItemDao().getLocation();
-//            refreshAllLists();
-//        }
-//        return ListItems;
-//    }
-
-
-    public LiveData<List<ListItem>> getAllListItems() {
-        if(ListItems == null){
-            ListItems = localDb.listItemDao().getAll();
-            refreshAllLists();
-        }
-        return ListItems;
-    }
-
-
-//    public LiveData<List<String>> getlocations() {
-//        if(locations == null){
-//            locations = localDb.listItemDao().getAllLocations();
-//        }
-//        return locations;
-//    }
 
     public interface Listener<T> {
         void onComplete(T data);
@@ -169,31 +142,7 @@ public class Model {
         });
     }
 
-
     public void getAllLocations(Model.Listener<List<List<String>>> callback) {
         firebaseModel.locationChangeListner(callback);
-    }
-    public void refreshAllLists(){
-//        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
-        Long localLastUpdate = ListItem.getLocalLastUpdate();
-        firebaseModel.getAllListsSince(localLastUpdate,list->{
-            executor.execute(()->{
-                Log.d("TAG", " firebase return : " + list.size());
-                Long time = localLastUpdate;
-                for(ListItem l:list){
-                    localDb.listItemDao().insertAll(l);
-                    if (time < l.getLastUpdated()){
-                        time = l.getLastUpdated();
-                    }
-                }
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                ListItem.setLocalLastUpdate(time);
-//                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
-            });
-        });
     }
 }

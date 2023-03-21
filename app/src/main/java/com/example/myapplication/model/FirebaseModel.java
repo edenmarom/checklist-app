@@ -113,21 +113,16 @@ public class FirebaseModel {
         locationsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called when the data in the database changes.
-                // Use the DataSnapshot object to retrieve the data.
                 List<List<String>> locations = new ArrayList<>();
                 for (DataSnapshot listSnapshot : dataSnapshot.getChildren()) {
-//                    ArrayList location = listSnapshot.child("location").getValue(String.class);
-//                    locations.add(location);
+
                   locations.add((List<String>) listSnapshot.child("location").getValue());
                 }
-//                Log.d(TAG, "Locations: " + locations.toString());
                     callback.onComplete(locations);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // This method is called if there is an error retrieving the data.
                 Log.w(TAG, "Failed to read value.", databaseError.toException());
             }
         });
