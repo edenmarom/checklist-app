@@ -16,9 +16,6 @@ public class MyListsViewModel extends ViewModel {
     }
 
     LiveData<List<ListItem>> getData() {
-        if(data == null){
-            return Model.instance().getMyListItems();
-        }
         return data;
     }
 

@@ -6,10 +6,11 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import com.example.myapplication.MyApplication;
 
-@Database(entities = {ListItem.class}, version = 86)
+@Database(entities = {ListItem.class, SharedListItem.class}, version = 90)
 @TypeConverters({Converters.class})
 abstract class AppLocalDbRepository extends RoomDatabase {
     public abstract ListItemDao listItemDao();
+    public abstract SharedListItemDao sharedListItemDao();
 }
 
 public class AppLocalDb {

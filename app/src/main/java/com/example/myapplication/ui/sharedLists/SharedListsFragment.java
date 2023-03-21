@@ -1,11 +1,9 @@
 package com.example.myapplication.ui.sharedLists;
-
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,7 +20,6 @@ public class SharedListsFragment extends Fragment {
     SharedListAdapter adapter;
     SharedListsViewModel viewModel;
 
-
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
@@ -31,13 +28,22 @@ public class SharedListsFragment extends Fragment {
         navController = NavHostFragment.findNavController(this);
 
         binding.RVSharedList.setHasFixedSize(true);
-        Fragment fragment = getParentFragment();
+        Fragment fragment = getParentFragment();//TODO EDEN CHECK THIS COMPARED TO ELIAV
         binding.RVSharedList.setLayoutManager(new LinearLayoutManager(getContext()));
-
         adapter = new SharedListAdapter(getLayoutInflater(), viewModel.getData().getValue(), fragment);
         binding.RVSharedList.setAdapter(adapter);
 
+        binding.progressBar.setVisibility(View.GONE);
+
         viewModel.getData().observe(getViewLifecycleOwner(), adapter::setData);
+
+        Model.instance().EventSharedListLoadingState.observe(getViewLifecycleOwner(),status->{
+            binding.swipeRefresh.setRefreshing(status == Model.LoadingState.LOADING);
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(()->{
+            reloadData();
+        });
 
         return root;
     }
@@ -48,7 +54,7 @@ public class SharedListsFragment extends Fragment {
     }
 
     public static void reloadData(){
-//        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().refreshMySharedLists();
     }
+
 }

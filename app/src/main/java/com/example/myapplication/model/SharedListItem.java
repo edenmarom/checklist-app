@@ -1,13 +1,17 @@
 package com.example.myapplication.model;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import com.google.firebase.database.ServerValue;
+
 import com.example.myapplication.MyApplication;
+import com.google.firebase.database.ServerValue;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 @Entity
-public class ListItem {
+public class SharedListItem {
     @PrimaryKey
     @NonNull
     String listId;
@@ -30,9 +34,9 @@ public class ListItem {
     String imgUrl;
     Long lastUpdated;
 
-    public ListItem() {}
+    public SharedListItem() {}
 
-    public ListItem(String listId, String name, List<String> listItem, List<String> location, String userId, List<String> participants, String imgUrl) {
+    public SharedListItem(String listId, String name, List<String> listItem, List<String> location, String userId, List<String> participants, String imgUrl) {
         this.listId = listId;
         this.name = name;
         this.items = listItem;
@@ -50,9 +54,9 @@ public class ListItem {
     static final String PARTICIPANTS = "participants";
     static final String IMG_URL = "imgUrl";
     static final String LAST_UPDATED = "lastUpdated";
-    static final String LOCAL_LAST_UPDATED = "list_local_last_update";
+    static final String LOCAL_LAST_UPDATED = "Shared_list_local_last_update";
 
-    public static ListItem fromJson(Map<String, Object> json) {
+    public static SharedListItem fromJson(Map<String, Object> json) {
         String id = (String) json.get(LIST_ID);
         String name = (String) json.get(NAME);
         String items = convertObjectToString(json.get(ITEMS));
@@ -63,7 +67,7 @@ public class ListItem {
         List<String> itemsList = toArray(items);
         List<String> locationsList = toArray(location);
         List<String> participantsList = toArray(participants);
-        ListItem l = new ListItem(id, name, itemsList, locationsList, userId, participantsList, imgUrl);
+        SharedListItem l = new SharedListItem(id, name, itemsList, locationsList, userId, participantsList, imgUrl);
 
         try {
             l.setLastUpdated((Long) json.get(LAST_UPDATED));

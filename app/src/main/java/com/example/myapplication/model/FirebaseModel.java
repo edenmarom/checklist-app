@@ -1,5 +1,4 @@
 package com.example.myapplication.model;
-
 import static com.example.myapplication.model.LoggedInUser.USER_REF;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -33,9 +32,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-
 import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
-
 
 public class FirebaseModel {
     private FirebaseDatabase db;
@@ -80,30 +77,6 @@ public class FirebaseModel {
                 });
             }
         });
-    }
-
-    public void getAllListsSince(Long since, Model.Listener<List<ListItem>> callback) {
-        DatabaseReference lists = db.getReference("lists");
-        lists.orderByChild(ListItem.LAST_UPDATED)
-                .startAt(since)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        List<ListItem> list = new LinkedList<>();
-                        for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
-                            ListItem l = ListItem.fromJson(dataMap);
-                            l.setListId(dataSnapshot.getKey());
-                            list.add(l);
-                        }
-                        callback.onComplete(list);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-                        callback.onComplete(null);
-                    }
-                });
     }
 
     public void updateUserProfileURl(String userUID, String url) {
@@ -213,6 +186,7 @@ public class FirebaseModel {
         updateEmailOnFirebaseAuth(newEmail);
         updateProfileDataInRealTimeDB(userId, newName, newPhone, newEmail);
     }
+
     public void updateList(String id, String name, String items, Model.Listener<Void> callback) {
         updateListDataInRealTimeDB(id, name, items);
         callback.onComplete(null);
@@ -345,20 +319,20 @@ public class FirebaseModel {
         });
     }
 
-    public void getMySharedListsSince(Long since, Model.Listener<List<ListItem>> callback) {
+    public void getMySharedListsSince(Long since, Model.Listener<List<SharedListItem>> callback) {
         DatabaseReference lists = db.getReference("lists");
-        lists.orderByChild(ListItem.LAST_UPDATED)
+        lists.orderByChild(SharedListItem.LAST_UPDATED)
                 .startAt(since)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        List<ListItem> list = new LinkedList<>();
+                        List<SharedListItem> list = new LinkedList<>();
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
-                            ListItem l = ListItem.fromJson(dataMap);
-                            l.setListId(dataSnapshot.getKey());
-                            if (l.getParticipants().contains(currentUser.getUserId())){
-                                list.add(l);
+                            SharedListItem sl = SharedListItem.fromJson(dataMap);
+                            sl.setListId(dataSnapshot.getKey());
+                            if (sl.getParticipants().contains(currentUser.getUserId())){
+                                list.add(sl);
                             }
                         }
                         callback.onComplete(list);
@@ -370,8 +344,4 @@ public class FirebaseModel {
                     }
                 });
     }
-
-//    public void getLocation() {
-//        listI
-//    }
 }

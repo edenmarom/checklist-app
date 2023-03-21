@@ -1,10 +1,7 @@
 package com.example.myapplication.model;
 import static com.example.myapplication.ui.login.LoginViewModel.currentUser;
 import android.graphics.Bitmap;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import androidx.core.os.HandlerCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import java.util.List;
@@ -12,15 +9,13 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class Model {
-    private static final Model _instance = new Model();
 
+    private static final Model _instance = new Model();
     private Executor executor = Executors.newSingleThreadExecutor();
-    private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseModel firebaseModel = new FirebaseModel();
-    private LiveData<List<ListItem>> ListItems;
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
     private LiveData<List<ListItem>> MyListItems;
-    private LiveData<List<ListItem>> SharedLists;
+    private LiveData<List<SharedListItem>> SharedLists;
 
     public static Model instance() {
         return _instance;
@@ -28,14 +23,6 @@ public class Model {
 
     private Model() {
     }
-
-//    public void getLocations() {
-//        if(ListItems == null){
-//            List<List<String>> locations = localDb.listItemDao().getLocation();
-//            refreshAllLists();
-//        }
-//        return ListItems;
-//    }
 
     public interface Listener<T> {
         void onComplete(T data);
@@ -46,7 +33,8 @@ public class Model {
         NOT_LOADING
     }
 
-    final public MutableLiveData<LoadingState> EventImgLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
+    final public MutableLiveData<LoadingState> EventMyListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
+    final public MutableLiveData<LoadingState> EventSharedListLoadingState = new MutableLiveData<LoadingState>(LoadingState.NOT_LOADING);
 
     public void uploadImage(String uid, Bitmap bitmap,Listener<String> listener) {
         firebaseModel.uploadImage(uid,bitmap,listener);
@@ -89,6 +77,10 @@ public class Model {
         firebaseModel.isUserLoggedIn(listener);
     }
 
+    public void getSelectedListData(String id, Listener<ListItem> listener){
+        firebaseModel.getSelectedListData(id,listener);
+    }
+
     public LiveData<List<ListItem>> getMyListItems() {
         if(MyListItems == null){
             MyListItems = localDb.listItemDao().getListItemByUserId(currentUser.getUserId());
@@ -96,12 +88,9 @@ public class Model {
         }
         return MyListItems;
     }
-    public void getSelectedListData(String id, Listener<ListItem> listener){
-        firebaseModel.getSelectedListData(id,listener);
-    }
 
     public void refreshMyLists(){
-//        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
+        EventMyListLoadingState.setValue(LoadingState.LOADING);
         Long localLastUpdate = ListItem.getLocalLastUpdate();
         firebaseModel.getMyListsSince(localLastUpdate,list->{
             executor.execute(()->{
@@ -114,42 +103,42 @@ public class Model {
                     }
                 }
                 ListItem.setLocalLastUpdate(time);
-//                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
+                EventMyListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
         });
     }
 
-    public void insertNewList(ListItem l, Listener<String> listener) {
-        firebaseModel.insertNewList(l, (listId)->{
-                refreshMyLists();
-                listener.onComplete(listId);
-        });
-    }
-
-    public LiveData<List<ListItem>> getSharedLists() {
+    public LiveData<List<SharedListItem>> getSharedLists() {
         if(SharedLists == null){
-            SharedLists = localDb.listItemDao().getMySharedList(currentUser.getUserId());
+            SharedLists = localDb.sharedListItemDao().getMySharedList(currentUser.getUserId());
             refreshMySharedLists();
         }
         return SharedLists;
     }
 
     public void refreshMySharedLists(){
-//        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
-        Long localLastUpdate = ListItem.getLocalLastUpdate();
+        EventSharedListLoadingState.setValue(LoadingState.LOADING);
+        Long localLastUpdate = SharedListItem.getLocalLastUpdate();
         firebaseModel.getMySharedListsSince(localLastUpdate,list->{
             executor.execute(()->{
-                Log.d("TAG", " firebase return : " + list.size());
+                Log.d("TAG", "Shared lists - firebase return: " + list.size());
                 Long time = localLastUpdate;
-                for(ListItem l:list){
-                    localDb.listItemDao().insertAll(l);
+                for(SharedListItem l:list){
+                    localDb.sharedListItemDao().insertAll(l);
                     if (time < l.getLastUpdated()){
                         time = l.getLastUpdated();
                     }
                 }
-                ListItem.setLocalLastUpdate(time);
-//                EventStudentsListLoadingState.postValue(LoadingState.NOT_LOADING);
+                SharedListItem.setLocalLastUpdate(time);
+                EventSharedListLoadingState.postValue(LoadingState.NOT_LOADING);
             });
+        });
+    }
+
+    public void insertNewList(ListItem l, Listener<String> listener) {
+        firebaseModel.insertNewList(l, (listId)->{
+            refreshMyLists();
+            listener.onComplete(listId);
         });
     }
 }

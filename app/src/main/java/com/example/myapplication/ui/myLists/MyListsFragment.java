@@ -47,11 +47,20 @@ public class MyListsFragment extends Fragment {
         binding.RVList.setHasFixedSize(true);
         Fragment fragment = getParentFragment();
         binding.RVList.setLayoutManager(new LinearLayoutManager(getContext()));
-
         adapter = new MyListAdapter(getLayoutInflater(), viewModel.getData().getValue(), fragment);
         binding.RVList.setAdapter(adapter);
 
+        binding.progressBar.setVisibility(View.GONE);
+
         viewModel.getData().observe(getViewLifecycleOwner(), adapter::setData);
+
+        Model.instance().EventMyListLoadingState.observe(getViewLifecycleOwner(),status->{
+            binding.swipeRefresh.setRefreshing(status == Model.LoadingState.LOADING);
+        });
+
+        binding.swipeRefresh.setOnRefreshListener(()->{
+            reloadData();
+        });
 
         return root;
     }
@@ -62,7 +71,6 @@ public class MyListsFragment extends Fragment {
     }
 
     public static void reloadData(){
-//        binding.progressBar.setVisibility(View.VISIBLE);
         Model.instance().refreshMyLists();
     }
 }
