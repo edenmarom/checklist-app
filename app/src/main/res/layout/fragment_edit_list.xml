@@ -12,7 +12,7 @@
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addImg_editList"
-        android:layout_width="70dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clickable="true"
         android:contentDescription="@string/action_settings"
@@ -34,14 +34,15 @@
         android:background="@drawable/cercel_shape"
         android:contextClickable="true"
         android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="start"
+        android:foregroundGravity="center"
+        android:gravity="center|top"
         android:hint="List items"
         android:inputType="textPersonName"
         android:minHeight="48dp"
         android:textColorHighlight="#131212"
         android:textColorHint="#121010"
         app:layout_constraintBottom_toTopOf="@+id/editList_image"
+        app:layout_constraintEnd_toEndOf="@+id/list_name_editList"
         app:layout_constraintStart_toStartOf="@+id/list_name_editList"
         app:layout_constraintTop_toBottomOf="@+id/list_name_editList" />
 
@@ -63,8 +64,8 @@
         android:background="@drawable/cercel_shape"
         android:contextClickable="true"
         android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="start"
+        android:foregroundGravity="center"
+        android:gravity="center"
         android:minHeight="48dp"
         android:text="List Name"
         app:layout_constraintBottom_toTopOf="@+id/list_items"

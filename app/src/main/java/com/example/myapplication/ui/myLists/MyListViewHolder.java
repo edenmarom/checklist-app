@@ -37,7 +37,7 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
         editB = itemView.findViewById(R.id.edit_B);
         image = itemView.findViewById(R.id.image_listItem);
         listItemTV = itemView.findViewById(R.id.listItem_TV);
-        updateTV = itemView.findViewById(R.id.date_listItem);
+//        updateTV = itemView.findViewById(R.id.date_listItem);
 
         editB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +53,7 @@ public class MyListViewHolder extends RecyclerView.ViewHolder {
         id = l.getListId();
         nameTv.setText(l.getName());
         listItemTV.setText(l.getListItem()
-                .toString().replaceAll(",","\n")
+                .toString().replaceAll(",","\n").replaceAll(" ","")
                 .replaceAll("\\[|\\]", ""));
 
         if (l.getImgUrl()  != null && l.getImgUrl().length() > 5) {

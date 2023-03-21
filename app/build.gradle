@@ -58,6 +58,7 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.8'
     implementation 'com.google.code.gson:gson:2.8.9'
 
+
     def nav_version = "2.5.3"  //your nav_version defined
     implementation "androidx.navigation:navigation-dynamic-features-fragment:$nav_version"
 
@@ -65,4 +66,9 @@ dependencies {
     def room_version = "2.4.3"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //api
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+
 }
