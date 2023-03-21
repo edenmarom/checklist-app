@@ -110,7 +110,7 @@ public class Model {
 
     public LiveData<List<SharedListItem>> getSharedLists() {
         if(SharedLists == null){
-            SharedLists = localDb.sharedListItemDao().getMySharedList(currentUser.getEmail());
+            SharedLists = localDb.sharedListItemDao().getAllMySharedList();
             refreshMySharedLists();
         }
         return SharedLists;

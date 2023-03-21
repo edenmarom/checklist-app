@@ -20,7 +20,7 @@ public class SharedListViewHolder extends RecyclerView.ViewHolder {
     TextView listItemTV;
     List<SharedListItem> data;
     String id;
-    List<String> participantsTV;
+    TextView participantsTV;
 
     public SharedListViewHolder(@NonNull View itemView, List<SharedListItem> data) {
         super(itemView);
@@ -45,17 +45,21 @@ public class SharedListViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(SharedListItem l) {
-        id = l.getListId();
-        nameTv.setText(l.getName());
-        listItemTV.setText(l.getListItem()
-                .toString().replaceAll(",","\n").replaceAll(" ","")
-                .replaceAll("\\[|\\]", ""));
-        participantsTV.addAll(l.getParticipants());
+        if (l != null) {
+            id = l.getListId();
+            nameTv.setText(l.getName());
+            listItemTV.setText(l.getListItem()
+                    .toString().replaceAll(",", "\n").replaceAll(" ", "")
+                    .replaceAll("\\[|\\]", ""));
+            participantsTV.setText(l.getParticipants()
+                    .toString().replaceAll(",", "\n").replaceAll(" ", "")
+                    .replaceAll("\\[|\\]", ""));
 
-        if (l.getImgUrl()  != null && l.getImgUrl().length() > 5) {
-            Picasso.get().load(l.getImgUrl()).placeholder(R.drawable.list).into(image);
-        }else{
-            image.setImageResource(R.drawable.list);
+            if (l.getImgUrl() != null && l.getImgUrl().length() > 5) {
+                Picasso.get().load(l.getImgUrl()).placeholder(R.drawable.list).into(image);
+            } else {
+                image.setImageResource(R.drawable.list);
+            }
         }
     }
 

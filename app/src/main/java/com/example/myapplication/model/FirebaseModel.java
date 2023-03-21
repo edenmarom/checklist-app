@@ -81,7 +81,7 @@ public class FirebaseModel {
         });
     }
 
-    public void locationChangeListner(Model.Listener<List<List<String>>> callback){
+    public void locationChangeListner(Model.Listener<List<List<String>>> callback) {
 
         DatabaseReference locationsRef = db.getReference("lists");
         locationsRef.addValueEventListener(new ValueEventListener() {
@@ -90,9 +90,9 @@ public class FirebaseModel {
                 List<List<String>> locations = new ArrayList<>();
                 for (DataSnapshot listSnapshot : dataSnapshot.getChildren()) {
 
-                  locations.add((List<String>) listSnapshot.child("location").getValue());
+                    locations.add((List<String>) listSnapshot.child("location").getValue());
                 }
-                    callback.onComplete(locations);
+                callback.onComplete(locations);
             }
 
             @Override
@@ -211,12 +211,12 @@ public class FirebaseModel {
         updateProfileDataInRealTimeDB(userId, newName, newPhone, newEmail);
     }
 
-    public void updateList(String id, String name, String items,String participant, Model.Listener<Void> callback) {
+    public void updateList(String id, String name, String items, String participant, Model.Listener<Void> callback) {
         updateListDataInRealTimeDB(id, name, items, participant);
         callback.onComplete(null);
     }
 
-    private void updateListDataInRealTimeDB(String id, String name, String items, String participant ) {
+    private void updateListDataInRealTimeDB(String id, String name, String items, String participant) {
         DatabaseReference lists = db.getReference("lists");
         lists.child(id).child("name").setValue(name);
         List<String> itemsAsList = Arrays.asList(items.split(","));
@@ -273,7 +273,7 @@ public class FirebaseModel {
                             Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
                             ListItem l = ListItem.fromJson(dataMap);
                             l.setListId(dataSnapshot.getKey());
-                            if (l.getUserId().equals(currentUser.getUserId())){
+                            if (l.getUserId().equals(currentUser.getUserId())) {
                                 list.add(l);
                             }
                         }
@@ -358,7 +358,7 @@ public class FirebaseModel {
                             Map<String, Object> dataMap = (Map<String, Object>) dataSnapshot.getValue();
                             SharedListItem sl = SharedListItem.fromJson(dataMap);
                             sl.setListId(dataSnapshot.getKey());
-                            if (sl.getParticipants().contains(currentUser.getEmail())){
+                            if (sl.getParticipants().contains(currentUser.getEmail())) {
                                 list.add(sl);
                             }
                         }
@@ -373,24 +373,23 @@ public class FirebaseModel {
     }
 
     public void getUsersList(Model.Listener<String[]> callback) {
-            DatabaseReference users = db.getReference("Users");
-            users.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DataSnapshot> task) {
-                    if (!task.isSuccessful()) {
-                        Log.e("TAG", "Error getting users list", task.getException());
-                        callback.onComplete(null);
+        DatabaseReference users = db.getReference("Users");
+        users.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("TAG", "Error getting users list", task.getException());
+                    callback.onComplete(null);
+                } else {
+                    Log.d("TAG", "getting users list:success " + String.valueOf(task.getResult().getValue()));
+                    List<String> emailList = new ArrayList<>();
+                    for (DataSnapshot userSnapshot : task.getResult().getChildren()) {
+                        String name = (String) userSnapshot.child("email").getValue();
+                        emailList.add(name);
                     }
-                    else {
-                        Log.d("TAG", "getting users list:success "+ String.valueOf(task.getResult().getValue()));
-                        List<String> emailList = new ArrayList<>();
-                        for (DataSnapshot userSnapshot : task.getResult().getChildren()) {
-                            String name = (String) userSnapshot.child("email").getValue();
-                            emailList.add(name);
-                        }
-                        callback.onComplete(emailList.toArray(new String[0]));
-                    }
+                    callback.onComplete(emailList.toArray(new String[0]));
                 }
-            });
+            }
+        });
     }
 }

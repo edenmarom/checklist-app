@@ -37,7 +37,7 @@ public class SharedListsFragment extends Fragment {
         viewModel.getData().observe(getViewLifecycleOwner(),list->{
             adapter.setData(list);
         });
-
+        reloadData();
 
         Model.instance().EventSharedListLoadingState.observe(getViewLifecycleOwner(),status->{
             binding.swipeRefresh.setRefreshing(status == Model.LoadingState.LOADING);

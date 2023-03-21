@@ -61,8 +61,10 @@ public class EditListFragment extends Fragment {
         Model.instance().getUsersList((emailList)->{
             ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                     android.R.layout.simple_spinner_item, emailList);
+            int spinnerPosition = adapter.getPosition(currentUser.getEmail());
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             binding.participantsSpinner.setAdapter(adapter);
+            binding.participantsSpinner.setSelection(spinnerPosition);
         });
 
         binding.addImgEditList.setOnClickListener(view1->{
