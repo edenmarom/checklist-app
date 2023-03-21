@@ -19,6 +19,7 @@ public class Model {
     private Handler mainHandler = HandlerCompat.createAsync(Looper.getMainLooper());
     private FirebaseModel firebaseModel = new FirebaseModel();
     private LiveData<List<ListItem>> ListItems;
+    private List<List<String>> locations;
     AppLocalDbRepository localDb = AppLocalDb.getAppDb();
     private LiveData<List<ListItem>> MyListItems;
 
@@ -45,6 +46,15 @@ public class Model {
         }
         return ListItems;
     }
+
+
+//    public LiveData<List<String>> getlocations() {
+//        if(locations == null){
+//            locations = localDb.listItemDao().getAllLocations();
+//        }
+//        return locations;
+//    }
+
     public interface Listener<T> {
         void onComplete(T data);
     }
@@ -135,7 +145,9 @@ public class Model {
     }
 
 
-
+    public void getAllLocations(Model.Listener<List<List<String>>> callback) {
+        firebaseModel.locationChangeListner(callback);
+    }
     public void refreshAllLists(){
 //        EventStudentsListLoadingState.setValue(LoadingState.LOADING);
         Long localLastUpdate = ListItem.getLocalLastUpdate();
