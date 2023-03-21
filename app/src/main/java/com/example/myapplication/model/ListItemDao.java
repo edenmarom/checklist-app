@@ -9,6 +9,9 @@ import java.util.List;
 @Dao
 public interface ListItemDao {
 
+    @Query("select * from ListItem")
+    LiveData<List<ListItem>> getAll();
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(ListItem... listItems);
 
