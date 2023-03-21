@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 import com.example.myapplication.R;
 import com.example.myapplication.databinding.FragmentEditListBinding;
@@ -55,6 +56,13 @@ public class EditListFragment extends Fragment {
             }
         });
 
+        Model.instance().getUsersList((emailList)->{
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                    android.R.layout.simple_spinner_item, emailList);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            binding.participantsSpinner.setAdapter(adapter);
+        });
+
         binding.addImgEditList.setOnClickListener(view1->{
             galleryLauncher.launch("image/*");
         });
@@ -62,8 +70,9 @@ public class EditListFragment extends Fragment {
         binding.editListEditBtnEditList.setOnClickListener(view1-> {
             String listitems = binding.listItems.getText().toString();
             String listName = binding.listNameEditList.getText().toString();
+            String participant = binding.participantsSpinner.getSelectedItem().toString();
 
-            Model.instance().updateEditList(id,listName,listitems, (Void)->{
+            Model.instance().updateEditList(id, listName, listitems, participant, (Void)->{
                 Model.instance().refreshMyLists();
                 getActivity().onBackPressed();
             });

@@ -14,6 +14,9 @@
         android:id="@+id/addImg_editList"
         android:layout_width="70dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="110dp"
+        android:layout_marginEnd="60dp"
         android:clickable="true"
         android:contentDescription="@string/action_settings"
         android:src="@drawable/ic_baseline_add_a_photo_24"
@@ -21,16 +24,15 @@
         android:tintMode="src_in"
         app:backgroundTint="#FFFFFF"
         app:backgroundTintMode="add"
-        app:layout_constraintBottom_toBottomOf="@+id/editList_image"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/editList_image"
-        app:layout_constraintTop_toTopOf="@+id/editList_image" />
+        app:layout_constraintTop_toBottomOf="@+id/participants_spinner" />
 
     <EditText
         android:id="@+id/list_items"
         android:layout_width="297dp"
-        android:layout_height="214dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/cercel_shape"
         android:contextClickable="true"
         android:ems="10"
@@ -41,16 +43,28 @@
         android:minHeight="48dp"
         android:textColorHighlight="#131212"
         android:textColorHint="#121010"
-        app:layout_constraintBottom_toTopOf="@+id/editList_image"
-        app:layout_constraintStart_toStartOf="@+id/list_name_editList"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/list_name_editList" />
+
+    <Spinner
+        android:id="@+id/participants_spinner"
+        android:layout_width="297dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="#BFB0B0"
+        android:spinnerMode="dropdown"
+        android:tooltipText="Participants List"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_items" />
 
     <Button
         android:id="@+id/edit_list_EditBtn_editList"
         android:layout_width="99dp"
         android:layout_height="51dp"
         android:onClick="add_list"
-        android:text="Edit"
+        android:text="Save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -58,8 +72,9 @@
 
     <EditText
         android:id="@+id/list_name_editList"
-        android:layout_width="303dp"
+        android:layout_width="297dp"
         android:layout_height="62dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/cercel_shape"
         android:contextClickable="true"
         android:ems="10"
@@ -67,7 +82,6 @@
         android:gravity="start"
         android:minHeight="48dp"
         android:text="List Name"
-        app:layout_constraintBottom_toTopOf="@+id/list_items"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -75,12 +89,12 @@
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
+        android:layout_marginTop="40dp"
         android:text="Edit List"
         android:textColor="#0C0808"
         android:textSize="34sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@+id/list_name_editList"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -89,14 +103,29 @@
         android:id="@+id/editList_image"
         android:layout_width="169dp"
         android:layout_height="175dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="50dp"
         android:scaleType="centerCrop"
         android:src="@drawable/list"
-        app:layout_constraintBottom_toTopOf="@+id/edit_list_EditBtn_editList"
-        app:layout_constraintEnd_toStartOf="@+id/addImg_editList"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_items"
+        app:layout_constraintTop_toBottomOf="@+id/participants_spinner"
         app:shapeAppearanceOverlay="@style/Circular" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="#000000"
+        android:drawableTint="#000000"
+        android:text="List Participants"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColorLink="#000000"
+        app:layout_constraintBottom_toTopOf="@+id/participants_spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_items" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

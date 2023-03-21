@@ -55,8 +55,8 @@ public class Model {
     public void updateUserProfileData(String userId, String newName, String newPhone, String newEmail) {
         firebaseModel.updateUserProfileData(userId, newName, newPhone, newEmail);
     }
-    public void updateEditList(String id, String name, String items, Listener<Void> listener) {
-        firebaseModel.updateList(id, name, items, listener);
+    public void updateEditList(String id, String name, String items,String participant ,Listener<Void> listener) {
+        firebaseModel.updateList(id, name, items, participant,listener);
         refreshMyLists();
     }
 
@@ -142,7 +142,11 @@ public class Model {
         });
     }
 
-    public void getAllLocations(Model.Listener<List<List<String>>> callback) {
+    public void getAllLocations(Listener<List<List<String>>> callback) {
         firebaseModel.locationChangeListner(callback);
+    }
+
+    public void getUsersList(Listener<String[]> callback) {
+        firebaseModel.getUsersList(callback);
     }
 }
