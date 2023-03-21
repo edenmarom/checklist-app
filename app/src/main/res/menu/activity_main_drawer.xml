@@ -24,5 +24,9 @@
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout"
             android:title="@string/menu_logout" />
+        <item
+            android:id="@+id/nav_api"
+            android:icon="@drawable/baseline_tips_and_updates_24"
+            android:title="Life advices" />
     </group>
 </menu>

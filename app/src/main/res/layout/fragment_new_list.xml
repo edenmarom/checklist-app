@@ -54,13 +54,13 @@
 
     <EditText
         android:id="@+id/list_name"
-        android:layout_width="265dp"
-        android:layout_height="51dp"
+        android:layout_width="277dp"
+        android:layout_height="76dp"
         android:background="@drawable/cercel_shape"
         android:contextClickable="true"
         android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="start"
+        android:foregroundGravity="center"
+        android:gravity="center"
         android:hint="List Name"
         android:inputType="textPersonName"
         android:minHeight="48dp"
@@ -74,12 +74,12 @@
     <EditText
         android:id="@+id/list_location"
         android:layout_width="265dp"
-        android:layout_height="51dp"
+        android:layout_height="75dp"
         android:background="@drawable/cercel_shape"
         android:contextClickable="true"
         android:ems="10"
-        android:foregroundGravity="left"
-        android:gravity="start"
+        android:foregroundGravity="center"
+        android:gravity="center"
         android:hint="location "
         android:inputType="textPersonName"
         android:minHeight="48dp"
@@ -109,13 +109,14 @@
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/list_name"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="140dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/AddButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="132dp"
+        android:layout_height="70dp"
         android:text="add"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
